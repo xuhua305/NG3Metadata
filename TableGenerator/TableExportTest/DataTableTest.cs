@@ -18,6 +18,7 @@ namespace TableExportTest
         /// </summary>
         public static void ExportTable()
         {
+
             //连接串
             string constr = "Data Source=.;Initial Catalog=NHTEST;Integrated Security=True;Pooling=False";
             TableExporter exporter = new TableExporter(constr);
