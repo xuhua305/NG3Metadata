@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<freeform>
+  <Properties>
+    <backGround bgColor="#E5EAFF,#FAFFFF" />
+  </Properties>
+  <Objects>
+    <TableLayout id="mainToolbarLayout" y="0" width="100%">
+      <Col width="5%" minWidth="50" />
+      <Col width="5%" minWidth="50" />
+      <Col width="5%" minWidth="50" />
+      <Col width="5%" minWidth="50" />
+      <Col width="5%" minWidth="50" />
+      <Col width="5%" minWidth="50" />
+      <Col width="55%" minWidth="50" />
+      <Col width="5%" minWidth="50" />
+      <Col width="5%" minWidth="50" />
+      <Col width="5%" minWidth="50" />
+      <tr height="23">
+        <td>
+          <Input id="btnAdd" type="Button" textColor="black" text="新增" style="flat,transparent" />
+        </td>
+        <td>
+          <Input id="btnEdit" type="Button" textColor="black" text="修改" style="flat,transparent" />
+        </td>
+        <td>
+          <Input id="btnDelete" type="Button" textColor="black" text="删除" style="flat,transparent" />
+        </td>
+        <td>
+          <Input id="btnView" type="Button" textColor="black" text="查看" style="flat,transparent" />
+        </td>
+        <td>
+          <Input id="btnSave" type="Button" textColor="black" text="保存" style="flat,transparent" />
+        </td>
+        <td>
+          <Input id="btnExpand" type="Button" textColor="black" text="收拢" style="flat,transparent" />
+        </td>
+        <td />
+        <td>
+          <Input id="btnPrint" type="Button" textColor="black" text="打印" style="flat,transparent" />
+        </td>
+        <td>
+          <Input id="btnHelp" type="Button" textColor="black" text="帮助" style="flat,transparent" />
+        </td>
+        <td>
+          <Input id="btnExit" type="Button" textColor="black" text="退出" style="flat,transparent" />
+        </td>
+      </tr>
+    </TableLayout>
+    <rect id="mainToolbarBottom" x1="0" y1="toolbar1.bottom" x2="100%" y2="100%" color="#7f9db9" />
+  </Objects>
+</freeform>

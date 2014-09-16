@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<freeform>
+  <Properties bgColor="#E5EAFF,#FAFFFF" key="Itemno" />
+  <Fonts>
+    <Font faceName="微软雅黑" size="-13" />
+    <Font size="14" />
+    <Font size="-16" bold="1" />
+  </Fonts>
+  <Objects>
+    <TableLayout id="mainQueryFormLayout" y1=".bottom + 20" width="100%">
+      <Col width="2%" />
+      <Col width="5%" />
+      <Col width="27%" />
+      <Col width="5%" />
+      <Col width="27%" />
+      <Col width="5%" />
+      <Col width="27%" />
+      <Col width="2%" />
+      <tr height="24">
+        <td />
+        <td>
+          <Input id="IsChecked" LeftText="是否需要检验:" datatype="bool" width="2" editSize="1" />
+        </td>
+        <td />
+        <td>
+          <Input id="BeginDateTime*date*ngLow*date*ngLow" LeftText="开始生效时间上限下限上限下限:" datatype="datetime" width="2" editSize="1" />
+        </td>
+        <td />
+        <td>
+          <Input id="BeginDateTime*date*ngLow*date*ngUP" LeftText="开始生效时间上限下限上限下限:" datatype="datetime" width="2" editSize="1" />
+        </td>
+      </tr>
+      <tr height="24">
+        <td />
+        <td>
+          <Input id="ItemName" LeftText="物料名称:" datatype="string" width="2" editSize="1" />
+        </td>
+        <td />
+        <td>
+          <Input id="Weight*num*ngLow*num*ngLow" LeftText="重量上限下限上限下限:" datatype="double" width="2" editSize="1" />
+        </td>
+        <td />
+        <td>
+          <Input id="Weight*num*ngLow*num*ngUP" LeftText="重量上限下限上限下限:" datatype="double" width="2" editSize="1" />
+        </td>
+      </tr>
+      <tr height="24">
+        <td />
+        <td />
+        <td />
+        <td>
+          <Input type="button" width="2" id="btnQuery" text="查询" />
+        </td>
+        <td />
+        <td>
+          <Input type="button" width="2" id="btnClear" text="清空" />
+        </td>
+      </tr>
+    </TableLayout>
+  </Objects>
+</freeform>

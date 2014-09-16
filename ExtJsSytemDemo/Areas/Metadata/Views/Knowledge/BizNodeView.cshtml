@@ -1,0 +1,259 @@
+﻿@{
+    ViewBag.Title = "BizNodeView";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section script
+{
+
+    <script type="text/javascript" src="../../../../Scripts/ngcommon.js"></script>
+    <script type="text/javascript" src="../../../../Scripts/languagewindow.js"></script>
+    <script type="text/javascript">
+
+        var otype = '@ViewBag.OType';
+        var buskey = '@ViewBag.Id';
+        var transferData = Ext.JSON.decode(Ext.htmlDecode('@ViewBag.TransferData'));
+        var displayData = Ext.JSON.decode(Ext.htmlDecode('@ViewBag.DisplayLanguageData'));
+        var descriptionData = Ext.JSON.decode(Ext.htmlDecode('@ViewBag.DescriptionLanguageData'));
+
+        Ext.onReady(function () {
+            Ext.QuickTips.init();
+
+            var ngToolbar = Ext.create('Ext.ng.Toolbar',
+                {
+                    region: 'north',
+                    //renderTo: 'toolbar',
+                    border: false,
+                    //split: true,
+                    height: 26,
+                    minSize: 26,
+                    maxSize: 26,
+                    ngbuttons: [
+                        'save', "->", 'close'
+                    ]
+                });
+
+            var baseNodeInfoPanel = Ext.create('Ext.ng.TableLayoutForm', {
+                buskey: 'id',
+                otype: otype,
+                columnsPerRow: 3,
+                fields: [{
+                    id: 'Id',
+                    xtype: 'ngText',
+                    fieldLabel: '编号',
+                    name: 'Id',
+                    hidden: true
+                }, {
+                    id: 'ParentId',
+                    xtype: 'ngText',
+                    fieldLabel: '父亲节点编号',
+                    name: 'ParentId',
+                    hidden: true
+                }, {
+                    id: 'ParentVersionId',
+                    xtype: 'ngText',
+                    fieldLabel: '父亲节点版本编号',
+                    name: 'ParentVersionId',
+                    hidden: true
+                }, {
+                    id: 'Name',
+                    xtype: 'ngText',
+                    fieldLabel: '名称',
+                    name: 'Name',
+                    mustInput: true
+                }, {
+                    id: 'CurrentDisplayName',
+                    xtype: 'ngText',
+                    fieldLabel: '显示名称',
+                    name: 'CurrentDisplayName',
+                    mustInput: true
+                }, {
+                    id: 'DisplayName',
+                    xtype: 'ngText',
+                    fieldLabel: '显示名称',
+                    name: 'DisplayName',
+                    hidden: true
+                }, {
+                    id: 'Namespace',
+                    xtype: 'ngText',
+                    fieldLabel: '命名空间',
+                    mustInput: true, //必输列
+                    name: 'Namespace'
+                }, {
+                    id: 'Version',
+                    xtype: 'ngText',
+                    fieldLabel: '版本',
+                    mustInput: true, //必输列
+                    name: 'Version'
+                }, {
+                    id: 'Remark',
+                    xtype: 'ngTextArea',
+                    fieldLabel: '备注',
+                    name: 'Remark',
+                    colspan: 3
+                }]
+            });
+
+
+            var bizNodeInfoPanel = Ext.create('Ext.ng.TableLayoutForm', {
+                buskey: 'id',
+                otype: otype,
+                columnsPerRow: 3,
+                fields: [{
+                    xtype: 'combo',
+                    store: industryStyleStore,
+                    fieldLabel: '行业化分类',
+                    queryMode: 'local',
+                    id: 'IndustryStyle',
+                    name: 'IndustryStyle',
+                    valueField: 'value',
+                    displayField: 'text'
+                }, {
+                    id: 'Description',
+                    xtype: 'ngTextArea',
+                    fieldLabel: '业务描述',
+                    name: 'Description',
+                    colspan: 3
+                }]
+            });
+
+            var tabPanel = Ext.create('Ext.tab.Panel', {
+                //renderTo: 'tabpanel',
+                //xtype: 'tabpanel',
+                layout: 'border',
+                region: 'center',
+                deferredRender: false,
+                plain: true,
+                activeTab: 0,
+                //height: 600,
+                defaults: { bodyStyle: 'padding:3px' },
+                items: [{
+                    layout: 'border', //使grid填充                
+                    title: '基本信息',
+                    //autoScroll: true,
+                    //height:400,
+                    //defaults: { width: 230 },
+                    //defaultType: 'textfield',
+                    items: [baseNodeInfoPanel]
+                }, {
+                    layout: 'border', //使grid填充             
+                    title: '业务信息',
+                    //autoScroll: true,
+                    //contentEl: 'center1',
+                    //defaults: { width: 230 },
+                    //defaultType: 'textfield',
+                    items: [bizNodeInfoPanel]
+                }]
+            });
+
+            Ext.create('Ext.container.Viewport', {
+                id: "viewPort",
+                layout: 'border',
+                items:
+                [
+                    ngToolbar, tabPanel
+                ]
+            });
+
+            var namespace = Ext.getCmp('Namespace');
+            var version = Ext.getCmp('Version');
+            var name = Ext.getCmp('Name');
+            var currentDisplayName = Ext.getCmp('CurrentDisplayName');
+            var displayName = Ext.getCmp('DisplayName');
+            var id = Ext.getCmp('Id');
+            var parentId = Ext.getCmp('ParentId');
+            var description = Ext.getCmp('Description');
+            
+            var currentDisplayNameWin = Ext.create('Ext.ng.languageWin');
+            var descriptionWin = Ext.create('Ext.ng.languageWin');
+
+            name.on('change', function (newValue, oldValue, eOpts) {
+                namespace.setValue(transferData.Namespace + '.' + newValue.getValue());
+            });
+
+            if (otype == oType.Add) {
+                id.setValue(buskey);
+                parentId.setValue(transferData.ParentId);
+                namespace.setReadOnly(true);
+                namespace.setValue(transferData.Namespace + '.');
+                version.setReadOnly(true);
+                version.setValue('1.0.0.0');
+
+                name.setValue(transferData.Name);
+                currentDisplayName.setValue(transferData.CurrentDisplayName);
+            } else if (otype == oType.Edit) {
+                var baseNodeInfoForm = baseNodeInfoPanel.getForm();
+                var bizNodeInfoForm = bizNodeInfoPanel.getForm();
+                baseNodeInfoForm.setValues(transferData);
+                bizNodeInfoForm.setValues(transferData);
+                currentDisplayName.setValue(transferData.CurrentDisplayName);
+                
+                if (displayData[0])
+                    currentDisplayNameWin.initLanguageGridInfo(displayData);
+                if (descriptionData[0])
+                    descriptionWin.initLanguageGridInfo(descriptionData);
+                
+
+            }
+            currentDisplayName.setReadOnly(true);
+
+            currentDisplayName.on('focus', function (the, eOpts) {
+                currentDisplayNameWin.showLanguageInfoWindow();
+            });
+
+            description.on('focus', function (the, eOpts) {
+                descriptionWin.showLanguageInfoWindow();
+            });
+
+            var frame = $GetWFrame();
+            if (frame) {
+                var listref = Ext.create('Ext.ng.LanguageRefresher');
+                frame.ListObserver.add('list', listref);
+                listref.on('RefreshLanguage', function () {
+                    currentDisplayName.setValue(currentDisplayNameWin.getCurrentLanguageValue());
+                    description.setValue(descriptionWin.getCurrentLanguageValue());
+                });
+            }
+
+
+            //保存
+            ngToolbar.get("save").on('click', function () {
+                var mergeData = MergeFormData([baseNodeInfoPanel, bizNodeInfoPanel], 'id', otype);
+                
+                var displayNameData = currentDisplayNameWin.getLanguageGridInfo();
+                var descriptionData = descriptionWin.getLanguageGridInfo();
+                
+                var action = '';
+                switch (otype) {
+                    case oType.Add:
+                        action = "AddNode";
+                        break;
+                    case oType.Edit:
+                        action = "UpdateNode";
+                        break;
+                    default:
+                }
+
+                Ext.Ajax.request({
+                    params: { 'mergeData': mergeData, 'displayNameData': displayNameData, 'descriptionData': descriptionData },
+                    url: '@Url.Content("~/Knowledge/")' + action,
+                    success: function (response) {
+                        var resp = Ext.JSON.decode(response.responseText);
+                        if (resp.status === "ok") {
+                            if (resp.id && resp.id.length != 0 && resp.name && resp.name.length != 0) {
+                                top.setCurrentNodeValue(resp.id, resp.name);
+                            }
+                            Ext.MessageBox.alert('保存成功', resp.status);
+                        } else {
+                            Ext.MessageBox.alert('保存失败', resp.status);
+                        }
+                    }
+                });
+
+
+            });
+
+        });
+
+    </script>
+}

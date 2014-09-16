@@ -1,0 +1,128 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<CommonHelp>
+  <Help>
+    <Mode>0</Mode>
+    <HelpID>XML构造节点</HelpID>
+    <Title></Title>
+    <TableName></TableName>
+    <CodeField></CodeField>
+    <NameField></NameField>
+    <AllField></AllField>
+    <SqlFilter />
+    <SortField></SortField>
+    <Distinct>1</Distinct>
+
+    <Assembly></Assembly>
+    <ClassName></ClassName>
+
+    <QueryTemplate></QueryTemplate>
+    <ListTemplate></ListTemplate>
+
+    <!--纯ExtJs帮助界面定义-->
+    <JsonTemplate></JsonTemplate>
+
+  </Help>
+  <Help>
+    <Mode>0</Mode>
+    <HelpID>secuser</HelpID>
+    <Title>操作员帮助</Title>
+    <TableName>secuser,fg_userorg</TableName>
+    <CodeField>logid</CodeField>
+    <NameField>u_name</NameField>
+    <AllField>logid,u_name</AllField>
+    <SqlFilter>secuser.logid = fg_userorg.userid </SqlFilter>
+    <SortField>logid</SortField>
+    <Distinct>1</Distinct>
+
+    <QueryTemplate>secuser_query.xml</QueryTemplate>
+    <ListTemplate>secuser_list.xml</ListTemplate>
+
+  </Help>
+
+  <Help>
+    <Mode>1</Mode>
+    <HelpID>user</HelpID>
+    <AllField>logid,name</AllField>
+    <HeadText>编号,名称</HeadText>
+    <Title>操作员帮助</Title>
+
+    <Assembly>EC.Supplier.Rule.dll</Assembly>
+    <ClassName>EC.Supplier.Rule.SendListRule</ClassName>
+
+    <QueryTemplate>secuser_query.xml</QueryTemplate>
+    <ListTemplate>secuser_list.xml</ListTemplate>
+
+  </Help>
+
+  <Help>
+    <Mode>0</Mode>
+    <HelpID>province</HelpID>
+    <TableName>province</TableName>
+    <CodeField>provinceno</CodeField>
+    <NameField>prvcname</NameField>
+    <AllField>provinceno,prvcname</AllField>
+    <HeadText>代码,名称</HeadText>
+    <SqlFilter></SqlFilter>
+    <SortField>provinceno</SortField>
+    <IsInOrganize />
+    <Title>省份帮助</Title>
+    <JsonTemplate>province.json</JsonTemplate>
+  </Help>
+
+  <Help>
+    <Mode>0</Mode>
+    <HelpID>city</HelpID>
+    <TableName>city</TableName>
+    <CodeField>cityno</CodeField>
+    <NameField>cityname</NameField>
+    <AllField>cityno,cityname,nationno,provinceno</AllField>
+    <HeadText>代码,名称,国家,省份</HeadText>
+    <SqlFilter></SqlFilter>
+    <SortField>cityno</SortField>
+    <IsInOrganize />
+    <Title>城市帮助</Title>
+  </Help>
+
+  <Help>
+    <Mode>0</Mode>
+    <HelpID>metadataEntity</HelpID>
+    <TableName>md_Knowledge</TableName>
+    <CodeField>md_Knowledge.Id</CodeField>
+    <NameField>md_Knowledge.DisplayName</NameField>
+    <AllField>Id,ParentId,Name,DisplayName</AllField>
+    <HeadText>编号,名称,显示名称</HeadText>
+    <SqlFilter></SqlFilter>
+    <SortField>md_Knowledge.Id</SortField>
+    <IsInOrganize />
+    <Title>元数据实体帮助</Title>
+  </Help>
+
+<Help>
+    <Mode>0</Mode>
+    <HelpID>testEntity</HelpID>
+    <TableName>WorkHouse</TableName>
+    <CodeField>WorkHouse.Id</CodeField>
+    <NameField>WorkHouse.Name</NameField>
+    <AllField>Id,Name</AllField>
+    <HeadText>编号,名称</HeadText>
+    <SqlFilter></SqlFilter>
+    <SortField>WorkHouse.Id</SortField>
+    <IsInOrganize />
+    <Title>测试帮助</Title>
+  </Help>
+
+  <Help>
+    <Mode>0</Mode>
+    <HelpID>allorg</HelpID>
+    <TableName>fg_orglist</TableName>
+    <CodeField>fg_orglist.ocode</CodeField>
+    <NameField>fg_orglist.oname</NameField>
+    <AllField>ocode,oname</AllField>
+    <HeadText>代码,名称</HeadText>
+    <SqlFilter></SqlFilter>
+    <SortField>fg_orglist.ocode</SortField>
+    <IsInOrganize />
+    <Title>职能机构帮助</Title>
+  </Help>
+
+</CommonHelp>

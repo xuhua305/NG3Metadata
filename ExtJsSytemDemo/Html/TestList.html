@@ -1,0 +1,317 @@
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=GB2312">
+    <link href="../extjs/resources/css/ext-all.css" rel="stylesheet" type="text/css" />
+    <script type='text/javascript' src='../extjs/ext-all.js'></script>
+    <script type='text/javascript' src='../Resource/js/ExtUx.js'></script>
+    <script type='text/javascript' src='../binary/dynaload.js?72'></script>
+    <script type='text/javascript' src='../Scripts/LggControl.js'></script>
+    <script language="JavaScript">
+
+        var isQuery = true;
+        var isListUpdate = false;
+        var currentRowindex = 0;
+        function OnReady(id) {
+            AF.func("Build", "../xml/TestList/Layout.xml");
+            GenerateFunctionAndProperty(AF, '');
+            
+            //GenerateProperty(AF, '');
+            if (onBeforeLoadUi) {
+                onLoadUi();
+                onAfterLoadUi();
+            }
+
+            if (onBeforeLoadData) {
+                onLoadData();
+                onAfterLoadData();
+            }
+        }
+
+        function onBeforeLoadUi() {
+            return true;
+        }
+
+        //加载数据
+        function onLoadUi() {
+            //AF.MyGrid.SetObjProp('btnListStyle', 'text', '传统');
+
+        }
+
+        function onAfterLoadUi() {
+
+        }
+
+        function onBeforeLoadData() {
+            return true;
+        }
+
+        function onLoadData() {
+            //AF.func('MyGrid.Load', '../Designer/GetMasters?startRow=@startRow&rows=@rows\r\nmode=Asynch\r\n');
+            AF.MyGrid.Load('../Home/GetMasters?startRow=@startRow&rows=@rows', 'mode=Asynch');
+            AF.MyGrid.SelectRow(currentRowindex);
+
+            //$.get("../Designer/GetMasters", function (data, status) {
+            //    //var h = AF.func("GetHandle", "MyGrid");
+            //    //AF.func(h + 'Load', data);
+            //    AF.MyGrid.Load(data);
+            //    AF.MyGrid.SelectRow(currentRowindex);
+            //});
+        }
+
+        function onAfterLoadData() {
+
+        }
+
+        //关闭前事件
+        function onBeforeClose() {
+            return true;
+        }
+
+        //关闭前保存
+        function onBeforeSave() {
+            if (AF.MyGrid.Validate('') == 0)
+                return false;
+
+            return true;
+        }
+        
+        function CommonHelpClosed(obj) {
+            alert('Suc');
+            alert(obj);
+        }
+        
+        function InvokeCommonHelp() {
+            var comhelp = Ext.create('Ext.ng.CommonHelp', {
+                helpid: 'testEntity',
+                valueField: "Id",
+                displayField: 'Name'
+            });
+            comhelp.onTriggerClick();
+            comhelp.on('helpselected', function(obj) {
+                CommonHelpClosed(obj);
+            });
+            //var myWin = Ext.create('Ext.window.Window', {
+            //    title: 'ddd',
+            //    height: 100,
+            //    width: 100,
+            //    renderTo: Ext.getDom("Div1")
+            //});
+            //myWin.show();
+            //myWin.render(Ext.getBody());
+            //var html = "<iframe src='javascript:false' width=100% height=100% frameborder=0></iframe>";
+            //myWin.update(html);
+
+        }
+        
+
+
+        //工具栏按钮事件
+        function onMyToolbarButtonClicked(p1, p2, p3, p4) {
+
+            switch (p1) {
+                case "btnListStyle":
+                    onMyToolbarBtnListStyleButtonClicked(p2, p3, p4);
+                    break;
+                case "btnExpand":
+                    onMyToolbarBtnExpandButtonClicked(p2, p3, p4);
+                    break;
+                case "btnNew":
+                    //onMyToolbarBtnNewButtonClicked(p2, p3, p4);
+                    InvokeCommonHelp();
+                    break;
+                case "btnEdit":
+                    onMyToolbarBtnEditButtonClicked(p2, p3, p4);
+                    break;
+                case "btnView":
+                    onMyToolbarBtnViewButtonClicked(p2, p3, p4);
+                    break;
+                case "btnDelete":
+                    onMyToolbarBtnDeleteButtonClicked(p2, p3, p4);
+                    break;
+                case "btnSave":
+                    onMyToolbarBtnSaveButtonClicked(p2, p3, p4);
+                    break;
+                case "btnPrint":
+                    onMyToolbarBtnPrintButtonClicked(p2, p3, p4);
+                    break;
+                case "btnExit":
+                    onMyToolbarBtnExitButtonClicked(p2, p3, p4);
+                    break;
+                default:
+                    break;
+            }
+        }
+        
+
+
+        //新增功能
+        function onMyToolbarBtnNewButtonClicked(p2, p3, p4) {
+            if (isListUpdate) {
+                AF.MyGrid.InsertRows(-1, 1, true, 'raiseEvent=true;SelectRow=false;isOpenEdit=true');
+            } else {
+                window.open('TestEdit.html?otype=add');
+            }
+            //AF.func('MyGrid.insertRows', "-1 \r\n 1 \r\n true \r\n raiseEvent=true;SelectRow=false;isOpenEdit=true");
+        }
+
+        //编辑功能
+        function onMyToolbarBtnEditButtonClicked(p2, p3, p4) {
+            var rowIndex = AF.MyGrid.GetCurrentRow();
+            currentRowindex = rowIndex;
+            var idValue = AF.MyGrid.GetCellData(rowIndex, 'id');
+            window.open('TestEdit.html?otype=edit&id=' + idValue);
+        }
+
+        function onMyToolbarBtnViewButtonClicked(p2, p3, p4) {
+            var rowIndex = AF.MyGrid.GetCurrentRow();
+            currentRowindex = rowIndex;
+            var idValue = AF.MyGrid.GetCellData(rowIndex, 'id');
+            window.open('TestEdit.html?otype=view&id=' + idValue);
+        }
+
+        //保存功能
+        function onMyToolbarBtnSaveButtonClicked(p2, p3, p4) {
+            if (!onBeforeSave())
+                return;
+            var ret = AF.MyGrid.GetChangedXML('level=1; CompKeySep=;isValidateKey=true');
+            ret = AF.MyGrid.ToJson(ret);
+            
+            Ext.Ajax.request({
+                params: { data: ret },
+                url: '../Home/UpdateMasters' + action,
+                success: function (response) {
+                    AF.MyGrid.ResetChanged('');
+                }
+            });
+        }
+
+        //切换列表更新方式功能
+        function onMyToolbarBtnListStyleButtonClicked(p2, p3, p4) {
+            isListUpdate = !isListUpdate;
+            if (isListUpdate) {
+                AF.MyToolbar.btnListStyle.setText('列表');
+                //AF.MyToolbar.SetObjProp('btnListStyle', 'text', '列表');
+            } else {
+                AF.MyToolbar.btnListStyle.setText('传统');
+
+
+                //AF.MyToolbar.SetObjProp('btnListStyle', 'text', '传统');
+            }
+
+            //AF.func('MyToolbar.SetObjProp', 'btnListStyle\r\nText\r\n变态');
+        }
+
+        function onMyToolbarBtnDeleteButtonClicked(p2, p3, p4) {
+            AF.MyGrid.DeleteCurrentRow(-1, 1, true, 'raiseEvent=true;SelectRow=false;isOpenEdit=true');
+        }
+
+        function onMyToolbarBtnPrintButtonClicked(p2, p3, p4) {
+            GenerateEvents(AF, '');
+            var eventStr = JSON.stringify(eventContainer);
+            $.post("../Home/HandleEvent",
+                {
+                    eventStr: eventStr
+                },
+                function (data, status) {
+
+                });
+        }
+
+        function onMyToolbarBtnExitButtonClicked(p2, p3, p4) {
+            if (onBeforeClose())
+                window.close();
+        }
+
+        function onMyToolbarBtnExpandButtonClicked(p2, p3, p4) {
+            isQuery = !isQuery;
+            if (isQuery) {
+                var ret = AF.MyToolbar.btnExpand.setText('收拢');
+                AF.func("SetObjProp", "mainLayout \r\n TR.queryTr \r\n visible \r\n true");
+            } else {
+                var ret = AF.MyToolbar.btnExpand.setText('展开');
+                AF.func("SetObjProp", "mainLayout \r\n TR.queryTr \r\n visible \r\n false");
+            }
+
+            //var type = AF.func('GetObjectType', 'MyToolbar');
+            //var ps2 = AF.func('MyQuery.reflectProps', '');
+            //var fs2 = AF.func('mainLayout.reflectFuncs', '');
+            ////var events = AF.func('MyQuery.reflectEvents ', '');
+            //var allComponent = AF.func('MyQuery.GetObjectIds', '');
+            ////alert(allComponent);
+            ////alert(ps2);
+            //alert(fs2);
+            //alert(events);
+        }
+
+        function onMyQueryButtonClicked(p1, p2, p3, p4) {
+            switch (p1) {
+                case "btnQuery":
+                    onMyQueryBtnQueryButtonClicked(p2, p3, p4);
+                    break;
+                case "btnClear":
+                    onMyQueryBtnClearButtonClicked(p2, p3, p4);
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        function onMyQueryBtnQueryButtonClicked(p2, p3, p4) {
+            var queryRet = AF.MyQuery.GetChangedXML('level=1');
+            var queryStr = AF.MyQuery.ToJson(queryRet);
+
+            AF.MyGrid.Load('../Home/GetMasters?startRow=@startRow&rows=@rows&queryStr=' + queryStr, 'mode=Asynch');
+            AF.MyGrid.SelectRow(0);
+
+        }
+
+        function onMyQueryBtnClearButtonClicked(p2, p3, p4) {
+            AF.MyQuery.Load('{}');
+        }
+
+
+
+
+
+
+        function OnEvent(id, Event, p1, p2, p3, p4) {
+            //非模式对话框中的freeform的事件
+            //var str = "id:" + id + ";Event:" + Event + ";p1:" + p1 + ";p2:" + p2 + ";p3:" + p3 + ";p4:" + p4;
+            //alert(str);
+
+            switch (Event) {
+                case "MyToolbar.ButtonClicked":
+                    onMyToolbarButtonClicked(p1, p2, p3, p4);
+                    break;
+                case "MyQuery.ButtonClicked":
+                    onMyQueryButtonClicked(p1, p2, p3, p4);
+                    break;
+                default:
+                    break;
+            }
+
+            //if (Event == "Freeform1.ButtonClicked" && p1 == "btn1") {
+            //    AF.func("SetDialogFreeform", freeformXML);
+            //    AF.func("SetDialogPara", "width=380;height=170;bgColor=#aaccff;alpha=100");
+            //    AF.func("OpenInnerDialog", "");
+            //    return;
+            //}
+
+            //if (Event == "Freeform1.ButtonClicked" && p1 == "btn2") {
+            //    var h = AF.func("GetHandle", "report");
+            //    AF.func(h + "callfunc", "18");
+            //    return;
+            //}
+
+            //if (Event == "Freeform1.ButtonClicked" || Event == "Freeform1.MenuClicked") {
+            //    AF.func("msgFloat", "工具条、菜单事件：id=" + p1);
+            //}
+        }
+
+    </script>
+</head>
+
+    <body topmargin="0" leftmargin="0" rightmargin="0" bottommargin="0" scroll="no" style="overflow: hidden">
+        <script>insertFreeForm('AF', 'eventlog=123.txt')</script>
+    </body>
+</html>

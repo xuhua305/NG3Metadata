@@ -1,0 +1,542 @@
+﻿@{
+	ViewBag.Title = "EmpInfoEdit";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section script
+{
+
+<script type="text/javascript">
+    
+    var otype = '@ViewBag.OType';
+    var busid = '@ViewBag.ID'; 
+
+</script>
+ 
+ <script type="text/javascript">
+
+     Ext.onReady(function () {
+
+         var toolbar = Ext.create('Ext.Toolbar',
+				{
+				    region: 'north',
+				    border: false,
+				    //split: true,
+				    height: 26,
+				    minSize: 26,
+				    maxSize: 26,
+				    items: [
+							   {
+							       id: "save",
+							       text: "提交",
+							       iconCls: 'add'
+							   },
+							   {
+							       id: "addrow",
+							       text: "增行",
+							       iconCls: 'add'
+							   },
+							   {
+							       id: "deleterow",
+							       text: "删行",
+							       iconCls: 'plugin'
+							   },
+							   "->",
+							   {
+							       id: "close",
+							       text: "退出",
+							       iconCls: 'cross'
+							   }
+							  ]
+				});
+
+         Ext.define('cmodel', {                //编辑状态下,状态列的下拉菜单的 model
+             extend: 'Ext.data.Model',
+             fields: [{
+                 name: 'sex',
+                 type: 'string'
+             }, {
+                 name: 'name',
+                 type: 'string'
+             }]
+         });
+
+         //性别
+         var states = [{             //编辑状态下,状态列的下拉菜单的 data
+             "sex": "0",
+             "name": "男"
+         }, {
+             "sex": "1",
+             "name": "女"
+         }]
+
+         var cstore = Ext.create('Ext.data.Store', {        //编辑状态下,状态列的下拉菜单的 store
+             model: 'cmodel',
+             data: states
+         });
+
+         var sexcomb = Ext.create('Ext.form.ComboBox', {
+             //xtype: 'combobox',                              //指定编辑状态下为下拉菜单
+             store: cstore,                                         //绑定下拉菜单数据源
+             editable: true,                                   //是否可以输入  
+             selectOnFoucus: true,
+             typeAhead: true,
+             triggerAction: "all",
+             hiddenName: String,
+             valueField: "sex",
+             displayField: 'name',
+             queryMode: 'local',                            //local指定为本地数据  如果是后台传输  值为remote
+             allowBlank: false,
+             fieldLabel: '性别',
+             name: 'sex',
+             anchor: '95%'
+         })
+
+         //#region 明细信息
+
+
+         Ext.define('model', {
+             extend: 'Ext.data.Model',
+             fields: [{
+                 name: 'id',
+                 type: 'string',
+                 mapping: 'id'
+             }, {
+                 name: 'workdt',
+                 //type: Ext.data.Types.DATE,
+                 type: 'date',
+                 dateFormat: 'Y-m-d', //'Y-m-d H:i:s',
+                 mapping: 'workdt'
+             }, {
+                 name: 'department',
+                 type: 'string',
+                 mapping: 'department'
+             }, {
+                 name: 'station',
+                 type: 'string',
+                 mapping: 'station'
+             }, {
+                 name: 'postion',
+                 mapping: 'postion',
+                 type: 'string'
+             }, {
+                 name: 'level',
+                 mapping: 'level',
+                 type: 'string'
+             }]
+         });
+
+         var store = Ext.create('Ext.data.Store', {
+             model: 'model',
+             pageSize: 20,
+             proxy: {
+                 type: 'ajax',
+                 url: 'EmpInfoEdit/GetDetailInfo?mainid=' + busid,
+                 reader: {
+                     type: 'json',
+                     root: 'Record',
+                     totalProperty: 'totalRows'
+                 }
+             }
+         });
+
+         var pagingbar = Ext.create('Ext.PagingToolbar', {
+             store: store,
+             displayInfo: true,
+             displayMsg: '第 {0} - {1}条 共 {2} 条数据',
+             emptyMsg: "没有任何数据",
+             beforePageText: "第",
+             afterPageText: "/{0} 页",
+             firstText: "首页",
+             prevText: "上一页",
+             nextText: "下一页",
+             lastText: "尾页",
+             refreshText: "刷新"
+         });
+
+         var cellEditing = Ext.create('Ext.grid.plugin.CellEditing', {
+             clicksToEdit: 1
+         });
+
+         var renderWorkDate = function (val, cell, record, rowIndex, colIndex, store) {
+             //             debugger;
+             //             alert(val);
+
+             if (val) {
+                 var str = Ext.util.Format.date(val, 'Y-m-d'); //FormatToDate(val, 'yyyy-MM-dd');
+                 return str;
+             }
+             else {
+                 return '';
+             }
+
+         }
+
+         var grid = Ext.create('Ext.grid.Panel', {
+             region: 'center',
+             //frame: true,
+             store: store,
+             columnLines: true,
+             //selType: 'cellmodel',
+             //selModel: Ext.create('Ext.selection.CheckboxModel'),
+             layout: {
+                 type: 'hbox',
+                 align: 'stretch'
+             },
+             columns: [Ext.create('Ext.grid.RowNumberer', { text: '行号', width: 35 }),
+				 {
+				     header: '编号',
+				     flex: 1,
+				     dataIndex: 'id',
+				     hidden: true
+				 },
+				{
+				    xtype: 'datecolumn',
+				    header: '任职时间',
+				    flex: 1,
+				    sortable: true,
+				    dataIndex: 'workdt',
+				    format: 'Y-m-d',
+				    editor: {
+				        xtype: 'datefield',
+				        format: 'Y-m-d',
+				        allowBlank: false
+				    },
+				    renderer: Ext.Function.bind(renderWorkDate, store) //重新渲染名称
+				}, {
+				    header: '部门',
+				    flex: 1,
+				    sortable: true,
+				    dataIndex: 'department',
+				    editor: {
+				        allowBlank: false
+				    }
+				}, {
+				    header: '工作岗位',
+				    flex: 1,
+				    sortable: true,
+				    dataIndex: 'station',
+				    editor: {
+				        allowBlank: false
+				    }
+				}, {
+				    header: '职位',
+				    flex: 1,
+				    sortable: true,
+				    dataIndex: 'postion',
+				    editor: {
+				        allowBlank: false
+				    }
+				}, {
+				    header: '职位等级',
+				    flex: 1,
+				    sortable: true,
+				    dataIndex: 'level',
+				    editor: {
+				        xtype: 'numberfield',
+				        allowBlank: false
+				    }
+				}],
+             viewConfig: {
+                 forceFit: true,
+                 scrollOffset: 0
+             },
+             //forceFit: true,
+             plugins: [cellEditing]
+             //bbar: pagingbar
+         });
+
+         //#endregion
+
+         //整个表单
+         var form = Ext.create('Ext.form.Panel', {
+             region: 'center',
+             //title: 'Inner Tabs',
+             frame: true,
+             bodyStyle: 'padding:2px',
+             //width: 600,
+             fieldDefaults: {
+                 //labelAlign: 'top',
+                 msgTarget: 'side'
+             },
+             defaults: {
+                 anchor: '100%'
+             },
+             keys: [{
+                 key: Ext.EventObject.ENTER,
+                 fn: function () { alert("enter"); },
+                 scope: this
+             }, {
+                 key: Ext.EventObject.ESC,
+                 fn: function () { alert("esc"); },
+                 scope: this
+             }],
+
+             items: [{
+                 layout: 'column',
+                 border: false,
+                 items: [{
+                     columnWidth: .5,
+                     border: false,
+                     layout: 'anchor',
+                     defaultType: 'textfield',
+                     items: [{
+                         xtype: 'hiddenfield',
+                         fieldLabel: '编号',
+                         name: 'id'
+                     }, {
+                         fieldLabel: '工号',
+                         name: 'empno',
+                         anchor: '95%'
+                     }, sexcomb]
+                 }, {
+                     columnWidth: .5,
+                     border: false,
+                     layout: 'anchor',
+                     defaultType: 'textfield',
+                     items: [{
+                         fieldLabel: '姓名',
+                         name: 'name',
+                         anchor: '95%'
+                     }, {
+                         xtype: 'numberfield',
+                         fieldLabel: '年龄',
+                         name: 'age',
+                         anchor: '95%'
+                     }]
+                 }, {
+                     columnWidth: .5,
+                     border: false,
+                     layout: 'anchor',
+                     defaultType: 'textfield',
+                     items: [Ext.create('Ext.ux.ComboBox', {
+                         fieldLabel: '省',
+                         id: 'province',
+                         name: 'province',
+                         valueField: 'provinceno',
+                         displayField: 'prvcname',
+                         codeField: 'provinceno', //代码列
+                         nameField: 'prvcname', //名称列
+                         helpid: 'province', //帮助标记
+                         anchor: '95%'
+                     }), Ext.create('Ext.ux.ComboBox', {
+                         fieldLabel: '市',
+                         id: 'city',
+                         name: 'city',
+                         valueField: 'cityno',
+                         displayField: 'cityname',
+                         codeField: 'cityno', //代码列
+                         nameField: 'cityname', //名称列
+                         helpid: 'city', //帮助标记                      
+                         //hideTrigger:true,  
+                         anchor: '95%'
+                     })]
+                 }, {
+                     columnWidth: .5,
+                     border: false,
+                     layout: 'anchor',
+                     defaultType: 'textfield',
+                     items: [{
+                         fieldLabel: '生日',
+                         name: 'birthday',
+                         xtype: 'datefield',
+                         format: 'Y-m-d H:i:s',
+                         anchor: '95%'
+                     }, {
+                         fieldLabel: '邮箱',
+                         name: 'email',
+                         vtype: 'email',
+                         anchor: '95%'
+                     }]
+                 }
+							   ]
+             }, {
+                 xtype: 'tabpanel',
+                 plain: true,
+                 activeTab: 0,
+                 height: 600,
+                 defaults: { bodyStyle: 'padding:3px' },
+                 items: [{
+                     title: '任职信息',
+                     //defaults: { width: 230 },
+                     //defaultType: 'textfield',
+                     items: [grid]
+                 }]
+             }]
+         });
+
+         Ext.create('Ext.container.Viewport', {
+             id: "viewPort",
+             layout: 'border',
+             items:
+			 [
+				toolbar, form
+			 ]
+         });
+
+         //修改状态
+         if (otype === "edit" || otype === "view") {
+
+             Ext.Ajax.request({
+                 //params: { 'id': busid },
+                 url: '/EmpInfoEdit/GetMasterInfo?id=' + busid,
+                 success: function (response) {
+                     var resp = Ext.JSON.decode(response.responseText);
+                     if (resp.status === "ok") {
+
+                         //debugger;
+                         var formobj = form.getForm();
+                         formobj.setValues(resp.data);
+
+
+                         BindCombox(Ext.getCmp('province'), 'provinceno', 'prvcname', 'province', Ext.getCmp('province').getValue());
+                         BindCombox(Ext.getCmp('city'), 'cityno', 'cityname', 'city', Ext.getCmp('city').getValue());
+
+
+                         //                         Ext.define('model', {
+                         //                             extend: 'Ext.data.Model',
+                         //                             fields: [{
+                         //                                 name: 'code',
+                         //                                 type: 'string',
+                         //                                 mapping: 'code'
+                         //                             }, {
+                         //                                 name: 'name',
+                         //                                 type: 'string',
+                         //                                 mapping: 'name'
+                         //                             }
+                         //                     ]
+                         //                         });
+
+                         //                         var provincepair = Ext.ModelManager.create({
+                         //                             code: '02',
+                         //                             name: '美国'
+                         //                         }, 'model');
+                         //                         Ext.getCmp('province').setValue(provincepair);
+
+
+                         //                         var citypair = Ext.ModelManager.create({
+                         //                             code: '01',
+                         //                             name: '中国'
+                         //                         }, 'model');
+                         //                         Ext.getCmp('city').setValue(citypair);
+
+                     } else {
+                         Ext.MessageBox.alert('删除失败', resp.status);
+                     }
+                 }
+             });
+
+             store.load(); //加载明细数据    
+         }
+
+         if (otype === "view") {
+             //             form.setDisabled(true);
+             //             grid.setDisabled(true);
+
+             //sexcomb.setDisabled(true);
+             //sexcomb.disable(true);             
+             //sexcomb.setReadOnly(true);         
+
+             //form.disable(true);
+             //grid.enable(false);
+
+
+             debugger;
+             //form变为只读
+             var fields = form.getForm().getFields().items;
+             for (var i = 0; i < fields.length; i++) {
+                 var field = fields[i];
+                 field.setReadOnly(true);
+             }
+
+             //grid变为只读
+             grid.on('beforeedit', function () {
+                 return false;
+             })
+         }
+         //保存
+         toolbar.items.get("save").on('click', function () {
+
+             //alert(JSON.stringify(form.getForm().getValues()));
+
+             alert(Ext.getCmp('province').getValue());
+             alert(Ext.getCmp('province').getRawValue());
+
+             var op = "new";
+             if (otype == "edit") {
+                 op = otype;
+             }
+
+             var formdata = GetExtJsFormData(form, "id", op);
+             var griddata = GetExtJsGridData(store, "id");
+
+             alert(formdata);
+             alert(griddata);
+
+             Ext.Ajax.request({
+                 params: { 'formdata': formdata, 'griddata': griddata },
+                 url: '/EmpInfoEdit/Save',
+                 success: function (response) {
+                     var resp = Ext.JSON.decode(response.responseText);
+                     if (resp.status === "ok") {
+                         //succFn();
+
+                         //CommitGridData(store);
+                         store.commitChanges();
+                         Ext.MessageBox.alert('保存成功', resp.status);
+                     } else {
+                         Ext.MessageBox.alert('保存失败', resp.status);
+                     }
+                 }
+             });
+
+         })
+
+         //增行
+         toolbar.items.get('addrow').on('click', function () {
+
+
+             var data = [{
+                 'id': '',
+                 'workdt': '',
+                 'department': '',
+                 'station': '',
+                 'position': '',
+                 'level': ''
+             }];
+
+             //store.insert(2, data);
+             for (var i = 0; i < 1; i++) {
+                 store.loadData(data, true); //在store的最后添加一行数据
+             }
+
+         })
+
+         //删行
+         toolbar.items.get('deleterow').on('click', function () {
+             //debugger;
+             var data = grid.getSelectionModel().getSelection();
+
+             if (data.length > 0) {
+
+                 var ids = [];
+                 Ext.Array.each(data, function (record) {
+                     var name = record.get('name');
+
+                     if (name) {
+                         ids.push(name);
+                     }
+
+                     store.remove(record); //前端删除
+
+                 });
+
+             }
+
+         })
+
+     })
+
+ </script>
+
+}

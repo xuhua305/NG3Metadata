@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<freeform>
+  <Properties>
+    <backGround bgColor="#E5EAFF,#FAFFFF" />
+  </Properties>
+  <Objects>
+    <TableLayout id="mainLayout" x="0" y="0" width="100%" height="100%">
+      <Col width="100%">
+        <tr id="mainToolbarTr" height="23">
+          <td>
+            <Component id="mainToolbar" Type="freeform" CreatePara="border=none" URL="MainToolbar.xml" />
+          </td>
+        </tr>
+        <tr id="mainQueryTr" height="27%">
+          <td>
+            <Component id="mainQuery" Type="freeform" CreatePara="border=none" URL="Query.xml" />
+          </td>
+        </tr>
+        <tr id="mainBodyTr" height="27%">
+          <td>
+            <Component id="mainBody" Type="TreeList" CreatePara="border=single" URL="Body.xml" />
+          </td>
+        </tr>
+      </Col>
+    </TableLayout>
+  </Objects>
+</freeform>

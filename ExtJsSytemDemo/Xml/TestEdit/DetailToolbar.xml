@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!-- Supcan Freeform -->
+<freeform>
+  <Properties>
+    <backGround bgColor="#E5EAFF,#FAFFFF"/>
+  </Properties>
+  <Objects>
+    <TableLayout id="MyDetailToolbarLayout" y="0" width="100%">
+
+      <col width="5%" minWidth="50"/>
+      <col width="5%" minWidth="50"/>
+      <col width="90%" minWidth="50"/>
+      <tr height="23">
+        <td>
+          <Input id="btnAddRow" type="Button" textColor="black" text="增行" style="flat,transparent"/>
+        </td>
+        <td>
+          <Input id="btnDeleteRow" type="Button" textColor="black" text="删行" style="flat,transparent"/>
+        </td>
+      </tr>
+    </TableLayout>
+    <rect id="rc2" x1="0" y1="toolbar1.bottom" x2="100%" y2="100%" color="#7f9db9" />
+  </Objects>
+</freeform>

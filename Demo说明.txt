@@ -1,0 +1,38 @@
+1、修改数据库连接串方法
+
+修改web.config文件、connectionStrings配置节的连接串
+
+DBHelper连接串直接在HomeController类InitialDb方法中初始化
+
+2、执行以下sql语句建表
+
+create table hr_employee
+(
+   id varchar(100) primary key,
+   name varchar(200),
+   sex varchar(1),
+   age int,
+   birthday date,
+   province varchar(10),
+   city varchar(10),
+   email varchar(200) 
+)
+
+create table hr_emp_positoninfo
+(
+    id varchar(100) primary key,
+	mainid varchar(100) ,
+	workdt date ,
+	department varchar(100) ,
+	station varchar(100) ,
+	postion varchar(100) ,
+	level int 
+)
+
+3、可以直接跑VS的“执行”运行或者部署到iis下运行
+
+
+
+
+
+

@@ -1,0 +1,427 @@
+﻿@{
+    ViewBag.Title = "MainTreeView";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section script
+{
+    <script type="text/javascript" src="../../../../Resource/js/MainFrame.js"></script>
+    <script type="text/javascript" src="../../../../Scripts/ngcommon.js"></script>
+    <script type="text/javascript">
+
+        var mainTree;
+
+        function OpenTab(url, id, text) {
+
+            var frame1 = document.createElement("IFRAME");
+            frame1.id = "frame1";
+            frame1.frameBorder = 0;
+            frame1.src = url;
+            frame1.height = "99.5%";
+            frame1.width = "99.5%";
+
+            var panel = Ext.create("Ext.Panel", {
+                title: text,
+                id: id,
+                //html: '<iframe id="frame1" src="home/About" frameborder="0" width="100%" height="100%"></iframe>',
+                closable: true,
+                listeners: {
+
+
+
+
+
+
+                    //beforeclose: beforeRemoveTab
+                },
+                contentEl: frame1
+            });
+
+            if (!tabMain.getComponent(id)) {
+                Ext.getCmp("tabMain").add(panel);
+            }
+
+            frame1.parentContainer = panel;
+
+            var curtab = tabMain.getComponent(id);
+            tabMain.setActiveTab(curtab);
+
+        }
+
+        function createNewNodeAndTab(nodeName, nodeDisplayName, viewName, openOType, nType) {
+
+            var selectionModel = mainTree.getSelectionModel();
+            var selectedNodes = selectionModel.selected.items;
+            if (selectedNodes.length > 0) {
+                var selectedNode = selectedNodes[0];
+                var id = NewGuid();
+                var name = nodeName;
+                var displayName = nodeDisplayName;
+
+                var parentId = selectedNode.data.id;
+                selectedNode.appendChild({ id: id, text: nodeDisplayName + '(' + name + ')', leaf: false, nodeType: nType, nodeNamespace: selectedNode.data.nodeNamespace + '.' + name });
+                selectedNode.expand();
+                var record = selectedNode.findChild("id", id, true);
+                selectionModel.select(record);
+                OpenTab(viewName + '?otype=' + openOType + '&id=' + id + '&parentId=' + parentId + '&name=' + name + '&displayName=' + displayName + '&namespace=' +
+                    selectedNode.data.nodeNamespace, id, displayName);
+            }
+        }
+
+        function setCurrentNodeValue(id, text) {
+            var selectionModel = mainTree.getSelectionModel();
+            var selectedNodes = selectionModel.selected.items;
+            if (selectedNodes.length > 0) {
+                var selectedNode = selectedNodes[0];
+                selectedNode.data.id = id;
+                selectedNode.set('text', text);
+            }
+        }
+
+        function openTabWithCurrentNode() {
+            var selectionModel = mainTree.getSelectionModel();
+            var selectedNodes = selectionModel.selected.items;
+            if (selectedNodes.length > 0) {
+                var selectedNode = selectedNodes[0];
+                var id = selectedNode.data.id;
+
+                Ext.Ajax.request({
+                    params: { 'id': id },
+                    url: '@Url.Content("~/Knowledge/")' + 'IsCheckOut',
+                    sync: false,
+                    success: function (response) {
+                        var resp = Ext.JSON.decode(response.responseText);
+                        if (resp.status === "true") {
+                            isCheckOut = true;
+                            Ext.MessageBox.alert('警告', '当前节点已经被签出');
+                        } else {
+                            Ext.Ajax.request({
+                                params: { 'id': id },
+                                url: '@Url.Content("~/Knowledge/")' + 'CheckOut',
+                                success: function (response) {
+                                    var resp = Ext.JSON.decode(response.responseText);
+                                    if (resp.status === "ok") {
+                                        var viewName = '';
+                                        var displayName = selectedNode.data.text;
+                                        var nodeStyle = selectedNode.data.nodeType;
+
+                                        switch (nodeStyle) {
+                                            case nodeType.classNode:
+                                                viewName = 'BizNodeView';
+                                                break;
+                                            case nodeType.dicNode:
+                                                viewName = 'DictionaryView';
+                                                break;
+                                            case nodeType.serviceNode:
+                                                viewName = 'ServiceView';
+                                                break;
+                                            case nodeType.entityNode:
+                                                viewName = 'EntityView';
+                                                break;
+                                            case nodeType.propertyNode:
+                                                viewName = 'EntityPropertyView';
+                                                break;
+                                            case nodeType.ui:
+                                                viewName = 'UiInteractionView';
+                                                break;
+                                            default:
+                                                break;
+                                        }
+
+
+                                        OpenTab(viewName + '?otype=' + oType.Edit + '&id=' + id, id, displayName);
+                                    } else {
+                                        Ext.MessageBox.alert('警告', '当前节点签出失败,可能已经被签出');
+                                    }
+
+                                }
+                            });
+                        }
+
+                    }
+                });
+            }
+
+        }
+
+        function deleteCurrentNode() {
+            var selectionModel = mainTree.getSelectionModel();
+            var selectedNodes = selectionModel.selected.items;
+            if (selectedNodes.length > 0) {
+                var selectedNode = selectedNodes[0];
+                var id = selectedNode.data.id;
+
+                Ext.Ajax.request({
+                    params: { 'id': id },
+                    url: '@Url.Content("~/Knowledge/")' + 'IsCheckOut',
+                    success: function (response) {
+                        var resp = Ext.JSON.decode(response.responseText);
+                        if (resp.status === "true") {
+                            Ext.MessageBox.alert('警告', '当前节点已经被签出');
+                        } else {
+
+                            if (selectedNode.data.root) {
+                                Ext.Msg.alert("删除节点", "根节点不允许删除！");
+                                return;
+                            }
+
+                            if (selectedNode.hasChildNodes()) {
+                                Ext.Msg.alert("删除节点", "请先删除所有子节点，再删除该节点！");
+                                return;
+                            } else {
+                                Ext.Ajax.request({
+                                    params: { 'id': id },
+                                    url: '@Url.Content("~/Knowledge/")' + 'DeleteModel',
+                                    success: function (response) {
+                                        var resp = Ext.JSON.decode(response.responseText);
+                                        if (resp.status === "ok") {
+
+                                            var previousNode = selectedNode.previousSibling;
+                                            var parentNode = selectedNode.parentNode;
+                                            var nextNode = selectedNode.nextSibling;
+                                            selectedNode.remove();
+                                            if (previousNode) {
+                                                selectionModel.select(previousNode);
+                                            } else {
+                                                if (nextNode) {
+                                                    selectionModel.select(nextNode);
+                                                } else {
+                                                    if (parentNode) {
+                                                        selectionModel.select(parentNode);
+                                                    }
+                                                }
+                                            }
+
+                                            Ext.MessageBox.alert('删除成功', resp.status);
+                                        } else {
+                                            Ext.MessageBox.alert('删除失败', resp.status);
+                                        }
+                                    }
+                                });
+                            }
+
+                        }
+                    }
+                });
+            }
+        }
+
+        Ext.onReady(function () {
+
+            Ext.QuickTips.init();
+            var ngToolbar = Ext.create('Ext.ng.Toolbar', {
+                region: 'north',
+                rightName: "EmpinfoList", //权限名称
+                ngbuttons: [
+                    { groupitem: true, tooltip: '新增', items: ['clear', 'copy'], iconCls: 'add' },
+                    { id: "editModel", text: "", tooltip: "修改", iconCls: "add" }, { id: "deleteModel", text: "", tooltip: "删除", iconCls: "add" },
+                    { id: "viewModel", tooltip: "查看", text: "", iconCls: "add" }, '-', { id: "checkoutModel", tooltip: "签出", text: "", iconCls: "add" },
+                    { id: "checkinModel", tooltip: "签入", text: "", iconCls: "add" }
+                ]
+            });
+
+            var mainTreeStore = Ext.create('Ext.data.TreeStore', {
+                autoLoad: false,
+                fields: [{ name: 'text', type: 'string' },
+                    { name: 'nodeType', type: 'int' },
+                    { name: 'nodeNamespace', type: 'string' }
+                ],
+                proxy: {
+                    type: 'ajax',
+                    url: '@Url.Content("GetTreeNodes")',
+                    extraParams: {
+                        currentNodeId: '',  //节点参数
+                        isNewNode: false,
+                        nodeStyle: 0
+                    }
+                },
+                folderSort: true,
+                sorters: [{
+                    property: 'text',
+                    direction: 'ASC'
+                }]
+            });
+
+            //menu
+            mainTree = new Ext.tree.TreePanel(
+                {
+                    id: "mainTree",
+                    store: mainTreeStore,
+                    region: "west",
+                    title: "知识模型",
+                    autoScroll: true,
+                    enableTabScroll: true,
+                    collapsible: true,
+                    collapsed: false,
+                    split: true,
+                    rootVisible: false,
+                    lines: true,
+                    useArrows: true,
+                    width: 220,
+                    minSize: 220,
+                    maxSize: 220,
+                    dockedItems: ngToolbar,
+                    viewConfig: {
+                        plugins: {
+                            ptype: 'treeviewdragdrop'
+                        }
+                    }//,
+                    //listeners:
+                    //{
+                    //    //beforeremove: beforeRemoveTab,
+                    //    itemclick: function (view, rec, node) {
+                    //         
+                    //        alert('');
+                    //    }
+                    //}
+                });
+
+            var childAddContextMenu = Ext.create('Ext.menu.Menu', {
+                margin: '0 0 10 0',
+                //floating: false,
+                items: [{
+                    id: 'nodeMenu',
+                    text: '业务节点',
+                    handler: function () {
+                        createNewNodeAndTab('NewNode', '新建分类节点', 'BizNodeView', oType.Add, nodeType.classNode);
+                    }
+                },
+                    {
+                        id: 'dictionaryMenu',
+                        text: '字典模型',
+                        handler: function () {
+                            createNewNodeAndTab('NewDictionary', '新建字典模型', 'DictionaryView', oType.Add, nodeType.dicNode);
+                        }
+                    },
+                    {
+                        id: 'entityMenu',
+                        text: '实体模型',
+                        handler: function () {
+                            createNewNodeAndTab('NewEntity', '新建实体模型', 'EntityView', oType.Add, nodeType.entityNode);
+                        }
+                    },
+                    {
+                        id: 'serviceMenu',
+                        text: '服务模型',
+                        handler: function () {
+                            createNewNodeAndTab('NewService', '新建服务模型', 'ServiceView', oType.Add, nodeType.serviceNode);
+                        }
+                    },
+                    {
+                        id: 'uiMenu',
+                        text: '界面模型',
+                        handler: function () {
+                            createNewNodeAndTab('NewUi', '新建界面模型', 'UiInteractionView', oType.Add, nodeType.ui);
+                        }
+                    }
+                ]
+            });
+
+            var childDeleteContextMenu = Ext.create('Ext.menu.Menu', {
+                margin: '0 0 10 0',
+                //floating: false,
+                items: [{
+                    id: 'commonDeleteMenu',
+                    text: '删除(保留历史)',
+                    handler: function () {
+                        deleteCurrentNode();
+                    }
+                },
+                    {
+                        id: 'absoluteDeleteMenu',
+                        text: '彻底删除',
+                        handler: function () {
+
+                        }
+                    }
+                ]
+            });
+
+            var mainContextMenu = Ext.create('Ext.menu.Menu', {
+                margin: '0 0 10 0',
+                //floating: false,
+                items: [{ id: 'addMenu', text: '新增', menu: childAddContextMenu },
+                    {
+                        id: 'editMenu',
+                        text: '修改',
+                        handler: function () {
+                            openTabWithCurrentNode();
+                        }
+                    },
+                    { id: 'deleteMenu', text: '删除', menu: childDeleteContextMenu },
+                    { id: 'viewMenu', text: '查看' }]
+            });
+
+            mainTree.on('itemcontextmenu', function (view, record, item, index, e, eOpts) {
+                e.preventDefault();
+                mainContextMenu.showAt(e.getXY());
+                e.stopEvent();
+            });
+
+            mainTree.on("beforeitemexpand", function (node, eOpts) {
+                mainTreeStore.proxy.extraParams.currentNodeId = node.internalId;
+                mainTreeStore.proxy.extraParams.isNewNode = false;
+                mainTreeStore.proxy.extraParams.nodeStyle = nodeType.classNode;
+            });
+
+            //tabMain
+            tabMain = Ext.create('Ext.tab.Panel',
+                {
+                    id: "tabMain",
+                    region: "center",
+                    autoScroll: true,
+                    enableTabScroll: true,
+                    activeTab: 0,
+                    onTitleDbClick: function (e, target, o) {
+                        var t = this.findTargets(e);
+                        if (t.item && t.item.closable) {
+                            if (t.item.fireEvent('beforeclose', t.item) !== false) {
+                                t.item.fireEvent('close', t.item);
+                                this.remove(t.item);
+                            }
+                        }
+                    },
+                    listeners:
+                    {
+                        //beforeremove: beforeRemoveTab,
+                        beforeclose: function () {
+                            alert("beforeclose");
+                        },
+                        beforedestroy: function () {
+                            alert("beforedestroy");
+                        }
+                    },
+                    items: [{
+                        xtype: 'panel',
+                        id: "tab1",
+                        title: '首页',
+                        html: "这只是一个非常普通的Tab。",
+                        closable: false,
+                        autoLoad: {
+                            url: 'home/xxx',
+                            scope: this,
+                            scripts: true,
+                            text: '页面加载中,请稍候....'
+                        }
+                    }]
+                });
+
+
+            var frame = $GetWFrame();
+            frame.Center = tabMain;
+
+            new Ext.Viewport(
+                {
+                    id: "viewPort",
+                    layout: 'border',
+                    items:
+                    [
+                        mainTree, tabMain
+                    ]
+                });
+
+        });
+
+    </script>
+}
+

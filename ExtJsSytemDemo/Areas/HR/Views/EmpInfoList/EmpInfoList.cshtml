@@ -1,0 +1,654 @@
+﻿@{
+	 ViewBag.Title = "EmpInfoList";
+	 Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@section script
+{
+ 
+ <script type="text/javascript">
+
+     Ext.onReady(function () {
+
+         //;
+
+         this.frameElement.parentContainer;
+
+         var toolbar = Ext.create('Ext.Toolbar',
+				{
+				    region: 'north',
+				    border: false,
+				    //split: true,
+				    height: 26,
+				    minSize: 26,
+				    maxSize: 26,
+				    items: [
+							   {
+							       id: "add",
+							       text: "新增",
+							       iconCls: 'add'
+							   },
+								{
+								    id: "edit",
+								    text: "修改",
+								    iconCls: 'plugin'
+								},
+							   {
+							       id: "delete",
+							       text: "删除",
+							       iconCls: 'delete'
+							   },
+							   {
+							       id: "view",
+							       text: "查看",
+							       iconCls: 'add'
+							   },
+								{
+								    id: "query",
+								    text: "查询",
+								    iconCls: 'add'
+								},
+								{
+								    id: "show",
+								    text: "显示",
+								    iconCls: 'add'
+								},
+							   {
+							       id: "test",
+							       text: "测试",
+							       iconCls: 'add'
+							       //menu: [{ id: 'sub', text: 'menu1'}]
+							   },
+								"->",
+							   {
+							       id: "close",
+							       text: "关闭",
+							       iconCls: 'cross'
+							   }
+							  ]
+				});
+
+         var ngToolbar = Ext.create('Ext.ng.Toolbar', {
+             region: 'north',
+             rightName: "EmpinfoList", //权限名称
+             ngbuttons: [
+				'add', 'edit', 'delete', 'view', 'query',
+				{ id: "show", text: "显示", iconCls: 'add' },
+				{ groupitem: true, text: '处理', items: ['refresh', 'clear', 'copy'], iconCls: 'icon-Verify' }
+				]
+         });
+
+         //查询区
+         var querypanel = Ext.create('Ext.form.Panel', {
+             region: 'north',
+             //autoHeight: true,
+             frame: true,
+             border: false,
+             bodyStyle: 'padding:5px',
+             //layout: 'form',
+             //hidden: true,
+             fieldDefaults: {
+                 //labelAlign: 'right', //'top',
+                 labelWidth: 60,
+                 msgTarget: 'side'
+             },
+             defaults: {
+                 anchor: '100%'
+             },
+             items: [{
+                 xtype: 'container',
+                 layout: 'column',
+                 border: false,
+                 items: [{
+                     xtype: 'container',
+                     columnWidth: .3,
+                     layout: 'anchor',
+                     border: false,
+                     items: [{
+                         xtype: 'textfield',
+                         fieldLabel: '工 号',
+                         name: 'empno',
+                         anchor: '95%'
+                         //width: 100
+                     }]
+                 }, {
+                     xtype: 'container',
+                     columnWidth: .3,
+                     layout: 'anchor',
+                     border: false,
+                     items: [{
+                         xtype: 'textfield',
+                         fieldLabel: '姓 名',
+                         name: 'name',
+                         anchor: '95%'
+                         //width: 100
+                     }]
+                 }, {
+                     xtype: 'container',
+                     columnWidth: .3,
+                     layout: 'anchor',
+                     flex: 1,
+                     border: false,
+                     items: [{
+                         xtype: 'textfield',
+                         fieldLabel: '性 别',
+                         name: 'empno',
+                         anchor: '95%'
+                         //width: 100
+                     }]
+                 }]
+             }, {
+                 xtype: 'container',
+                 layout: 'column',
+                 border: false,
+                 items: [{
+                     xtype: 'container',
+                     columnWidth: .3,
+                     layout: 'anchor',
+                     border: false,
+                     items: [{
+                         xtype: 'textfield',
+                         fieldLabel: '年龄',
+                         name: 'empno',
+                         anchor: '95%'
+                         //width: 100
+                     }]
+                 }, {
+                     xtype: 'container',
+                     columnWidth: .3,
+                     layout: 'anchor',
+                     border: false,
+                     items: [{
+                         xtype: 'textfield',
+                         fieldLabel: '生日',
+                         name: 'name',
+                         anchor: '95%'
+                         //width: 100
+                     }]
+                 }, {
+                     xtype: 'container',
+                     columnWidth: .3,
+                     layout: 'anchor',
+                     border: false,
+                     items: [{
+                         xtype: 'textfield',
+                         fieldLabel: '省',
+                         name: 'empno',
+                         anchor: '95%'
+                         //width: 100
+                     }]
+                 }]
+             }, {
+                 xtype: 'container',
+                 layout: 'column',
+                 border: false,
+                 items: [{
+                     xtype: 'container',
+                     columnWidth: .3,
+                     layout: 'anchor',
+                     border: false,
+                     items: [{
+                         xtype: 'textfield',
+                         fieldLabel: '市',
+                         name: 'empno',
+                         anchor: '95%'
+                         //width: 100
+                     }]
+                 }, {
+                     xtype: 'container',
+                     columnWidth: .3,
+                     layout: 'anchor',
+                     border: false,
+                     items: [{
+                         xtype: 'textfield',
+                         fieldLabel: 'Email',
+                         name: 'name',
+                         anchor: '95%'
+                         //width: 100
+                     }]
+                 }]
+             }]
+         });
+
+         var autoLayoutPanel = Ext.create('Ext.ng.TableLayoutForm', {             
+             buskey: 'id',
+             otype: 'add',
+             columnsPerRow : 3,
+             items: [{
+                 xtype: 'textfield',
+                 fieldLabel: '工 号',
+                 name: 'empno',
+                 anchor: '95%'                 
+             }, {
+                 xtype: 'textfield',
+                 fieldLabel: '姓 名',
+                 name: 'name',
+                 colspan : 2,
+                 anchor: '97.5%'                
+             }, {
+                 xtype: 'textfield',
+                 fieldLabel: '性 别',
+                 name: 'empno',
+                 anchor: '95%'                
+             }, {
+                 xtype: 'numberfield',
+                 fieldLabel: '年龄',
+                 minWidth:60,
+                 name: 'empno',
+                 hideTrigger: true,
+                 decimalPrecision: 0, //小数点位数
+                 //decimalSeparator:',', //小数点分隔符
+                 anchor: '95%'                 
+             }, {
+                 xtype: 'datefield',
+                 fieldLabel: '生日',
+                 name: 'name',
+                 anchor: '95%'                 
+             }, {
+                 xtype: 'ngComboBox',
+                 fieldLabel: '省',
+                 id: 'province',
+                 name: 'province',
+                 valueField: 'provinceno',
+                 displayField: 'prvcname',
+                 helpid: 'province', //帮助标记
+                 anchor: '95%'
+             }, {
+                 xtype: 'ngComboBox',
+                 fieldLabel: '市',
+                 id: 'city',
+                 name: 'city',
+                 valueField: 'cityno',
+                 displayField: 'cityname',
+                 helpid: 'city', //帮助标记                      
+                 //hideTrigger:true,  
+                 anchor: '95%'
+             }, {
+                 xtype: 'textfield',
+                 fieldLabel: '邮 箱',
+                 name: 'email',
+                 vtype: 'email'
+                 //anchor: '95%'
+             }]
+         })
+
+         //定义模型
+         Ext.define('model', {
+             extend: 'Ext.data.Model',
+             fields: [{
+                 name: 'id',
+                 type: 'string',
+                 mapping: 'id'
+             }, {
+                 name: 'empno',
+                 type: 'string',
+                 mapping: 'empno'
+             }, {
+                 name: 'name',
+                 type: 'string',
+                 mapping: 'name'
+             }, {
+                 name: 'sex',
+                 type: 'string',
+                 mapping: 'sex'
+             }, {
+                 name: 'age',
+                 mapping: 'age',
+                 type: 'string'
+             },
+			   {
+			       name: 'birthday',
+			       mapping: 'birthday',
+			       type: 'date'
+			   },
+			   {
+			       name: 'province',
+			       mapping: 'province',
+			       type: 'string'
+			   },
+			   {
+			       name: 'city',
+			       mapping: 'city',
+			       type: 'string'
+			   },
+			   {
+			       name: 'email',
+			       mapping: 'email',
+			       type: 'string'
+			   }]
+         });
+
+         //store
+         //         var sstore = Ext.create('Ext.data.Store', {
+         //             model: 'model',
+         //             pageSize: 2,
+         //             proxy: {
+         //                 type: 'ajax',
+         //                 url: 'EmpInfoList/GetEmpList',
+         //                 reader: {
+         //                     type: 'json',
+         //                     root: 'Record',
+         //                     totalProperty: 'totalRows'
+         //                 }
+         //             }
+         //         });
+         //         sstore.load();
+
+         var store = Ext.create('Ext.ng.JsonStore', {
+             model: 'model',
+             pageSize: 20,
+             url: 'EmpInfoList/GetEmpList'
+         })
+         store.load();
+
+
+         //;
+
+         var pagingbar = Ext.create('Ext.ng.PagingBar', {
+             store: store
+         });
+
+         //grid
+         var grid = Ext.create('Ext.ng.GridPanel', {
+             region: 'center',
+             //frame: true,
+             store: store,
+             columnLines: true,
+             //selType: 'cellmodel',
+             //selModel: Ext.create('Ext.selection.CheckboxModel'),
+             layout: {
+                 type: 'hbox',
+                 align: 'stretch'
+             },
+             columns: [Ext.create('Ext.grid.RowNumberer', { text: '行号', width: 30 }),
+				{
+				    header: '编号',
+				    flex: 1,
+				    sortable: false,
+				    dataIndex: 'id',
+				    hidden: true
+				}, {
+				    header: '工号', //'<div align="center">工号</div>',
+				    flex: 1,
+				    //locked: true, //锁定列
+				    sortable: true,
+				    isQueryField: true, //是否需要查询
+				    //style: "text-align:center", //列头居中
+				    titleAlign: 'left',
+				    align: 'right', //内容居右
+				    //queryCtl: { xtype: 'textfield', colspan: 2 },
+				    dataIndex: 'empno'
+				}, {
+				    header: '姓名',
+				    flex: 1,
+				    titleAlign: 'center',
+				    //align : 'center',
+				    sortable: true,
+				    isQueryField: true, //是否需要查询
+                    queryCtl : {xtype: 'textfield',colspan : 2},
+				    dataIndex: 'name'
+				}, {
+				    header: '性别',
+				    flex: 1,
+				    sortable: true,
+				    isQueryField: true, //是否需要查询
+				    dataIndex: 'sex'
+				}, {
+				    header: '年龄',
+				    flex: 1,
+				    sortable: true,
+				    isQueryField: true, //是否需要查询
+				    queryCtl: { xtype: 'numberfield' },
+				    dataIndex: 'age'
+				}, {
+				    xtype: 'datecolumn',
+				    header: '生日',
+				    flex: 1,
+				    sortable: true,
+				    isQueryField: true, //是否需要查询
+				    queryCtl: { xtype: 'datefield', format: 'Y-m-d' }, //查询控件描述                             
+				    dataIndex: 'birthday',
+				    format: 'Y-m-d'
+				}, {
+				    header: '省',
+				    flex: 1,
+				    sortable: true,
+				    isQueryField: true, //是否需要查询
+				    queryCtl: { xtype: 'ngComboBox', valueField: 'provinceno', displayField: 'prvcname', helpid: 'province',helpType:'rich',helpHeight:360,helpWidth:480},
+				    dataIndex: 'province'
+				}, {
+				    header: '市',
+				    flex: 1,
+				    sortable: true,
+				    isQueryField: true, //是否需要查询
+				    queryCtl: { xtype: 'ngComboBox', valueField: 'cityno', displayField: 'cityname', helpid: 'city' },
+				    dataIndex: 'city'
+				}, {
+				    header: 'email',
+				    flex: 2,
+				    sortable: true,
+				    isQueryField: true, //是否需要查询
+				    queryCtl: { xtype: 'textfield', colspan: 2 },
+				    dataIndex: 'email'
+				}],
+             viewConfig: {
+                 forceFit: true,
+                 scrollOffset: 0
+             },
+             //plugins: [cellEditing],
+             bbar: pagingbar
+
+         });
+
+        
+
+         var temppanel = Ext.create('Ext.ng.QueryPanel', {
+             grid: grid,
+             columnsPerRow : 3
+             //hidden: true
+         })
+
+         //alert(JSON.stringify(temppanel));
+
+         //布局
+         Ext.create('Ext.container.Viewport', {
+             id: "viewPort",
+             layout: 'border',
+             items:
+			 [
+			   ngToolbar, autoLayoutPanel, grid
+			 ]
+         });
+
+         //新增
+         ngToolbar.get('add').on('click', function () {
+
+             //;
+             //var top = window.parent;             
+
+             top.OpenTab('@Url.Content("~/HR/EmpInfoEdit?otype=add")', 'EmpInfoEdit', '员工信息维护');
+
+         });
+
+         //修改
+         ngToolbar.get('edit').on('click', function () {
+
+             var data = grid.getSelectionModel().getSelection();
+
+             if (data.length > 0) {
+                 var id = data[0].get('id');
+
+                 top.OpenTab('@Url.Content("~/HR/EmpInfoEdit")' + '?otype=edit&id=' + id, 'EmpInfoEdit', '员工信息维护');
+             }
+         })
+
+         //删除      
+         ngToolbar.get('delete').on('click', function () {
+             var data = grid.getSelectionModel().getSelection();
+
+             if (data.length > 0) {
+
+                 var id = data[0].get('id');
+                 Ext.Ajax.request({
+                     params: { 'id': id },
+                     url: '@Url.Content("~/EmpInfoList/Delete")',
+                     success: function (response) {
+                         var resp = Ext.JSON.decode(response.responseText);
+                         if (resp.status === "ok") {
+                             store.remove(data[0]); //移除
+                         } else {
+                             Ext.MessageBox.alert('删除失败', resp.status);
+                         }
+                     }
+                 });
+
+             }
+
+             //             //批量删除
+             //             if (data.length > 0) {
+             //                 var ids = [];
+             //                 Ext.Array.each(data, function (record) {
+             //                     id = record.get('id');
+             //                     if (name) {
+
+             //                         if (name) {
+             //                             ids.push(name);
+             //                         }
+             //                     }                    
+
+             //                 });
+
+             //                 Ext.Ajax.request({
+             //                     params: { 'id': ids },
+             //                     url: '/EmpInfoList/Delete',
+             //                     success: function (response) {
+             //                         var resp = Ext.JSON.decode(response.responseText);
+             //                         if (resp.status === "ok") {
+
+             //                             Ext.Array.each(data, function (record) {                               
+             //                                 store.remove(record); //前端删除
+             //                             });
+
+             //                         } else {
+             //                             Ext.MessageBox.alert('删除失败', resp.status);
+             //                         }
+             //                     }
+             //                 });
+             //             }
+
+
+         })
+
+         //查看
+         ngToolbar.get('view').on('click', function () {
+
+             var data = grid.getSelectionModel().getSelection();
+
+             if (data.length > 0) {
+                 var id = data[0].get('id');
+                 top.OpenTab('@Url.Content("~/HR/EmpInfoEdit")' + '?otype=view&id=' + id, 'EmpInfoEdit', '员工信息维护');
+             }
+
+         })
+
+
+         //查询
+         ngToolbar.get('query').on('click', function () {
+             ;
+             var formdata = temppanel.getForm();
+             var data = formdata.getValues();
+
+             store.load({
+                 params: { 'queryfilter': JSON.stringify(data) }
+             })
+
+         });
+
+
+
+         store.on('beforeload', function () {
+             var formdata = temppanel.getForm();
+             var data = formdata.getValues();
+
+             store.proxy.extraParams = { 'queryfilter': JSON.stringify(data) };
+         });
+
+         //显示,隐藏
+         ngToolbar.get('show').on('click', function () {
+             if (temppanel.hidden) {
+                 temppanel.show();
+                 ngToolbar.get('show').setText("隐藏");
+             }
+             else {
+                 temppanel.hide();
+                 ngToolbar.get('show').setText("显示");
+             }
+         });
+
+
+         //测试
+         toolbar.items.get('test').on('click', function () {
+
+             //alert(Math.ceil(2/3));
+             //alert(2 / 3);
+
+             //var dt = new Date();
+
+             //             alert("toDateString:" + dt.toDateString());
+             //             alert("toLocaleDateString" + dt.toLocaleDateString());
+             //             alert("toLocaleString" + dt.toLocaleString());
+             //             alert("toLocaleTimeString" + dt.toLocaleTimeString());
+
+             //             alert(Ext.util.Format.date(dt, 'Y-m-d'));
+             //             alert(Ext.util.Format.date(dt, 'Y-m-d H:i:s'));
+
+             //             alert(Ext.Date.parse(dt, "Y"));
+             //             alert(Ext.Date.parse(dt, "Y-m-d"));
+             //             alert(Ext.Date.parse(dt, "Y-m-d g:i:s A"));
+             //             alert(Ext.Date.parse(dt, "Y-m-d H:i:s",true));
+
+             ;
+             alert(autoLayoutPanel.getFormData());
+
+         })
+
+
+         ngToolbar.get('clear').on('click', function () {
+             alert('清除');
+         })
+
+         try {
+             var d = toolbar.items.get('test');
+             var sub = toolbar.items.get('test').menu.items.get('sub');
+             sub.on('click', function () {
+                 alert('sub');
+             })
+
+             var com = Ext.getCmp('sub');
+         } catch (e) {
+
+         }
+
+
+
+         Ext.getDoc().on('contextmenu', function (e) {
+
+             var contextmenu = Ext.create('Ext.menu.Menu', {
+                 width: 200,
+                 height: 100,
+                 margin: '0 0 10 0',
+                 //floating: false,
+                 items: [{ text: 'item 1' }, { text: 'item 2' }, { text: 'item 3'}]
+             });
+
+             //e.stopEvent();
+             e.preventDefault();
+             contextmenu.showAt(e.getXY());
+         })
+
+     })
+
+ </script>
+
+}

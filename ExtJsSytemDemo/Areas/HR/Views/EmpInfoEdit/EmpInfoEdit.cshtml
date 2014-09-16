@@ -1,0 +1,752 @@
+﻿@{
+	ViewBag.Title = "EmpInfoEdit";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section script
+{
+
+<script type="text/javascript">
+    
+    var otype = '@ViewBag.OType';
+    var busid = '@ViewBag.ID'; 
+
+</script>
+ 
+ <script type="text/javascript">
+
+     Ext.onReady(function () {
+
+
+         //         var view = Ext.create('Ext.Viewport', {
+         //             id: "viewPort",
+         //             layout: 'border',
+         //             items: [
+         //                   { id: 'toolbar',
+         //                      region: 'north',
+         //                      xtype: 'container',
+         //                      border: false,
+         //                      height: 26 
+         //                   },{
+         //                    region: 'center', xtype: 'container',
+         //                    id: "centercontainer", border: false,
+         //                    layout: 'border',
+         //                    items: [
+         //                    { id: 'formpanel', region: 'north', xtype: 'container', border: false, height: 120},
+         //                    { id: 'tabpanel', region: 'center', layout: 'border', xtype: 'container', border: false }
+         //                    ]
+         //                }
+         //            ]
+         //            });
+
+         //            var view = Ext.create('Ext.Viewport', {
+         //                id: "viewPort",
+         //                layout: 'border',
+         //                items: [
+         //                    {
+         //                        region: 'north',
+         //                        id: 'npanel', xtype: 'container', border: false, height: 140,
+         //                        layout: 'border',
+         //                        items: [
+         //                            {id: 'toolbar', region: 'north', xtype: 'container', border: false, height: 26 },
+         //                            { id: 'formpanel', region: 'north', xtype: 'container', border: false, height: 130 }
+         //                        ]
+         //                    },
+         //                    { id: 'tabpanel', layout: 'border', region: 'center', xtype: 'container', autoScroll: true, border: true }
+         //                  
+         //            ]
+         //            });
+
+
+         var toolbar = Ext.create('Ext.Toolbar',
+				{
+				    region: 'north',
+				    //renderTo: 'toolbar',
+				    border: false,
+				    //split: true,
+				    height: 26,
+				    minSize: 26,
+				    maxSize: 26,
+				    items: [
+							   {
+							       id: "save",
+							       text: "提交",
+							       iconCls: 'add'
+							   },
+							   {
+							       id: "addrow",
+							       text: "增行",
+							       iconCls: 'add'
+							   },
+							   {
+							       id: "deleterow",
+							       text: "删行",
+							       iconCls: 'plugin'
+							   },
+							   "->",
+							   {
+							       id: "close",
+							       text: "退出",
+							       iconCls: 'cross'
+							   }
+							  ]
+				});
+
+         Ext.define('cmodel', {                //编辑状态下,状态列的下拉菜单的 model
+             extend: 'Ext.data.Model',
+             fields: [{
+                 name: 'sex',
+                 type: 'string'
+             }, {
+                 name: 'name',
+                 type: 'string'
+             }]
+         });
+
+         //性别
+         var states = [{             //编辑状态下,状态列的下拉菜单的 data
+             "sex": "0",
+             "name": "男"
+         }, {
+             "sex": "1",
+             "name": "女"
+         }]
+
+         var cstore = Ext.create('Ext.data.Store', {        //编辑状态下,状态列的下拉菜单的 store
+             model: 'cmodel',
+             data: states
+         });
+
+         var sexcomb = Ext.create('Ext.form.ComboBox', {
+             //xtype: 'combobox',                              //指定编辑状态下为下拉菜单
+             store: cstore,                                         //绑定下拉菜单数据源
+             editable: true,                                   //是否可以输入  
+             selectOnFoucus: true,
+             typeAhead: true,
+             triggerAction: "all",
+             hiddenName: String,
+             valueField: "sex",
+             displayField: 'name',
+             queryMode: 'local',                            //local指定为本地数据  如果是后台传输  值为remote
+             allowBlank: false,
+             fieldLabel: '性 别',
+             name: 'sex',
+             anchor: '95%'
+         })
+
+         //#region 明细信息
+
+
+         Ext.define('model', {
+             extend: 'Ext.data.Model',
+             fields: [{
+                 name: 'id',
+                 type: 'string',
+                 mapping: 'id'
+             }, {
+                 name: 'workdt',
+                 //type: Ext.data.Types.DATE,
+                 type: 'date',
+                 dateFormat: 'Y-m-d', //'Y-m-d H:i:s',
+                 mapping: 'workdt'
+             }, {
+                 name: 'department',
+                 type: 'string',
+                 mapping: 'department'
+             }, {
+                 name: 'station',
+                 type: 'string',
+                 mapping: 'station'
+             }, {
+                 name: 'postion',
+                 mapping: 'postion',
+                 type: 'string'
+             }, {
+                 name: 'level',
+                 mapping: 'level',
+                 type: 'string'
+             }]
+         });
+
+         var store = Ext.create('Ext.data.Store', {
+             model: 'model',
+             pageSize: 20,
+             proxy: {
+                 type: 'ajax',
+                 url: 'EmpInfoEdit/GetDetailInfo?mainid=' + busid,
+                 reader: {
+                     type: 'json',
+                     root: 'Record',
+                     totalProperty: 'totalRows'
+                 }
+             }
+         });
+
+         var pagingbar = Ext.create('Ext.PagingToolbar', {
+             store: store,
+             displayInfo: true,
+             displayMsg: '第 {0} - {1}条 共 {2} 条数据',
+             emptyMsg: "没有任何数据",
+             beforePageText: "第",
+             afterPageText: "/{0} 页",
+             firstText: "首页",
+             prevText: "上一页",
+             nextText: "下一页",
+             lastText: "尾页",
+             refreshText: "刷新"
+         });
+
+         var cellEditing = Ext.create('Ext.grid.plugin.CellEditing', {
+             clicksToEdit: 1
+         });
+
+         var renderWorkDate = function (val, cell, record, rowIndex, colIndex, store) {
+             //             ;
+             //             alert(val);
+
+             if (val) {
+                 var str = Ext.util.Format.date(val, 'Y-m-d'); //FormatToDate(val, 'yyyy-MM-dd');
+                 return str;
+             }
+             else {
+                 return '';
+             }
+
+         }
+
+         var department = Ext.create('Ext.ng.ComboBox', {
+             hiddenName: 'myprovince',
+             name: 'department', //'province',
+             allowBlank: false,
+             valueField: 'ocode',
+             displayField: 'oname',
+             helpid: 'allorg' //帮助标记   
+         });
+
+         var departmentKeyValue = new Object();//代码转名称缓存，共享
+         var renderDepartMent = function (val, cell, record, rowIndex, colIndex) {
+
+             //;
+             if (val == "") return;
+
+             var name;
+             if (departmentKeyValue[val] == undefined) {
+                 name = department.getCodeName(val);
+                 departmentKeyValue[val] = name;
+             }
+             else {
+                 name = departmentKeyValue[val];
+             }
+
+             return name;
+         }
+
+         var grid = Ext.create('Ext.ng.GridPanel', {
+             region: 'center',
+             //renderTo: 'gridpanel',
+             //frame: true,
+             store: store,
+             columnLines: true,
+             buskey: 'id', //对应的业务表主键
+             otype: otype, //操作类型,add||edit
+             //autoScroll: true,
+             selType: 'cellmodel',
+             //selModel: Ext.create('Ext.selection.CheckboxModel'),
+             layout: {
+                 //type: 'hbox',
+                 align: 'stretch'
+             },
+             columns: [Ext.create('Ext.grid.RowNumberer', { text: '行号', width: 35 }),
+				 {
+				     header: '编号',
+				     flex: 1,
+				     dataIndex: 'id',
+				     hidden: true
+				 },
+				{
+				    xtype: 'datecolumn',
+				    header: '任职时间',
+				    flex: 1,
+				    sortable: true,
+				    mustInput: true, //必输列
+				    dataIndex: 'workdt',
+				    format: 'Y-m-d',
+				    editor: {
+				        xtype: 'datefield',
+				        format: 'Y-m-d',
+				        allowBlank: false
+				    },
+				    renderer: Ext.Function.bind(renderWorkDate, store) //重新渲染名称
+				}, {
+				    header: '部门',
+				    flex: 1,
+				    sortable: true,
+				    mustInput: true,
+				    dataIndex: 'department',
+				    editor: department,
+				    renderer: Ext.Function.bind(renderDepartMent, department)
+				}, {
+				    header: '工作岗位',
+				    flex: 1,
+				    sortable: true,
+				    dataIndex: 'station',
+				    editor: {
+				        allowBlank: false
+				    }
+				}, {
+				    header: '职位',
+				    flex: 1,
+				    sortable: true,
+				    dataIndex: 'postion',
+				    editor: {
+				        allowBlank: false
+				    }
+				}, {
+				    header: '职位等级',
+				    flex: 1,
+				    sortable: true,
+				    dataIndex: 'level',
+				    editor: {
+				        xtype: 'numberfield',
+				        allowBlank: false
+				    }
+				}],
+             viewConfig: {
+                 forceFit: true,
+                 scrollOffset: 0
+             },
+             //forceFit: true,
+             plugins: [cellEditing],
+             bbar: pagingbar
+         });
+                 
+
+         //#endregion   
+
+         //整个表单
+         var form = Ext.create('Ext.ng.FormPanel', {            
+             region: 'north',
+             frame: true,
+             split: true,
+             buskey: 'id', //对应的业务表主键
+             otype: otype, //操作类型,add||edit
+             bodyStyle: 'padding:10px',
+             //width: 600,
+             fieldDefaults: {
+                 //labelAlign: 'center',//'right', //'top',
+                 labelWidth: 60,
+                 msgTarget: 'side'
+             },
+             defaults: {
+                 anchor: '100%'
+             },
+             keys: [{
+                 key: Ext.EventObject.ENTER,
+                 fn: function () { alert("enter"); },
+                 scope: this
+             }, {
+                 key: Ext.EventObject.ESC,
+                 fn: function () { alert("esc"); },
+                 scope: this
+             }],
+
+             items: [{
+                 xtype: 'container',
+                 anchor: '100%',
+                 layout: 'column',
+                 border: false,
+                 items: [{
+                     xtype: 'container',
+                     columnWidth: .5,
+                     border: false,
+                     layout: 'anchor',
+                     defaultType: 'textfield',
+                     items: [{
+                         xtype: 'hiddenfield',
+                         fieldLabel: '编号',
+                         name: 'id'
+                     }, {
+                         //labelStyle: 'color:RoyalBlue',
+                         xtype: 'ngText',
+                         fieldLabel: '工 号',
+                         name: 'empno',
+                         mustInput: true,
+                         anchor: '95%'
+                     }, sexcomb]
+                 }, {
+                     xtype: 'container',
+                     columnWidth: .5,
+                     border: false,
+                     layout: 'anchor',
+                     defaultType: 'textfield',
+                     items: [{
+                         xtype: 'ngText',
+                         fieldLabel: '姓 名',
+                         name: 'name',
+                         mustInput: true,
+                         //labelStyle: 'color:RoyalBlue',
+                         anchor: '95%'
+                     }, {
+                         xtype: 'ngNumber',//'numberfield',
+                         fieldLabel: '年 龄',
+                         mustInput: true,
+                         name: 'age',
+                         anchor: '95%'
+                     }]
+                 }, {
+                     xtype: 'container',
+                     columnWidth: .5,
+                     border: false,
+                     layout: 'anchor',
+                     defaultType: 'textfield',
+                     items: [
+                      {
+                          xtype: 'ngComboBox',
+                          fieldLabel: '省',
+                          id: 'province',
+                          name: 'province',
+                          helpWidth: 200,
+                          helpHeight: 300,
+                          //mustInput: true,
+                          valueField: 'provinceno',
+                          displayField: 'prvcname',
+                          helpid: 'province', //帮助标记
+                          anchor: '95%'
+                      }, {
+                          xtype: 'ngComboBox',
+                          fieldLabel: '市',
+                          id: 'city',
+                          name: 'city',
+                          valueField: 'cityno',
+                          displayField: 'cityname',
+                          helpid: 'city', //帮助标记                      
+                          //hideTrigger:true,  
+                          anchor: '95%'
+                      }]
+                 }, {
+                     xtype: 'container',
+                     columnWidth: .5,
+                     border: false,
+                     layout: 'anchor',
+                     defaultType: 'textfield',
+                     items: [{
+                         //xtype: 'datefield',
+                         xtype: 'ngDate',
+                         fieldLabel: '生 日',
+                         name: 'birthday',
+                         mustInput: true,                         
+                         format: 'Y-m-d H:i:s',
+                         anchor: '95%'
+                     }, {
+                         fieldLabel: '邮 箱',
+                         name: 'email',
+                         vtype: 'email',
+                         anchor: '95%'
+                     }]
+                 }, {
+                     xtype: 'container',
+                     columnWidth: .50,
+                     border: false,
+                     layout: 'anchor',
+                     //defaultType: 'checkbox',
+                     items: [{
+                         xtype: 'checkboxgroup',
+                         fieldLabel: '爱好',
+                         name: 'hobby',
+                         anchor: '95%',
+                         items: [
+                                    { boxLabel: '篮球', name: 'hobby-1' },
+                                    { boxLabel: '音乐', name: 'hobby-2', checked: true },
+                                    { boxLabel: '电影', name: 'hobby-3' },
+                                    { boxLabel: '文学', name: 'hobby-4' },
+                                    { boxLabel: '历史', name: 'hobby-5' }
+                                ]
+                     }]
+                 }, {
+                     xtype: 'container',
+                     columnWidth: .50,
+                     border: false,
+                     layout: 'anchor',
+                     items: [{
+                         xtype: 'container',
+                         defaultType: 'radio',
+                         layout: 'hbox',
+                         border: false,
+                         defaults: {
+                             anchor: '100%',
+                             hideEmptyLabel: false
+                         },
+                         items: [{
+                             //checked: true,
+                             fieldLabel: '状态',
+                             //labelWidth:120,
+                             boxLabel: '在职',
+                             name: 'status',
+                             inputValue: 'on'
+                         }, {
+                             boxLabel: '离职',
+                             name: 'status',
+                             inputValue: 'leave'
+                         }]
+                     }]
+                 }]
+             }]
+         });
+
+         var tabPanel = Ext.create('Ext.tab.Panel', {
+             //renderTo: 'tabpanel',
+             //xtype: 'tabpanel',
+             layout: 'border',
+             region: 'center',
+             deferredRender: false,
+             plain: true,
+             activeTab: 0,
+             //height: 600,
+             defaults: { bodyStyle: 'padding:3px' },
+             items: [{
+                 layout: 'border', //使grid填充                
+                 title: '任职信息',
+                 //autoScroll: true,
+                 //height:400,
+                 //defaults: { width: 230 },
+                 //defaultType: 'textfield',
+                 items: [grid]
+             }, {
+                 title: '其他信息',
+                 autoScroll: true,
+                 contentEl: 'center1'
+                 //defaults: { width: 230 },
+                 //defaultType: 'textfield',
+                 //items: [grid]
+             }]
+         });
+
+         Ext.create('Ext.container.Viewport', {
+             id: "viewPort",
+             layout: 'border',
+             items:
+         			 [
+                        toolbar, form, tabPanel
+         			 ]
+         });
+
+         department.on('helpselected', SetSelectedValue); //订阅帮助选中事件
+
+         var selectObj = new Object(); //参数设置
+
+         //修改前设置一下通用帮助的回填参数
+         grid.on('beforeedit', function (editor, e, eOpts) {
+
+             //;
+             if (e.colIdx == 3 && e.field === 'department') {
+                 selectObj.row = e.rowIdx; //行
+                 selectObj.col = e.colIdx; //列
+                 selectObj.field = e.field; //字段
+             }
+
+         })
+
+         function SetSelectedValue(obj) {
+
+             //;
+             //alert('hello');
+             //grid.store.getAt(e.rowIdx).set(e.field, code);
+             //grid.store.getAt(this.rowIdx).set('department', obj.code);
+             //grid.store.getAt(this.rowIdx).set('province_name', obj.name);
+
+             //             if (this.colIdx == 3 && this.field === 'department') {
+             //                 grid.store.getAt(this.rowIdx).set('department', obj.code);
+             //                 department.un('helpselected', SetSelectedValue, this); //取消订阅
+
+             //             }
+
+             grid.store.getAt(selectObj.row).set(selectObj.field, obj.code);
+
+         };
+
+         //修改状态
+         if (otype === "edit" || otype === "view") {
+
+             Ext.Ajax.request({
+                 //params: { 'id': busid },
+                 url: 'EmpInfoEdit/GetMasterInfo?id=' + busid,
+                 success: function (response) {
+                     var resp = Ext.JSON.decode(response.responseText);
+                     if (resp.status === "ok") {
+
+                         //;
+                         var formobj = form.getForm();
+                         alert(resp.data);
+                         formobj.setValues(resp.data);
+
+                         Ext.getCmp('province').bindData();
+                         Ext.getCmp('city').bindData();
+
+                         //BindCombox(Ext.getCmp('province'), 'provinceno', 'prvcname', 'province', Ext.getCmp('province').getValue());
+                         //BindCombox(Ext.getCmp('city'), 'cityno', 'cityname', 'city', Ext.getCmp('city').getValue());
+
+
+                         //                         Ext.define('model', {
+                         //                             extend: 'Ext.data.Model',
+                         //                             fields: [{
+                         //                                 name: 'code',
+                         //                                 type: 'string',
+                         //                                 mapping: 'code'
+                         //                             }, {
+                         //                                 name: 'name',
+                         //                                 type: 'string',
+                         //                                 mapping: 'name'
+                         //                             }
+                         //                     ]
+                         //                         });
+
+                         //                         var provincepair = Ext.ModelManager.create({
+                         //                             code: '02',
+                         //                             name: '美国'
+                         //                         }, 'model');
+                         //                         Ext.getCmp('province').setValue(provincepair);
+
+
+                         //                         var citypair = Ext.ModelManager.create({
+                         //                             code: '01',
+                         //                             name: '中国'
+                         //                         }, 'model');
+                         //                         Ext.getCmp('city').setValue(citypair);
+
+                     } else {
+                         Ext.MessageBox.alert('删除失败', resp.status);
+                     }
+                 }
+             });
+
+             store.load(); //加载明细数据    
+         }
+
+         if (otype === "view") {
+
+             //;
+             //form变为只读
+             //             var fields = form.getForm().getFields().items;
+             //             for (var i = 0; i < fields.length; i++) {
+             //                 var field = fields[i];
+             //                 if (field.setReadOnly) {
+             //                     field.setReadOnly(true);
+             //                 }
+             //             }
+
+             //grid变为只读
+             //             grid.on('beforeedit', function () {
+             //                 return false;
+             //             })
+
+         }
+
+         //保存
+         toolbar.items.get("save").on('click', function () {
+
+             var vf = form.isValid();
+             var vg = grid.isValid();
+
+             if (!vf || !vg) {
+                 return;
+             }
+
+             //alert(JSON.stringify(form.getForm().getValues()));
+
+             //alert(Ext.getCmp('province').getValue());
+             //alert(Ext.getCmp('province').getRawValue());
+
+             var op = "new";
+             if (otype == "edit") {
+                 op = otype;
+             }
+
+             //             var formdata = GetExtJsFormData(form, "id", op);
+             //             var griddata = GetExtJsGridData(store, "id");
+
+             //;
+
+
+
+             var formdata = form.getFormData();
+             var griddata = grid.getChange();
+
+             //return;
+
+             alert(formdata);
+             alert(griddata);
+
+             Ext.Ajax.request({
+                 params: { 'formdata': formdata, 'griddata': griddata },
+                 url: '@Url.Content("~/EmpInfoEdit/Save")',
+                 success: function (response) {
+                     var resp = Ext.JSON.decode(response.responseText);
+                     if (resp.status === "ok") {
+                         //succFn();
+
+                         //CommitGridData(store);
+                         store.commitChanges();
+                         Ext.MessageBox.alert('保存成功', resp.status);
+                     } else {
+                         Ext.MessageBox.alert('保存失败', resp.status);
+                     }
+                 }
+             });
+
+         })
+
+         //增行
+         toolbar.items.get('addrow').on('click', function () {
+
+             var data = [{
+                 'id': '',
+                 'workdt': '',
+                 'department': '',
+                 'station': '',
+                 'position': '',
+                 'level': ''
+             }];
+
+             store.insert(store.getCount(), data);
+             //             for (var i = 0; i < 1; i++) {
+             //                 store.loadData(data, true); //在store的最后添加一行数据
+             //             }
+
+         })
+
+         //删行
+         toolbar.items.get('deleterow').on('click', function () {
+             //;
+             var data = grid.getSelectionModel().getSelection();
+
+             if (data.length > 0) {
+
+                 var ids = [];
+                 Ext.Array.each(data, function (record) {
+                     var name = record.get('name');
+
+                     if (name) {
+                         ids.push(name);
+                     }
+
+                     store.remove(record); //前端删除
+
+                 });
+
+             }
+
+         })
+
+     })
+
+ </script>
+
+}
+
+<div id="center1" class="x-hide-display">
+        <p><b>Done reading me? Close me by clicking the X in the top right corner.</b></p>
+        <p>Vestibulum semper. Nullam non odio. Aliquam quam. Mauris eu lectus non nunc auctor ullamcorper. Sed tincidunt molestie enim. Phasellus lobortis justo sit amet quam. Duis nulla erat, varius a, cursus in, tempor sollicitudin, mauris. Aliquam mi velit, consectetuer mattis, consequat tristique, pulvinar ac, nisl. Aliquam mattis vehicula elit. Proin quis leo sed tellus scelerisque molestie. Quisque luctus. Integer mattis. Donec id augue sed leo aliquam egestas. Quisque in sem. Donec dictum enim in dolor. Praesent non erat. Nulla ultrices vestibulum quam.</p>
+        <p>Duis hendrerit, est vel lobortis sagittis, tortor erat scelerisque tortor, sed pellentesque sem enim id metus. Maecenas at pede. Nulla velit libero, dictum at, mattis quis, sagittis vel, ante. Phasellus faucibus rutrum dui. Cras mauris elit, bibendum at, feugiat non, porta id, neque. Nulla et felis nec odio mollis vehicula. Donec elementum tincidunt mauris. Duis vel dui. Fusce iaculis enim ac nulla. In risus.</p>
+        <p>Donec gravida. Donec et enim. Morbi sollicitudin, lacus a facilisis pulvinar, odio turpis dapibus elit, in tincidunt turpis felis nec libero. Nam vestibulum tempus ipsum. In hac habitasse platea dictumst. Nulla facilisi. Donec semper ligula. Donec commodo tortor in quam. Etiam massa. Ut tempus ligula eget tellus. Curabitur id velit ut velit varius commodo. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Nulla facilisi. Fusce ornare pellentesque libero. Nunc rhoncus. Suspendisse potenti. Ut consequat, leo eu accumsan vehicula, justo sem lobortis elit, ac sollicitudin ipsum neque nec ante.</p>
+        <p>Aliquam elementum mauris id sem. Vivamus varius, est ut nonummy consectetuer, nulla quam bibendum velit, ac gravida nisi felis sit amet urna. Aliquam nec risus. Maecenas lacinia purus ut velit. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Suspendisse sit amet dui vitae lacus fermentum sodales. Donec varius dapibus nisl. Praesent at velit id risus convallis bibendum. Aliquam felis nibh, rutrum nec, blandit non, mattis sit amet, magna. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Etiam varius dignissim nibh. Quisque id orci ac ante hendrerit molestie. Aliquam malesuada enim non neque.</p>
+</div>

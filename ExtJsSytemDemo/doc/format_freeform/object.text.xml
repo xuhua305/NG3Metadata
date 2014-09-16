@@ -1,0 +1,59 @@
+﻿<?xml version='1.0' encoding='utf-8' ?>
+<root>
+<elements name="Text" meaning="纯文字对象的属性" number="0-n" content="文字">
+<element name="text/value" meaning="文字">
+	<category>主要</category>
+	<value>串</value>
+</element>
+<element name="fontIndex" meaning="文字字体">
+	<category>外观</category>
+	<datatype>int</datatype>
+	<value>数字，指向在&amp;lt;Fonts&amp;gt;中定义的字体的顺序号，从0开始计数</value>
+	<default>0</default>
+</element>
+<element name="color/textColor" meaning="文字颜色">
+	<category>外观</category>
+	<datatype>color</datatype>
+	<value>颜色串</value>
+	<default>#000000</default>
+</element>
+<element name="align" meaning="文字水平对齐">
+	<category>外观</category>
+	<value>left / center / right</value>
+	<default>left</default>
+</element>
+<element name="vAlign" meaning="文字垂直对齐">
+	<category>外观</category>
+	<value>top / middle / bottom</value>
+	<default>top</default>
+</element>
+<element name="displayMask" meaning="显示掩码表达式">
+	<category>外观</category>
+	<value>和Treelist的显示掩码类似，但仅支持文字、文字颜色这二种子表达式</value>
+</element>
+<element name="isMultiLine/isMultiLineAble" meaning="如果超出宽度, 是否允许自动拆分成多行显示">
+	<category>外观</category>
+	<datatype>bool</datatype>
+	<default>false</default>
+</element>
+<element name="isHyperLink" meaning="是否超链接">
+	<category>行为</category>
+	<datatype>bool</datatype>
+	<default>false</default>
+</element>
+<element name="isBindingCol" meaning="是否数据绑定列，用于函数GetChangedXML()生成的XML串">
+	<category>数据</category>
+	<datatype>bool</datatype>
+	<default>false</default>
+</element>
+
+<element name="textId" meaning="指定用于显示的数据列的列名(出现在数据的XML中)">
+	<category>数据</category>
+	<value>串</value>
+</element>
+</elements>
+
+<comments>
+	<comment>text允许以"|"分隔中英文(用于中英文切换)</comment>
+</comments>
+</root>

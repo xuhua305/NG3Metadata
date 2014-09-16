@@ -1,0 +1,302 @@
+﻿@{
+    ViewBag.Title = "StudentInfoDetail";
+}
+
+@section script
+{
+
+   <script type="text/javascript">
+             
+
+       Ext.onReady(function () {
+
+           Ext.define('Ext.ux.TriggerField', {
+               extend: 'Ext.form.field.Trigger',
+               helpid: 'secuser',
+               onTriggerClick: function () {
+
+                   Ext.define('model', {
+                       extend: 'Ext.data.Model',
+                       fields: [{
+                           name: 'code',
+                           type: 'string',
+                           mapping: 'code'
+                       }, {
+                           name: 'name',
+                           type: 'string',
+                           mapping: 'name'
+                       }                      
+                    ]
+                   });
+
+                   var store = Ext.create('Ext.data.Store', {
+                       model: 'model',
+                       pageSize: 20,
+                       proxy: {
+                           type: 'ajax',
+                           url: '../Help/GetItemHelp',
+                           reader: {
+                               type: 'json',
+                               root: 'items',
+                               totalProperty: 'total'
+                           }
+                       }
+                   });
+                   store.load();
+
+                   var pagingbar = Ext.create('Ext.PagingToolbar', {
+                       store: store,
+                       displayInfo: true,
+                       displayMsg: '第 {0} - {1}条 共 {2} 条数据',
+                       emptyMsg: "没有任何数据",
+                       beforePageText: "第",
+                       afterPageText: "/{0} 页",
+                       firstText: "首页",
+                       prevText: "上一页",
+                       nextText: "下一页",
+                       lastText: "尾页",
+                       refreshText: "刷新"
+                   });
+
+                   var grid = Ext.create('Ext.grid.Panel', {
+                       region: 'center',
+                       //frame: true,
+                       store: store,
+                       columnLines: true,
+                       //selType: 'cellmodel',
+                       //selModel: Ext.create('Ext.selection.CheckboxModel'),
+                       layout: {
+                           type: 'hbox',
+                           align: 'stretch'
+                       },
+                       columns: [Ext.create('Ext.grid.RowNumberer', { text: '行号', width: 35 }),
+                        {
+                            header: '代码',
+                            flex: 1,
+                            sortable: true,
+                            dataIndex: 'code',
+                            hidden: false
+                        }, {
+                            header: '名称',
+                            flex: 1,
+                            sortable: true,
+                            dataIndex: 'name',
+                            editor: {
+                                allowBlank: false
+                            }
+                        }],
+                       viewConfig: {
+                           forceFit: true,
+                           scrollOffset: 0
+                       },
+                       //forceFit: true,
+                       //plugins: [cellEditing],
+                       bbar: pagingbar
+                   });
+
+                  var win = Ext.create('Ext.window.Window', {
+                       title: 'Hello',
+                       height: 300,
+                       width: 400,
+                       layout: 'fit',
+                       items: [grid]
+                   }).show();
+
+                   var me = this;
+
+                   grid.on('itemdblclick', function () {
+                       ;
+                       var data = grid.getSelectionModel().getSelection();
+                       
+                       if(data.length > 0)
+                       {
+                           var code = data[0].get('code');
+                           var name = data[0].get('name');
+                           this.setValue(code);                          
+                           win.hide();
+                       }
+                   },this)
+
+               }
+           })
+
+           var toolbar = Ext.create('Ext.Toolbar',
+                {
+                    region: 'north',
+                    border: false,
+                    //split: true,
+                    height: 26,
+                    minSize: 26,
+                    maxSize: 26,
+                    items: [
+                               {
+                                   id: "save",
+                                   text: "提交",
+                                   iconCls: 'add'
+                               }, 
+                               "->",
+                               {
+                                   id: "close",
+                                   text: "退出",
+                                   iconCls: 'cross'
+                               }
+                              ]
+                           });
+
+            var form = Ext.create('Ext.form.Panel', {
+                region:'center',
+                //title: 'Inner Tabs',
+                frame: true,
+                bodyStyle: 'padding:5px',
+                //width: 600,
+                fieldDefaults: {
+                    labelAlign: 'top',
+                    msgTarget: 'side'
+                },
+                defaults: {
+                    anchor: '100%'
+                },
+                keys:[{ 
+                         key:Ext.EventObject.ENTER, 
+                         fn:function(){alert("enter");}, 
+                         scope:this 
+                        },{ 
+                         key:Ext.EventObject.ESC, 
+                         fn:function(){alert("esc");}, 
+                         scope:this 
+                        }],
+
+                items: [{
+                    layout: 'column',
+                    border: false,
+                    items: [{
+                        columnWidth: .5,
+                        border: false,
+                        layout: 'anchor',
+                        defaultType: 'textfield',
+                        items: [{
+                            fieldLabel: 'First Name',
+                            name: 'first',
+                            anchor: '95%'
+                        }, {
+                            fieldLabel: 'Company',
+                            name: 'company',
+                            anchor: '95%'
+                        }]
+                    }, {
+                        columnWidth: .5,
+                        border: false,
+                        layout: 'anchor',
+                        defaultType: 'textfield',
+                        items: [{
+                            fieldLabel: 'Last Name',
+                            name: 'last',
+                            anchor: '95%'
+                        }, {
+                            fieldLabel: 'Email',
+                            name: 'email',
+                            vtype: 'email',
+                            anchor: '95%'
+                        }]
+                    }, {
+                        columnWidth: .5,
+                        border: false,
+                        layout: 'anchor',
+                        defaultType: 'textfield',
+                        items: [Ext.create('Ext.ux.TriggerField', {
+                                   fieldLabel: '物料',
+                                   name: 'item',
+                                   anchor: '95%'
+                                  }),
+                         {
+                             xtype : 'combobox',
+                            fieldLabel: '录入员',
+                            name: 'operator',                           
+                            anchor: '95%',
+                            //hideTrigger:true,
+                            onTriggerClick: function () {
+                                alert("heihei");
+                            }
+                        }]
+                    }]
+                }, {
+                    xtype: 'tabpanel',
+                    plain: true,
+                    activeTab: 0,
+                    height: 235,
+                    defaults: { bodyStyle: 'padding:10px' },
+                    items: [{
+                        title: 'Personal Details',
+                        defaults: { width: 230 },
+                        defaultType: 'textfield',
+
+                        items: [{
+                            fieldLabel: 'First Name',
+                            name: 'first',
+                            allowBlank: false,
+                            value: 'Jamie'
+                        }, {
+                            fieldLabel: 'Last Name',
+                            name: 'last',
+                            value: 'Avins'
+                        }, {
+                            fieldLabel: 'Company',
+                            name: 'company',
+                            value: 'Ext JS'
+                        }, {
+                            fieldLabel: 'Email',
+                            name: 'email',
+                            vtype: 'email'
+                        }]
+                    }, {
+                        title: 'Phone Numbers',
+                        defaults: { width: 230 },
+                        defaultType: 'textfield',
+
+                        items: [{
+                            fieldLabel: 'Home',
+                            name: 'home',
+                            value: '(888) 555-1212'
+                        }, {
+                            fieldLabel: 'Business',
+                            name: 'business'
+                        }, {
+                            fieldLabel: 'Mobile',
+                            name: 'mobile'
+                        }, {
+                            fieldLabel: 'Fax',
+                            name: 'fax'
+                        }]
+                    }, {
+                        cls: 'x-plain',
+                        title: 'Biography',
+                        layout: 'fit',
+                        items: {
+                            xtype: 'htmleditor',
+                            name: 'bio2',
+                            fieldLabel: 'Biography'
+                        }
+                    }]
+                }]
+
+//                buttons: [{
+//                    text: 'Save'
+//                }, {
+//                    text: 'Cancel'
+//                }]
+            });
+
+            Ext.create('Ext.container.Viewport', {
+                id: "viewPort",
+                layout: 'border',
+                items:
+                [
+                  toolbar, form
+                ]
+            });
+
+       });
+
+</script>
+
+}

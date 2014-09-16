@@ -1,0 +1,123 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{112A34CB-63C9-47BD-B3C6-EE54A179F826}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>NG3.Metadata.Core</RootNamespace>
+    <AssemblyName>NG3.Metadata.Core</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Build.Framework" />
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\Refdll\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization.Formatters.Soap" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DataType.cs" />
+    <Compile Include="Entity\DicContentJsonConverter.cs" />
+    <Compile Include="Entity\DictionaryContent.cs" />
+    <Compile Include="Entity\EntityRelation.cs" />
+    <Compile Include="Entity\EntityRelationsJsonConverter.cs" />
+    <Compile Include="Entity\EntityRelationStyle.cs" />
+    <Compile Include="Entity\MetadataForDictionary.cs" />
+    <Compile Include="Entity\MetadataForEntity.cs" />
+    <Compile Include="Entity\MetadataForProperty.cs" />
+    <Compile Include="Entity\MetadataForPropertyTemplate.cs" />
+    <Compile Include="Entity\PrimaryKeyGenerateStyle.cs" />
+    <Compile Include="Entity\TableRelation.cs" />
+    <Compile Include="IndustryStyle.cs" />
+    <Compile Include="NGCultureInfo.cs" />
+    <Compile Include="MetadataBizBase.cs" />
+    <Compile Include="MetadataConvert.cs" />
+    <Compile Include="MetadataForNode.cs" />
+    <Compile Include="MetadataCatalogue.cs" />
+    <Compile Include="MetadataGod.cs" />
+    <Compile Include="NGJsonConverter.cs" />
+    <Compile Include="NGVersion.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SerializationHelp.cs" />
+    <Compile Include="Service\ImplementSytle.cs" />
+    <Compile Include="Service\MetadataForService.cs" />
+    <Compile Include="Service\MetadataForSystemVariable.cs" />
+    <Compile Include="Service\PagingInfo.cs" />
+    <Compile Include="Service\ParameterInfo.cs" />
+    <Compile Include="Service\ParameterStyle.cs" />
+    <Compile Include="UiStyle.cs" />
+    <Compile Include="Ui\ComponentType.cs" />
+    <Compile Include="Ui\JsCodeInfo.cs" />
+    <Compile Include="Ui\JsCodeStructure.cs" />
+    <Compile Include="Ui\LayoutColumn.cs" />
+    <Compile Include="Ui\Layout\UiHeadInfo.cs" />
+    <Compile Include="Ui\Layout\UiGridInfo.cs" />
+    <Compile Include="Ui\Layout\UiHeadZoneInfo.cs" />
+    <Compile Include="Ui\Layout\UiQueryInfo.cs" />
+    <Compile Include="Ui\UIStyle.cs" />
+    <Compile Include="Ui\Layout\UiTemplateForJs.cs" />
+    <Compile Include="Ui\MetadataForUi.cs" />
+    <Compile Include="Ui\TableLayout\LayoutColumn.cs" />
+    <Compile Include="Ui\TableLayout\LayoutComponent.cs" />
+    <Compile Include="Ui\TableLayout\LayoutRow.cs" />
+    <Compile Include="Ui\TableLayout\LayoutTable.cs" />
+    <Compile Include="Ui\MetadataUiForm.cs" />
+    <Compile Include="Ui\MetadataUiLayout.cs" />
+    <Compile Include="Ui\MetadataUiGrid.cs" />
+    <Compile Include="Ui\MetadataUiQuery.cs" />
+    <Compile Include="Ui\MetadataUiToolbar.cs" />
+    <Compile Include="Ui\MetadataUiTree.cs" />
+    <Compile Include="Ui\MetadataUiBase.cs" />
+    <Compile Include="Ui\Toolbar\ToolbarButtonAligment.cs" />
+    <Compile Include="Ui\Toolbar\ToolbarButtonStyle.cs" />
+    <Compile Include="Ui\Toolbar\ToolScrip.cs" />
+    <Compile Include="Ui\Toolbar\ToolScripButton.cs" />
+    <Compile Include="Ui\Layout\UiBodyInfo.cs" />
+    <Compile Include="Ui\UiComponent.cs" />
+    <Compile Include="Ui\Layout\UiTemplate.cs" />
+    <Compile Include="Ui\UnitStyle.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>xcopy /s /y $(TargetDir)$(TargetFileName) $(SolutionDir)ExtJsSytemDemo\bin</PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

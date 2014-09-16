@@ -1,0 +1,7 @@
+<TreeList>
+  <Properties isShowRuler="true" IsRemoteSort="true" />
+  <Cols>
+    <Col name="logid" queryable="true" width="70" isKey="true">编号</Col>
+    <Col name="u_name" width="70">名称</Col>
+  </Cols>
+</TreeList>

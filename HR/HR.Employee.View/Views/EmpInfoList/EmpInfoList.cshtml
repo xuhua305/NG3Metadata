@@ -1,0 +1,234 @@
+﻿@{
+     ViewBag.Title = "EmpInfoList";
+     Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@section script
+{
+ 
+ <script type="text/javascript">
+
+     Ext.onReady(function () {
+
+         //;
+         var toolbar = Ext.create('Ext.Toolbar',
+                {
+                    region: 'north',
+                    border: false,
+                    //split: true,
+                    height: 26,
+                    minSize: 26,
+                    maxSize: 26,
+                    items: [
+                               {
+                                   id: "save",
+                                   text: "提交",
+                                   iconCls: 'cog_edit'
+                               },
+                               {
+                                   id: "add",
+                                   text: "新增",
+                                   iconCls: 'add'
+                               },
+                               {
+                                   id: "addrow",
+                                   text: "增行",
+                                   iconCls: 'add'
+                               },
+                                {
+                                    id: "edit",
+                                    text: "修改",
+                                    iconCls: 'plugin'
+                                },
+                               {
+                                   id: "delete",
+                                   text: "删除",
+                                   iconCls: 'delete'
+                               }, "->",
+                               {
+                                   id: "close",
+                                   text: "退出",
+                                   iconCls: 'cross'
+                               }
+                              ]
+                });
+
+         //定义模型
+         Ext.define('model', {
+             extend: 'Ext.data.Model',
+             fields: [{
+                 name: 'id',
+                 type: 'string',
+                 mapping: 'id'
+             }, {
+                 name: 'empno',
+                 type: 'string',
+                 mapping: 'empno'
+             }, {
+                 name: 'name',
+                 type: 'string',
+                 mapping: 'name'
+             }, {
+                 name: 'sex',
+                 type: 'string',
+                 mapping: 'sex'
+             }, {
+                 name: 'age',
+                 mapping: 'age',
+                 type: 'string'
+             },
+               {
+                   name: 'birthday',
+                   mapping: 'birthday',
+                   type: 'date'
+               },
+               {
+                   name: 'province',
+                   mapping: 'province',
+                   type: 'string'
+               },
+               {
+                   name: 'city',
+                   mapping: 'city',
+                   type: 'string'
+               },
+               {
+                   name: 'email',
+                   mapping: 'email',
+                   type: 'string'
+               }]
+         });
+
+         //store
+         var store = Ext.create('Ext.data.Store', {
+             model: 'model',
+             pageSize: 20,
+             proxy: {
+                 type: 'ajax',
+                 url: 'EmpInfoList/GetEmpList',
+                 reader: {
+                     type: 'json',
+                     root: 'Record',
+                     totalProperty: 'totalRows'
+                 }
+             }
+         });
+         store.load();
+
+         //分页条
+         var pagingbar = Ext.create('Ext.PagingToolbar', {
+             store: store,
+             displayInfo: true,
+             displayMsg: '第 {0} - {1}条 共 {2} 条数据',
+             emptyMsg: "没有任何数据",
+             beforePageText: "第",
+             afterPageText: "/{0} 页",
+             firstText: "首页",
+             prevText: "上一页",
+             nextText: "下一页",
+             lastText: "尾页",
+             refreshText: "刷新"
+         });
+
+         //grid
+         var grid = Ext.create('Ext.grid.Panel', {
+             region: 'center',
+             frame: true,
+             store: store,
+             columnLines: true,
+             //selType: 'cellmodel',
+             //selModel: Ext.create('Ext.selection.CheckboxModel'),
+             layout: {
+                 type: 'hbox',
+                 align: 'stretch'
+             },
+             columns: [Ext.create('Ext.grid.RowNumberer', { text: '行号', width: 30 }),
+                {
+                    header: '编号',
+                    flex: 1,
+                    sortable: true,
+                    dataIndex: 'id',
+                    hidden: true
+                }, {
+                    header: '<div align="center">工号</div>',
+                    flex: 1,
+                    sortable: true,
+                    dataIndex: 'empno'
+                }, {
+                    header: '姓名',
+                    flex: 1,
+                    sortable: true,
+                    dataIndex: 'name'
+                }, {
+                    header: '性别',
+                    flex: 1,
+                    sortable: true,
+                    dataIndex: 'sex'
+                }, {
+                    header: '年龄',
+                    flex: 1,
+                    sortable: true,
+                    dataIndex: 'age'
+                }, {
+                    xtype: 'datecolumn',
+                    header: '生日',
+                    flex: 1,
+                    sortable: true,
+                    dataIndex: 'birthday',
+                    format: 'Y-m-d'
+                }, {
+                    header: '省',
+                    flex: 1,
+                    sortable: true,
+                    dataIndex: 'province'
+                }, {
+                    header: '市',
+                    flex: 1,
+                    sortable: true,
+                    dataIndex: 'city'
+                }, {
+                    header: 'email',
+                    flex: 1,
+                    sortable: true,
+                    dataIndex: 'email'
+                }],
+             viewConfig: {
+                 forceFit: true,
+                 scrollOffset: 0
+             },
+             //plugins: [cellEditing],
+             bbar: pagingbar
+
+         });
+
+         Ext.create('Ext.container.Viewport', {
+             id: "viewPort",
+             layout: 'border',
+             items:
+             [
+               toolbar, grid
+             ]
+         });
+
+         //新增
+         toolbar.items.get('add').on('click', function () {
+
+             //;
+             //var top = window.parent;             
+
+             top.OpenTab('/HR/EmpInfoEdit', 'EmpInfoEdit', '员工信息维护');
+
+         });
+
+
+         toolbar.items.get('addrow').on('click', function () {
+             var utcCurrTime = new Date();
+             alert(utcCurrTime);
+         })
+
+     })
+
+ </script>
+
+}

@@ -1,0 +1,39 @@
+﻿<Freeform>
+  <Properties bgColor="#E5EAFF,#FAFFFF" />
+  <Objects>
+    <TableLayout width="100%">
+      <col width="10"/>
+      <col width="90"/>
+      <col width="0.1"/>
+      <col width="90"/>
+      <col width="0.1"/>
+      <col width="5"/>
+      <col width="75"/>
+      <col width="5"/>
+      <col width="75"/>
+      <col width="10"/>
+      <tr height="4"/>
+      <tr height="24">
+                  <td/>
+                  <td>
+                    <Input id="logid" type="Edit" align="left" width="2" leftText=" 编号:" editSize="1" leftTextAlign="left" />
+                  </td>
+                  <td/>
+                  <td>
+                    <Input id="u_name" type="Edit" align="left" leftText=" 名称:" width="2" editSize="1" leftTextAlign="left" />
+                  </td>
+                  <td/>
+                  <td/>
+                  <td>
+                    <Input id="btnquery" type="Button" tabOrder="998" text="搜索"/>
+                  </td>
+                  <td/>
+                  <td>
+                    <Input id="btnreset" type="Button" tabOrder="999" text="清空"/>
+                  </td>
+                  <td/>
+                </tr>
+                <tr height="4"/>
+    </TableLayout>
+  </Objects>
+</Freeform>

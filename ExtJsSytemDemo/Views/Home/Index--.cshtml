@@ -1,0 +1,305 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section script
+{
+
+   <script type="text/javascript">
+
+       Ext.onReady(function () {
+
+           //toolbar
+           var toolbar = new Ext.Toolbar(
+                {
+                    region: 'north',
+                    border: false,
+                    split: true,
+                    height: 26,
+                    minSize: 26,
+                    maxSize: 26,
+                    items: ["->",
+                               {
+                                   id: "refresh",
+                                   text: "刷新",
+                                   iconCls: 'table_refresh'
+                               }, "-",
+                               {
+                                   id: "logoff",
+                                   text: "注销",
+                                   iconCls: 'plugin'
+                               }, "-",
+                               {
+                                   id: "close",
+                                   text: "退出",
+                                   iconCls: 'folder_go'
+                               }
+                              ]
+                });
+
+           debugger;
+
+           var esc = toolbar.items.get('close');
+//           var map = new Ext.util.KeyMap({
+//               target: esc,
+//               key: 'a',
+//               fn: function () { alert('esc'); },
+//               scope: this
+           //           });
+
+
+           var map = new Ext.util.KeyMap({
+               target: this.document, 
+               key: 'b',
+               alt: false,
+               shift: false,
+               ctrl: false,
+               fn: function (e) {
+                   alert("a+shift+ctrl");
+               },
+               scope: this
+           });             
+
+
+
+           var treeStore1 = Ext.create('Ext.data.TreeStore', {
+               autoLoad: false,
+               proxy: {
+                   type: 'ajax',
+                   url: '../Tree/LoadTree'
+               },
+               folderSort: true,
+               sorters: [{
+                   property: 'text',
+                   direction: 'ASC'
+               }]
+           });
+
+           //menu
+           var tree1 = new Ext.tree.TreePanel(
+                {
+                    id: "tree1",
+                    store: treeStore1,
+                    region: "west",
+                    title: "学生信息",
+                    autoScroll: true,
+                    enableTabScroll: true,
+                    collapsible: true,
+                    collapsed: false,
+                    split: true,
+                    rootVisible: false,
+                    lines: true,
+                    useArrows: true,
+                    width: 220,
+                    minSize: 220,
+                    maxSize: 220,
+                    viewConfig: {
+                        plugins: {
+                            ptype: 'treeviewdragdrop'
+                        }
+                    },
+                    listeners: {
+                        //            itemclick: function (view, re) {
+                        //                alert("itemclick");
+                        //            },
+                        //            itemdblclick: function (view, re) {
+                        //                alert("itemdbclick");
+                        //            }
+                        beforeload: function (ds, opration, opt) {
+                            
+                            debugger;
+
+                            opration.params.nodeid = opration.node.data.id;
+                            opration.params.name = opration.node.data.tex;
+                        }
+                    }
+
+                });
+
+           var treeStore2 = Ext.create('Ext.data.TreeStore', {
+               autoLoad: true,
+               //          proxy: {
+               //              type: 'ajax',
+               //              url: 'get-nodes.php'
+               //          },
+               root: {
+                   text: '办公事务管理',
+                   id: 'src',
+                   expanded: true,
+                   children: [{
+                       text: "工作计划",
+                       aa: 'bb',
+                       leaf: true
+                   }, {
+                       text: "工作日志管理",
+                       expanded: true,
+                       children: [{
+                           text: "工作日志统计",
+                           leaf: true,
+                           data:
+                                {
+                                    href: "baidu"
+                                }
+                       }, {
+                           text: "日程日志",
+                           leaf: true
+                       }]
+                   }, {
+                       text: "工作日志模板",
+                       leaf: true
+                   }]
+               },
+               folderSort: true,
+               sorters: [{
+                   property: 'text',
+                   direction: 'ASC'
+               }]
+           });
+
+           var tree2 = new Ext.tree.TreePanel(
+                {
+                    id: "tree2",
+                    store: treeStore2,
+                    region: "west",
+                    title: "基础数据",
+                    autoScroll: true,
+                    enableTabScroll: true,
+                    collapsible: true,
+                    collapsed: false,
+                    split: true,
+                    rootVisible: false,
+                    lines: true,
+                    useArrows: true,
+                    loadMask: { msg: '正在加载数据，请稍侯...' },
+                    width: 220,
+                    minSize: 220,
+                    maxSize: 220,
+                    viewConfig: {
+                        plugins: {
+                            ptype: 'treeviewdragdrop'
+                        }
+                    },
+                    listeners: {
+                        //            itemclick: function (view, re) {
+                        //                alert("itemclick");
+                        //            },
+                        //                        itemdblclick: function (view, node) {
+
+                        //                            debugger;
+                        //                            alert("itemdbclick");
+                        //                        }
+                    }
+
+                });
+
+           tree1.on('beforeexpand', function () {
+               //alert('beforeexpand');
+           });
+
+           tree1.on('itemdblclick', function (view, node) {
+
+               var url = node.data.hrefTarget;
+
+               OpenTab(url, node.data.id, node.data.text);
+
+           });
+
+           var accordion = Ext.create('Ext.Panel', {
+               title: '功能菜单',
+               collapsible: true,
+               region: 'west',
+               margins: '5 0 5 5',
+               split: true,
+               width: 210,
+               layout: 'accordion',
+               items: [tree1, tree2]
+           });
+
+           //tabMain
+           tabMain = Ext.create('Ext.tab.Panel',
+                 {
+                     id: "tabMain",
+                     region: "center",
+                     autoScroll: true,
+                     enableTabScroll: true,
+                     activeTab: 0,
+                     onTitleDbClick: function (e, target, o) {
+                         var t = this.findTargets(e);
+                         if (t.item && t.item.closable) {
+                             if (t.item.fireEvent('beforeclose', t.item) !== false) {
+                                 t.item.fireEvent('close', t.item);
+                                 this.remove(t.item);
+                             }
+                         }
+                     },
+                     listeners:
+                     {
+                         //beforeremove: beforeRemoveTab,
+                         beforeclose: function () {
+                             alert("beforeclose");
+                         },
+                         beforedestroy: function () {
+                             alert("beforedestroy");
+                         }
+
+                     },
+                     items: [{
+                         xtype: 'panel',
+                         id: "tab1",
+                         title: '首页',
+                         html: "这只是一个非常普通的Tab。",
+                         closable: false,
+                         autoLoad: {
+                             url: 'home/xxx',
+                             scope: this,
+                             scripts: true,
+                             text: '页面加载中,请稍候....'
+                         }
+                     }]
+                 });
+
+           new Ext.Viewport(
+             {
+                 id: "viewPort",
+                 layout: 'border',
+                 items:
+                [
+                   toolbar, accordion, tabMain
+                ]
+             });
+
+       })
+
+         function OpenTab(url,id,text) {
+
+             var frame1 = document.createElement("IFRAME");
+             frame1.id = "frame1";
+             frame1.frameBorder = 0;
+             frame1.src = url;
+             frame1.height = "100%";
+             frame1.width = "100%";
+
+
+             if (!tabMain.getComponent(id)) {
+                 Ext.getCmp("tabMain").add(Ext.create("Ext.Panel", {
+                     title: text,
+                     id: id,
+                     //html: '<iframe id="frame1" src="home/About" frameborder="0" width="100%" height="100%"></iframe>',
+                     closable: true,
+                     listeners: {
+                         //beforeclose: beforeRemoveTab
+                     },
+                     contentEl: frame1
+                 }))
+             }
+
+             //debugger;
+
+             var curtab = tabMain.getComponent(id)
+             tabMain.setActiveTab(curtab);
+
+         }
+
+   </script>    
+}

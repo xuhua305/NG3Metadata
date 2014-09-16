@@ -1,0 +1,204 @@
+﻿@{
+    ViewBag.Title = "EmpInfoEdit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section script
+{
+ 
+ <script type="text/javascript">
+
+     Ext.onReady(function () {
+
+         var toolbar = Ext.create('Ext.Toolbar',
+                {
+                    region: 'north',
+                    border: false,
+                    //split: true,
+                    height: 26,
+                    minSize: 26,
+                    maxSize: 26,
+                    items: [
+                               {
+                                   id: "save",
+                                   text: "提交",
+                                   iconCls: 'add'
+                               },
+                               "->",
+                               {
+                                   id: "close",
+                                   text: "退出",
+                                   iconCls: 'cross'
+                               }
+                              ]
+          });
+
+                           var form = Ext.create('Ext.form.Panel', {
+                               region: 'center',
+                               //title: 'Inner Tabs',
+                               frame: true,
+                               bodyStyle: 'padding:5px',
+                               //width: 600,
+                               fieldDefaults: {
+                                   //labelAlign: 'top',
+                                   msgTarget: 'side'
+                               },
+                               defaults: {
+                                   anchor: '90%'
+                               },
+                               keys: [{
+                                   key: Ext.EventObject.ENTER,
+                                   fn: function () { alert("enter"); },
+                                   scope: this
+                               }, {
+                                   key: Ext.EventObject.ESC,
+                                   fn: function () { alert("esc"); },
+                                   scope: this
+                               }],
+
+                               items: [{
+                                   layout: 'column',
+                                   border: false,
+                                   items: [{
+                                       columnWidth: .5,
+                                       border: false,
+                                       layout: 'anchor',
+                                       defaultType: 'textfield',
+                                       items: [{
+                                           fieldLabel: '工号',
+                                           name: 'first',
+                                           anchor: '95%'
+                                       }, Ext.create('Ext.ux.ComboBox', {
+                                           fieldLabel: '性别',
+                                           name: 'company',
+                                           anchor: '95%'
+                                       })]
+                                   }, {
+                                       columnWidth: .5,
+                                       border: false,
+                                       layout: 'anchor',
+                                       defaultType: 'textfield',
+                                       items: [{
+                                           fieldLabel: '姓名',
+                                           name: 'last',
+                                           anchor: '95%'
+                                       }, {
+                                           fieldLabel: '年龄',
+                                           name: 'email',
+                                           vtype: 'email',
+                                           anchor: '95%'
+                                       }]
+                                   }, {
+                                       columnWidth: .5,
+                                       border: false,
+                                       layout: 'anchor',
+                                       defaultType: 'textfield',
+                                       items: [Ext.create('Ext.ux.ComboBox',{
+                                           fieldLabel: '省',
+                                           name: 'last',
+                                           anchor: '95%'
+                                       }), Ext.create('Ext.ux.ComboBox',{
+                                           fieldLabel: '市',
+                                           name: 'email',
+                                           vtype: 'email',
+                                           //hideTrigger:true,  
+                                           anchor: '95%'
+                                       })]
+                                   }, {
+                                       columnWidth: .5,
+                                       border: false,
+                                       layout: 'anchor',
+                                       defaultType: 'textfield',
+                                       items: [Ext.create('Ext.ux.TriggerField', {
+                                           fieldLabel: '生日',
+                                           name: 'item',
+                                           anchor: '95%'
+                                       }),{
+                                         xtype: 'combobox',
+                                         fieldLabel: '邮箱',
+                                         name: 'operator',
+                                         anchor: '95%',
+                                         //hideTrigger:true                                      
+                                     }]
+                                 }
+                               ]}, {
+                                   xtype: 'tabpanel',
+                                   plain: true,
+                                   activeTab: 0,
+                                   height: 235,
+                                   defaults: { bodyStyle: 'padding:10px' },
+                                   items: [{
+                                       title: 'Personal Details',
+                                       defaults: { width: 230 },
+                                       defaultType: 'textfield',
+
+                                       items: [{
+                                           fieldLabel: 'First Name',
+                                           name: 'first',
+                                           allowBlank: false,
+                                           value: 'Jamie'
+                                       }, {
+                                           fieldLabel: 'Last Name',
+                                           name: 'last',
+                                           value: 'Avins'
+                                       }, {
+                                           fieldLabel: 'Company',
+                                           name: 'company',
+                                           value: 'Ext JS'
+                                       }, {
+                                           fieldLabel: 'Email',
+                                           name: 'email',
+                                           vtype: 'email'
+                                       }]
+                                   }, {
+                                       title: 'Phone Numbers',
+                                       defaults: { width: 230 },
+                                       defaultType: 'textfield',
+
+                                       items: [{
+                                           fieldLabel: 'Home',
+                                           name: 'home',
+                                           value: '(888) 555-1212'
+                                       }, {
+                                           fieldLabel: 'Business',
+                                           name: 'business'
+                                       }, {
+                                           fieldLabel: 'Mobile',
+                                           name: 'mobile'
+                                       }, {
+                                           fieldLabel: 'Fax',
+                                           name: 'fax'
+                                       }]
+                                   }, {
+                                       cls: 'x-plain',
+                                       title: 'Biography',
+                                       layout: 'fit',
+                                       items: {
+                                           xtype: 'htmleditor',
+                                           name: 'bio2',
+                                           fieldLabel: 'Biography'
+                                       }
+                                   }]
+                               }]
+
+                               //                buttons: [{
+                               //                    text: 'Save'
+                               //                }, {
+                               //                    text: 'Cancel'
+                               //                }]
+                           });
+
+                           Ext.create('Ext.container.Viewport', {
+                               id: "viewPort",
+                               layout: 'border',
+                               items:
+                [
+                  toolbar, form
+                ]
+                           });
+
+ })
+
+ </script>
+
+}

@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--Supcan Freeform -->
+<freeform>
+<Properties bgColor="#e5eaff,#faffff">
+</Properties>
+<Fonts>
+	<Font faceName="微软雅黑" size="-13" />
+	<Font size="14" />
+	<Font size="-16" bold="1"/>
+</Fonts>
+<Objects>
+	<Rect id='rect' x1='0' y1='0' width='100%' height='100%' thick='0' />
+
+	<Tab id="Tab1" x1='.x1+10' y='.y1+10' x2='.x2-10' y2='.y2-10' BackColor="#e5eaff" >
+		<Component id="T" type="treelist" url="t1.xml"  text="树列表"/>
+		<Component id="Cht" type="chart" text="统计图"/>
+		<Component id="R" type="report" url="../report/report1.xml"  text="报表"/>
+	</Tab>
+</Objects>
+</freeform>

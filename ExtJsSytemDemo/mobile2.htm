@@ -1,0 +1,119 @@
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=GB2312">
+<link rel="stylesheet" href="res/temp1.css" type="text/css">
+<script type='text/javascript' src='binary/dynaload.js?80'></script>
+<script language="JavaScript">
+var dtlst=null;
+var count=0;
+function OnReady(id)
+{
+ if(id == 'AF') {
+  var obj = document.getElementById(id);
+  obj.func("Build", "report/center5.xml");
+  count++;
+ }
+ else if(id == 'Upload') {
+  var obj = document.getElementById("divupload");
+  obj.style.visibility="hidden";
+  count++;
+ }
+ if(count == 2) {
+  var obj = document.getElementById("btn1");
+  obj.disabled=false;
+  obj = document.getElementById("btn2");
+  obj.disabled=false;
+ }
+}
+
+function tomobile(srv)
+{
+ var dt = new Date();
+ if(dtlst != null) {
+  var sp=dt.getTime() - dtlst.getTime();
+  if(sp < 5000) {
+    alert("您发布太频繁了，稍休息几秒钟再试吧");
+    return;
+  }
+ }
+ dtlst = dt;
+
+ if(srv == 1)
+  srv = "http://www.supcan.cn/dotnet/rs.aspx";
+ else
+  srv = "http://demodev.eicp.net/supcan/dotnet/rs.aspx";
+
+ //另存报表到临时文件
+ var filename=AF.func("CacheDirUtility", "isCreateTempFile=true;ext=xml");
+ AF.func("callfunc", "1074\r\n" + filename);
+ var kb = AF.func("FileUtility", "getKB\r\n" + filename);
+ if(kb > 500) {
+  alert("上传失败:  您的报表尺寸太大(" +kb+ "k), 测试版发布的报表不能超过500k! ");
+  return;
+ }
+
+ //文件上传，并获得URL
+ var ret = Upload.func("httpPost", "url=" +srv+ "?func=calc;return=response;isEcho=0;isShowProgress=false;filename="+filename);
+ if(ret == "" || ret=="0") {
+  alert("上传失败! ");
+  return;
+ }
+ ret = Upload.func("getHttpPostResponse", "");
+ if(ret == "" || ret=="0") {
+  alert("上传失败! ");
+  return;
+ }
+ if(ret.substr(0, 7) != "http://") {
+  alert("服务器返回错误: " + ret);
+  return;
+ }
+
+ //后继处理
+ var obj = document.getElementById("img1");
+ obj.src = "http://chart.googleapis.com/chart?cht=qr&chs=160x160&choe=UTF-8&chld=L|4&chl=" + encodeURIComponent(ret);
+ obj = document.getElementById("div1");
+ obj.style.display="block";
+}
+function onhlp()
+{
+ var obj = document.getElementById("imghlp");
+ obj.style.visibility="visible";
+ obj.src="http://www.supcan.cn/download/mobile1.jpg";
+}
+</script>
+</head>
+<body>
+<center>
+
+<table cols=2 border=0 width=100%>
+<col valign=top width=90>
+<col>
+<tr>
+<td align=center><img src='res/how.bmp'></td>
+<td>
+<b>Step 1</b>. 本报表就是演示页“30.普通统计图”中的XML模板，请作简单的改动，但不要删除统计图和取数公式;<br>
+<b>Step 2</b>. 发布该模板,  让服务器计算数据源，您的ipad、手机就能浏览数据了：  <input type=button id="btn1" disabled="disabled" value=" 发布到主服务器 " onClick="tomobile(1)"> 或 <input type=button id="btn2" disabled="disabled" value=" 发布到备用服务器 " onClick="tomobile(2)">
+<br>
+</td></tr>
+<tr height=6><td colspan=2/></tr>
+</table>
+
+<div id="div1" style="position:relative;width:100%;height:220px;display:none">
+<table border=0 width="100%">
+<col width=380>
+<col width=150>
+<col>
+<col width=255>
+<tr height><td align=right><img src="res/ok.jpg"> 报表已上传成功!  用ipad或手机扫描即可打开: </td><td align="center"><img id="img1" src=""/><td/><td><a href='javascript:onhlp()'>您知道手机怎么扫描吗？</a><br><img id='imghlp' src='' style='visibility:hidden'></td></tr>
+</table>
+</div>
+<div id="divupload" style="position:relative;width:2px;height:2px">
+	<script>insertUpload('Upload', 'bgColor=white')</script>
+</div>
+<div style="position:relative;width:100%;height:500px">
+	<script>insertReport('AF', '')</script>
+</div>
+
+</center>
+</body>
+</html>

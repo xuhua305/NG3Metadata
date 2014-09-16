@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--By Supcan TreeList -->
+<TreeList>
+  <Properties Title="单一列表" editAble="true" HeaderFontIndex="2" key="Id"></Properties>
+  <Fonts>
+    <Font faceName="Consolas"/>
+    <Font />
+    <Font faceName="微软雅黑" bold="1"/>
+    <Font bold="true" />
+  </Fonts>
+  <Cols>
+    <Col name="Id" width="100" align="center" key="true">员工编号</Col>
+    <Col name="Name"      width="100" align="center">员工姓名</Col>
+    <Col name="Sex" width="110" align="center" edittype="droplist" droplistID="DropSex">性别</Col>
+    <Col name="Birth"    width="100" datatype="date">出生年月</Col>
+    <Col name="Num"    width="100" datatype="int">数量</Col>
+    <Col name="DecimalNum"    width="100" datatype="double">小数</Col>
+    <Col name="Time"    width="150" datatype="datetime">时间</Col>
+    <Col name="Remark"      width="500" align="center">备注</Col>
+  </Cols>
+
+  <DropLists>
+    <DropList id="DropSex">
+      <item key="1">男</item>
+      <item key="2">女</item>
+    </DropList>
+  </DropLists>
+</TreeList>

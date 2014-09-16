@@ -1,0 +1,50 @@
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=GB2312">
+<link rel="stylesheet" href="res/temp1.css" type="text/css">
+<script type='text/javascript' src='binary/dynaload.js?80'></script>
+<script language="JavaScript">
+ function OnReady(id)
+ {
+  AF.func("Build", "report/report11.xml");
+  AF.func("callFunc", "309");
+ }
+</script>
+</head>
+
+<body>
+<center>
+
+<table cols=2 border=0 width=100%>
+<col valign=top width=110>
+<col>
+<tr>
+<td align=center><img src='res/how.bmp'></td>
+<td><b>1</b>.上报的报表通常为固定格式的报表，最终用户只要往指定单元格填数即可；<br>
+<b>2</b>.工具条中的"设定录入顺序"(<img src='res/prop.bmp'>)被按下时，输入到单元格的数字将表示为"固定输入顺序"(Tab Order);<br>
+<b>3</b>.请打开工具箱(<img src='res/toolbox.bmp'>)查看单元格的“别名”，有别名、或有TabOrder的单元格数据将被上传;<br>
+<b>4</b>.也可以选定一个区域，使用鼠标右键的“统一设置录入顺序和别名”成块设置;<br>
+<b>5</b>.请点击<img src='res/prop.bmp'>旁边的按钮，进入“设置数据验证”，里面设了3个验证条件，用于申报阶段.</td>
+</tr>
+<tr height=4><td/></tr>
+</table>
+
+<div style="position:relative;width:100%;height:410px">
+	<script>insertReport('AF', 'workmode=uploadDesigntime')</script>
+</div>
+
+<!--  以下为技术分析区 -->
+<br><br><br>
+<table border=0 cols=1 border=0 width=97% style='line-height:21px'>
+<tr><td><img src='res/tech.jpg'></td></tr><tr><td>
+<b>1</b>.页面中Report控件的创建脚本及参数如下：<br>
+<pre class='xml'>
+&lt;script&gt;insertReport('AF', '<b>workmode=uploadDesigntime</b>')&lt;/script&gt;</pre>
+workmode=uploadDesigntime表示现在是上报报表的设计阶段。
+</td></tr></table>
+
+<br>
+</center>
+</body>
+<script type='text/javascript' src='res/nstd.js'></script>
+</html>

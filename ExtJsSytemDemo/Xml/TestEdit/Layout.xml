@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!-- Supcan Freeform -->
+<freeform>
+  <Properties>
+    <backGround bgColor="#E5EAFF,#FAFFFF"/>
+  </Properties>
+  <Objects>
+    <TableLayout id="mainLayout" x="0" y="0" width="100%" height="100%">
+      <col width="100%"/>
+      <tr height="23">
+        <td>
+          <Component id="MyToolbar" Type="freeform" CreatePara="border=none" URL="Toolbar.xml"/>
+        </td>
+      </tr>
+      <tr height="40%">
+        <td>
+          <Component id="MyFreeForm" Type="freeform" CreatePara="border=single" URL="FreeForm.xml"/>
+        </td>
+      </tr>
+      <tr height="23">
+      <td>
+        <Component id="MyDetailToolbar" Type="freeform" CreatePara="border=none" URL="DetailToolbar.xml"/>
+      </td>
+      </tr>
+      <tr height="40%">
+        <td>
+          <Component id="MyGrid" Type="TreeList" CreatePara="border=single" URL="Grid.xml"/>
+        </td>
+      </tr>
+    </TableLayout>
+  </Objects>
+</freeform>

@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!-- Supcan Freeform -->
+<freeform>
+  <Properties>
+    <backGround bgColor="#E5EAFF,#FAFFFF"/>
+  </Properties>
+  <Objects>
+    <TableLayout id="MyToolbarLayout" y="0" width="100%">
+
+      <col width="5%" minWidth="50"/>
+      <col width="80%" minWidth="50"/>
+      <col width="5%" minWidth="50"/>
+      <col width="5%" minWidth="50"/>
+      <col width="5%" minWidth="50"/>
+      <tr height="23">
+        <td>
+          <Input id="btnSave" type="Button" textColor="black" text="保存" style="flat,transparent"/>
+        </td>
+        <td/>
+        <td>
+          <Input id="btnPrint" type="Button" textColor="black" text="打印" style="flat,transparent"/>
+        </td>
+        <td>
+          <Input id="btnHelp" type="Button" textColor="black" text="帮助" style="flat,transparent"/>
+        </td>
+        <td>
+          <Input id="btnExit" type="Button" textColor="black" text="退出" style="flat,transparent"/>
+        </td>
+      </tr>
+    </TableLayout>
+    <rect id="rc2" x1="0" y1="toolbar1.bottom" x2="100%" y2="100%" color="#7f9db9" />
+  </Objects>
+</freeform>

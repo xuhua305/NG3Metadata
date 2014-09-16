@@ -1,0 +1,245 @@
+﻿@{
+    ViewBag.Title = "Combox";
+}
+
+@section script
+{
+
+   <script type="text/javascript">
+       
+     
+
+       Ext.onReady(function () {                     
+
+           var toolbar = Ext.create('Ext.Toolbar',
+                {
+                    region: 'north',
+                    border: false,
+                    //split: true,
+                    height: 26,
+                    minSize: 26,
+                    maxSize: 26,
+                    items: [
+                               {
+                                   id: "save",
+                                   text: "提交",
+                                   iconCls: 'add'
+                               }, 
+                               "->",
+                               {
+                                   id: "close",
+                                   text: "退出",
+                                   iconCls: 'cross'
+                               }
+                              ]
+                           });
+
+           Ext.define('cmodel', {                //编辑状态下,状态列的下拉菜单的 model
+               extend: 'Ext.data.Model',
+               fields: [{
+                   //name: 'sex',
+                   //type: 'string',
+                   name:'code',
+                   mapping: 'code'
+               }, {
+                   name: 'name',
+                   mapping:'name',
+                   type: 'string'
+               }]
+           });
+
+           var states = [{             //编辑状态下,状态列的下拉菜单的 data
+               "sex": "0",
+               "name": "男性"
+           }, {
+               "sex": "1",
+               "name": "女性"
+           }]
+
+           var cstore = Ext.create('Ext.data.Store', {        //编辑状态下,状态列的下拉菜单的 store
+               model: 'cmodel',
+               data: states
+                
+           });
+
+             var sexcomb = Ext.create('Ext.form.ComboBox', {
+               //xtype: 'combobox',                              //指定编辑状态下为下拉菜单
+               name : "sexname",
+               store: cstore,                                         //绑定下拉菜单数据源
+               editable: true,                                   //是否可以输入  
+               selectOnFoucus: true,
+               typeAhead: true,
+               triggerAction: "all",
+               hiddenName: String,
+               valueField: "sex",
+               displayField: 'name',
+               queryMode: 'local',                            //local指定为本地数据  如果是后台传输  值为remote
+               allowBlank: false,
+               fieldLabel: 'Last Name',
+               columnWidth: .5,
+               anchor: '95%'
+               //triggerCls: "cog_edit",
+               //triggerWrapCls: "cog_edit",              
+           });
+            //sexcomb.setValue('1');
+
+             var mystore =  new Ext.data.JsonStore({
+                //url: 'Help/GetProvince',
+                pageSize: 10,//这个决定页大小
+                //autoLoad:true,
+                fields: [
+                { name: 'name', mapping: 'name' },
+                { name: 'code', mapping: 'code' },
+                { name: 'flag', mapping: 'flag' }
+                ],
+                proxy: {
+                    type: 'ajax',
+                    url: '../Help/GetProvince',
+                    reader: {
+                        type: 'json',
+                        root: 'provinces',
+                        totalProperty: 'total'
+                        //idProperty: 'name'
+                    }
+                }
+                //root:'provinces',
+                //sortInfo:{field: "name", direction: "ASC"}
+            });
+
+           var mycomb = Ext.create('Ext.form.ComboBox', {
+               //xtype: 'combobox',                              //指定编辑状态下为下拉菜单
+               name : "sexname",
+               store: mystore,//cstore,                                         //绑定下拉菜单数据源
+               editable: true,                                   //是否可以输入  
+               //selectOnFoucus: true,
+               typeAhead: true,
+               triggerAction: "all",
+               hiddenName: String,
+               valueField: 'code',//"sex",
+               displayField: 'name',
+               queryMode: 'remote',//'local',                            //local指定为本地数据  如果是后台传输  值为remote
+               allowBlank: false,
+               fieldLabel: 'Last Name',
+               columnWidth: .5,
+               anchor: '95%'
+               //triggerCls: "cog_edit",
+               //triggerWrapCls: "cog_edit",              
+           });
+            //sexcomb.setValue('1');
+
+        
+            var form = Ext.create('Ext.form.Panel', {
+                region:'center',
+                //title: 'Inner Tabs',
+                frame: true,
+                bodyStyle: 'padding:5px',
+                //width: 600,
+                fieldDefaults: {
+                    labelAlign: 'top',
+                    msgTarget: 'side'
+                },
+                defaults: {
+                    anchor: '100%'
+                },
+                keys:[{ 
+                         key:Ext.EventObject.ENTER, 
+                         fn:function(){alert("enter");}, 
+                         scope:this 
+                        },{ 
+                         key:Ext.EventObject.ESC, 
+                         fn:function(){alert("esc");}, 
+                         scope:this 
+                        }],
+
+                items: [{
+                    layout: 'column',
+                    border: false,
+                    items: [{
+                        columnWidth: .5,
+                        border: false,
+                        layout: 'anchor',
+                        defaultType: 'textfield',
+                        items: [{
+                            fieldLabel: 'First Name',
+                            name: 'first',
+                            anchor: '95%'
+                        }, {
+                            fieldLabel: 'Company',
+                            name: 'company',
+                            anchor: '95%'
+                        }]
+                    }, {
+                        columnWidth: .5,
+                        border: false,
+                        layout: 'anchor',
+                        defaultType: 'textfield',
+                        items: [mycomb, {
+                            //xtype:'combo',
+                            fieldLabel: 'Email',
+                            name: 'email',
+                            vtype: 'email',
+                            anchor: '95%'
+                        }]
+                    }, {
+                        columnWidth: .5,
+                        border: false,
+                        layout: 'anchor',
+                        defaultType: 'textfield',
+                        items: [Ext.create('Ext.ng.ComboBox', {
+                                   fieldLabel: '国家',
+                                   name: 'country',
+                                   anchor: '95%'
+                        }), Ext.create('Ext.ng.ComboBox', {
+                            hiddenName:'mycity',
+                            fieldLabel: '省州',
+                            name: 'province',
+                            id: 'province',
+                            rootPath: '@Url.Content("~/")',
+                            valueField: 'provinceno',
+                            displayField: 'prvcname',
+                            helpid: 'province', //帮助标记        
+                            anchor: '95%'
+
+                            //hideTrigger:true,                           
+                        })
+                        ]
+                    }]
+                }]
+
+//                buttons: [{
+//                    text: 'Save'
+//                }, {
+//                    text: 'Cancel'
+//                }]
+            });
+
+            Ext.create('Ext.container.Viewport', {
+                id: "viewPort",
+                layout: 'border',
+                items:
+                [
+                  toolbar, form
+                ]
+            });
+
+            toolbar.items.get("save").on('click', function () {
+                ;
+
+                var city = Ext.get("city");
+                //var obj = sexcomb.getRawValue();
+                //alert(obj);
+                //alert(sexcomb.getValue())
+
+                alert(JSON.stringify(form.getForm().getValues()));
+
+                //alert(Ext('sexname').dom.value);               
+
+
+            })
+
+       });
+
+</script>
+
+}
+

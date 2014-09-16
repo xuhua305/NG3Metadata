@@ -1,0 +1,607 @@
+﻿@{
+    ViewBag.Title = "EntityPropertyView";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section script
+{
+
+    <script type="text/javascript" src="../../../../Scripts/ngcommon.js"></script>
+    <script type="text/javascript" src="../../../../Scripts/languagewindow.js"></script>
+    <script type="text/javascript">
+
+        var otype = '@ViewBag.OType';
+        var buskey = '@ViewBag.Id';
+        var transferData = Ext.JSON.decode(Ext.htmlDecode('@ViewBag.TransferData'));
+        
+        var displayData = Ext.JSON.decode(Ext.htmlDecode('@ViewBag.DisplayLanguageData'));
+        var descriptionData = Ext.JSON.decode(Ext.htmlDecode('@ViewBag.DescriptionLanguageData'));
+
+
+        Ext.onReady(function () {
+            Ext.QuickTips.init();
+
+            var ngToolbar = Ext.create('Ext.ng.Toolbar',
+                {
+                    region: 'north',
+                    //renderTo: 'toolbar',
+                    border: false,
+                    //split: true,
+                    height: 26,
+                    minSize: 26,
+                    maxSize: 26,
+                    ngbuttons: [
+                        'save', "->", 'close'
+                    ]
+                });
+
+            var baseNodeInfoPanel = Ext.create('Ext.ng.TableLayoutForm', {
+                buskey: 'id',
+                otype: otype,
+                columnsPerRow: 3,
+                fields: [{
+                    id: 'Id',
+                    xtype: 'ngText',
+                    fieldLabel: '编号',
+                    name: 'Id',
+                    hidden: true
+                }, {
+                    id: 'ParentId',
+                    xtype: 'ngText',
+                    fieldLabel: '父亲节点编号',
+                    name: 'ParentId',
+                    hidden: true
+                }, {
+                    id: 'ParentVersionId',
+                    xtype: 'ngText',
+                    fieldLabel: '父亲节点版本编号',
+                    name: 'ParentVersionId',
+                    hidden: true
+                }, {
+                    id: 'Name',
+                    xtype: 'ngText',
+                    fieldLabel: '名称',
+                    mustInput: true, //必输列
+                    name: 'Name'
+                }, {
+                    id: 'CurrentDisplayName',
+                    xtype: 'ngText',
+                    fieldLabel: '显示名称',
+                    mustInput: true, //必输列
+                    name: 'CurrentDisplayName'
+                }, {
+                    id: 'DisplayName',
+                    xtype: 'ngText',
+                    fieldLabel: '显示名称',
+                    name: 'DisplayName',
+                    hidden: true
+                }, {
+                    id: 'Namespace',
+                    xtype: 'ngText',
+                    fieldLabel: '命名空间',
+                    mustInput: true, //必输列
+                    name: 'Namespace'
+                }, {
+                    id: 'Version',
+                    xtype: 'ngText',
+                    mustInput: true, //必输列
+                    fieldLabel: '版本',
+                    name: 'Version'
+                }, {
+                    xtype: 'combo',
+                    store: yesAndNo,
+                    fieldLabel: '模版',
+                    queryMode: 'local',
+                    id: 'IsTemplate',
+                    name: 'IsTemplate',
+                    valueField: 'value',
+                    displayField: 'text'
+                }, {
+                    xtype: 'combo',
+                    store: dataTypeStore,
+                    fieldLabel: '数据类型',
+                    queryMode: 'local',
+                    id: 'DataType',
+                    name: 'DataType',
+                    mustInput: true, //必输列
+                    valueField: 'value',
+                    displayField: 'text'
+                }, {
+                    id: 'DefaultValue',
+                    xtype: 'ngText',
+                    fieldLabel: '默认值',
+                    name: 'DefaultValue'
+                }, {
+                    id: 'MaxStringLength',
+                    xtype: 'ngNumber',//'numberfield',
+                    fieldLabel: '字符长度',
+                    name: 'MaxStringLength'
+                }, {
+                    id: 'MaxNumLength',
+                    xtype: 'ngNumber',//'numberfield',
+                    fieldLabel: '小数长度',
+                    name: 'MaxNumLength'
+                }, {
+                    id: 'MaxNumPrecision',
+                    xtype: 'ngNumber',//'numberfield',
+                    fieldLabel: '小数精度',
+                    name: 'MaxNumPrecision'
+                }, {
+                    xtype: 'combo',
+                    store: yesAndNo,
+                    fieldLabel: '非空',
+                    queryMode: 'local',
+                    id: 'IsAllowNull',
+                    name: 'IsAllowNull',
+                    valueField: 'value',
+                    displayField: 'text'
+                }, {
+                    xtype: 'combo',
+                    store: yesAndNo,
+                    fieldLabel: '唯一',
+                    queryMode: 'local',
+                    id: 'IsAllowRepeat',
+                    name: 'IsAllowRepeat',
+                    valueField: 'value',
+                    displayField: 'text'
+                }, {
+                    id: 'MapFieldName',
+                    xtype: 'ngText',
+                    fieldLabel: '映射字段',
+                    mustInput: true, //必输列
+                    name: 'MapFieldName'
+                }, {
+                    xtype: 'combo',
+                    store: yesAndNo,
+                    fieldLabel: '计算字段',
+                    queryMode: 'local',
+                    id: 'IsCompute',
+                    name: 'IsCompute',
+                    valueField: 'value',
+                    displayField: 'text'
+                }, {
+                    id: 'ComputeExpression',
+                    xtype: 'ngTextArea',
+                    fieldLabel: '计算表达式',
+                    name: 'ComputeExpression',
+                    colspan: 3
+                }, {
+                    xtype: 'ngTextArea',
+                    fieldLabel: '备注',
+                    name: 'Remark',
+                    colspan: 3
+                }]
+            });
+
+            var bizNodeInfoPanel = Ext.create('Ext.ng.TableLayoutForm', {
+                buskey: 'id',
+                otype: otype,
+                columnsPerRow: 3,
+                fields: [{
+                    xtype: 'combo',
+                    store: industryStyleStore,
+                    fieldLabel: '行业化分类',
+                    queryMode: 'local',
+                    id: 'IndustryStyle',
+                    name: 'IndustryStyle',
+                    valueField: 'value',
+                    displayField: 'text'
+                }, {
+                    xtype: 'combo',
+                    store: yesAndNo,
+                    fieldLabel: '权限控制',
+                    queryMode: 'local',
+                    id: 'IsHaveRights',
+                    name: 'IsHaveRights',
+                    valueField: 'value',
+                    displayField: 'text'
+                }, {
+                    xtype: 'combo',
+                    store: yesAndNo,
+                    fieldLabel: '敏感数据',
+                    queryMode: 'local',
+                    id: 'IsSensitive',
+                    name: 'IsSensitive',
+                    valueField: 'value',
+                    displayField: 'text'
+                }, {
+                    xtype: 'combo',
+                    store: yesAndNo,
+                    fieldLabel: '查询字段',
+                    queryMode: 'local',
+                    id: 'IsQuery',
+                    name: 'IsQuery',
+                    valueField: 'value',
+                    displayField: 'text'
+                }, {
+                    id: 'Description',
+                    xtype: 'ngTextArea',
+                    fieldLabel: '业务描述',
+                    name: 'Description',
+                    colspan: 3
+                }]
+            });
+            
+            var techNodeInfoPanel = Ext.create('Ext.ng.TableLayoutForm', {
+                buskey: 'id',
+                otype: otype,
+                columnsPerRow: 3,
+                fields: [{
+                    xtype: 'combo',
+                    store: yesAndNo,
+                    fieldLabel: '允许修改',
+                    queryMode: 'local',
+                    id: 'IsALlowEdit',
+                    name: 'IsALlowEdit',
+                    valueField: 'value',
+                    displayField: 'text'
+                }, {
+                    id: 'EditMask',
+                    xtype: 'ngText',
+                    fieldLabel: '显示格式',
+                    mustInput: true, //必输列
+                    name: 'EditMask'
+                }]
+            });
+            
+            var helpEntityTree = Ext.create('Ext.ng.TreePanel', {
+                treeFields: [{ name: 'text', type: 'string' }
+                ],
+                url: '@Url.Content("~/Knowledge/")' + 'GetEntityTree',
+                height: 200
+            });
+            
+            var helpEntityTreeCombo = Ext.create('Ext.ng.TreeComboBox', {
+                name: 'helpEntityTreeCombo',
+                valueField: 'id',
+                displayField: 'text',
+                treePanel: helpEntityTree,
+                //treeMinWidth: 200,
+                effectiveNodeType: 'leaf', // 'all',leaf仅叶子有效果
+                treeValueField: 'id',
+                anchor: '95%'
+            });
+            
+
+
+            var helpEntitySelectPanel = Ext.create('Ext.ng.TableLayoutForm', {
+                buskey: 'id',
+                otype: otype,
+                columnsPerRow: 3,
+                fields: [
+                    helpEntityTreeCombo
+                ]
+            });
+            
+            Ext.define('helpPropertyGridModel', {
+                //编辑状态下,状态列的下拉菜单的 model
+                extend: 'Ext.data.Model',
+                fields: [{
+                    name: 'Id',
+                    type: 'string'
+                }, {
+                    name: 'Name',
+                    type: 'string'
+                }, {
+                    name: 'CurrentDisplayName',
+                    type: 'string'
+                }]
+            });
+            
+            var sourcePropertyGridStore = Ext.create('Ext.data.Store', {
+                model: 'helpPropertyGridModel'
+            });
+
+
+            var targetPropertyGridStore = Ext.create('Ext.data.Store', {
+                model: 'helpPropertyGridModel'
+            });
+
+            var sourcePropertyGrid = Ext.create('Ext.ng.GridPanel', {
+                region: 'center',
+                layout: 'border',
+                title: '可用属性',
+                flex: 2,
+                store: sourcePropertyGridStore,
+                columnLines: true,
+                buskey: 'id', //对应的业务表主键
+                otype: 'add', //操作类型,add||edit
+                layout: {
+                    align: 'stretch'
+                },
+                columns: [Ext.create('Ext.grid.RowNumberer', { text: '行号', width: 35 }),
+                    {
+                        header: '编号',
+                        flex: 1,
+                        sortable: true,
+                        dataIndex: 'Id',
+                        editor: {
+                            allowBlank: false
+                        }
+                    }, {
+                        header: '名称',
+                        flex: 1,
+                        sortable: true,
+                        dataIndex: 'Name',
+                        editor: {
+                            allowBlank: false
+                        }
+                    }, {
+                        header: '显示名称',
+                        flex: 1,
+                        sortable: true,
+                        dataIndex: 'CurrentDisplayName',
+                        editor: {
+                            allowBlank: false
+                        }
+                    }],
+                viewConfig: {
+                    forceFit: true,
+                    scrollOffset: 0
+                }
+            });
+
+            var targetPropertyGrid = Ext.create('Ext.ng.GridPanel', {
+                region: 'center',
+                layout: 'border',
+                title: '启用属性',
+                flex: 2,
+                store: targetPropertyGridStore,
+                columnLines: true,
+                buskey: 'id', //对应的业务表主键
+                otype: 'add', //操作类型,add||edit
+                layout: {
+                    align: 'stretch'
+                },
+                columns: [Ext.create('Ext.grid.RowNumberer', { text: '行号', width: 35 }),
+                    {
+                        header: '编号',
+                        flex: 1,
+                        sortable: true,
+                        dataIndex: 'Id',
+                        editor: {
+                            allowBlank: false
+                        }
+                    }, {
+                        header: '名称',
+                        flex: 1,
+                        sortable: true,
+                        dataIndex: 'Name',
+                        editor: {
+                            allowBlank: false
+                        }
+                    }, {
+                        header: '显示名称',
+                        flex: 1,
+                        sortable: true,
+                        dataIndex: 'CurrentDisplayName',
+                        editor: {
+                            allowBlank: false
+                        }
+                    }],
+                viewConfig: {
+                    forceFit: true,
+                    scrollOffset: 0
+                }
+            });
+            
+            var leftBodyPropertyButton = Ext.create("Ext.Button", {
+                text: ">",
+                width: 50,
+                listeners: {
+                    "click": function () {
+
+                    }
+                },
+                id: "leftBodyPropertyButton",
+                scale: 'medium'
+            });
+            
+            var rightBodyPropertyButton = Ext.create("Ext.Button", {
+                text: "<",
+                width: 50,
+                listeners: {
+                    "click": function () {
+
+                    }
+                },
+                id: "rightBodyPropertyButton",
+                scale: 'medium'
+            });
+            
+            var helpButtonPanel = Ext.create('Ext.form.Panel', {
+                id: "helpButtonPanel",
+                layout: {
+                    type: 'vbox',
+                    padding: '5',
+                    pack: 'center',
+                    align: 'center'
+                },
+                flex: 0.3,
+                items:
+                [
+                    leftBodyPropertyButton, rightBodyPropertyButton
+                ]
+            });
+            
+            var helpEntityPropertySelectPanel = Ext.create('Ext.form.Panel', {
+                id: "helpEntityPropertySelectPanel",
+                region: 'center',
+                flex: 1,
+                //layout: 'border',
+                layout: {
+                    type: 'hbox',
+                    padding: '5',
+                    align: 'stretch'
+                },
+                items:
+                [
+                    sourcePropertyGrid, helpButtonPanel, targetPropertyGrid
+                ]
+            });
+
+
+            var helpNodeInfoPanel = Ext.create('Ext.form.Panel', {
+                id: "helpNodeInfoPanel",
+                region: 'center',
+                layout: {
+                    type: 'vbox',
+                    padding: '5',
+                    align: 'stretch'
+                },
+                items:
+                [
+                    helpEntitySelectPanel, helpEntityPropertySelectPanel
+                ]
+            });
+
+            var tabPanel = Ext.create('Ext.tab.Panel', {
+                //renderTo: 'tabpanel',
+                //xtype: 'tabpanel',
+                flex: 1,
+                region: 'center',
+                deferredRender: false,
+                plain: true,
+                activeTab: 0,
+                //height: 600,
+                defaults: { bodyStyle: 'padding:3px' },
+                items: [{
+                    layout: 'border', //使grid填充                
+                    title: '基本信息',
+                    items: [baseNodeInfoPanel]
+                }, {
+                    layout: 'border', //使grid填充             
+                    title: '业务信息',
+                    items: [bizNodeInfoPanel]
+                }, {
+                    layout: 'border', //使grid填充             
+                    title: '技术信息',
+                    items: [techNodeInfoPanel]
+                }, {
+                    layout: 'border', //使grid填充             
+                    title: '帮助信息',
+                    items: [helpNodeInfoPanel]
+                }]
+            });
+            
+            Ext.create('Ext.container.Viewport', {
+                id: "mainViewPort",
+                layout: 'border',
+                items:
+                [
+                    ngToolbar, tabPanel
+                ]
+            });
+
+            var namespace = Ext.getCmp('Namespace');
+            var version = Ext.getCmp('Version');
+            var name = Ext.getCmp('Name');
+            var currentDisplayName = Ext.getCmp('CurrentDisplayName');
+            var displayName = Ext.getCmp('DisplayName');
+            var id = Ext.getCmp('Id');
+            var parentId = Ext.getCmp('ParentId');
+            var description = Ext.getCmp('Description');
+            
+            var currentDisplayNameWin = Ext.create('Ext.ng.languageWin');
+            var descriptionWin = Ext.create('Ext.ng.languageWin');
+
+            name.on('change', function (newValue, oldValue, eOpts) {
+                namespace.setValue(transferData.Namespace + '.' + newValue.getValue());
+            });
+
+            if (otype == oType.Add) {
+                id.setValue(buskey);
+                parentId.setValue(transferData.ParentId);
+                namespace.setReadOnly(true);
+                namespace.setValue(transferData.Namespace + '.');
+                version.setReadOnly(true);
+                version.setValue('1.0.0.0');
+
+                name.setValue(transferData.Name);
+                currentDisplayName.setValue(transferData.CurrentDisplayName);
+            }
+            else if (otype == oType.Edit) {
+                var baseNodeInfoForm = baseNodeInfoPanel.getForm();
+                var bizNodeInfoForm = bizNodeInfoPanel.getForm();
+                baseNodeInfoForm.setValues(transferData);
+                bizNodeInfoForm.setValues(transferData);
+                currentDisplayName.setValue(transferData.CurrentDisplayName);
+                
+                if (displayData[0])
+                    currentDisplayNameWin.initLanguageGridInfo(displayData);
+                if (descriptionData[0])
+                    descriptionWin.initLanguageGridInfo(descriptionData);
+            }
+            
+            currentDisplayName.on('focus', function (the, eOpts) {
+                currentDisplayNameWin.showLanguageInfoWindow();
+            });
+
+            description.on('focus', function (the, eOpts) {
+                descriptionWin.showLanguageInfoWindow();
+            });
+
+            var frame = $GetWFrame();
+            if (frame) {
+                var listref = Ext.create('Ext.ng.LanguageRefresher');
+                frame.ListObserver.add('list', listref);
+                listref.on('RefreshLanguage', function () {
+                    currentDisplayName.setValue(currentDisplayNameWin.getCurrentLanguageValue());
+                    description.setValue(descriptionWin.getCurrentLanguageValue());
+                });
+            }
+
+
+
+            //保存
+            ngToolbar.get("save").on('click', function () {
+                
+                if (!baseNodeInfoPanel.isValid() || !bizNodeInfoPanel.isValid() || !techNodeInfoPanel.isValid()) {
+                    alert('格式不符合要求');
+                    return;
+                }
+                var mergeData = MergeFormData([baseNodeInfoPanel, bizNodeInfoPanel, techNodeInfoPanel], 'id', otype);
+                
+                var displayNameData = currentDisplayNameWin.getLanguageGridInfo();
+                var descriptionData = descriptionWin.getLanguageGridInfo();
+
+                var action = '';
+                switch (otype) {
+                    case oType.Add:
+                        action = "AddProperty";
+                        break;
+                    case oType.Edit:
+                        action = "UpdateProperty";
+                        break;
+                    default:
+                }
+
+                Ext.Ajax.request({
+                    params: { 'mergeData': mergeData, 'displayNameData': displayNameData, 'descriptionData': descriptionData },
+                    url: '@Url.Content("~/Knowledge/")' + action,
+                    success: function (response) {
+                        var resp = Ext.JSON.decode(response.responseText);
+                        if (resp.status === "ok") {
+                            if (resp.id && resp.id.length != 0 && resp.name && resp.name.length != 0) {
+                                top.setCurrentNodeValue(resp.id, resp.name);
+                            }
+                            Ext.MessageBox.alert('保存成功', resp.status);
+                            var frame = $GetWFrame();
+                            if (frame) {
+                                var listref = frame.ListObserver.get('propertiesList');
+                                listref.fireEvent('RefreshProperties', baseNodeInfoPanel.getValues());
+                            }
+
+                        } else {
+                            Ext.MessageBox.alert('保存失败', resp.status);
+                        }
+                    }
+                });
+
+
+            });
+
+        });
+
+    </script>
+}

@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<TreeList>
+  <Properties Title="" editAble="true" HeaderFontIndex="2" key="Id" />
+  <Fonts>
+    <Font faceName="微软雅黑" bold="1" />
+    <Font faceName="Consolas" />
+    <Font bold="true" />
+  </Fonts>
+  <Cols>
+    <Col name="Id" width="100" align="center" datatype="string" key="true" isHide="true" />
+    <Col name="Birth" width="100" align="center" datatype="datetime">出生年月</Col>
+    <Col name="Sex" width="100" align="center" datatype="int">性别</Col>
+    <Col name="Name" width="100" align="center" datatype="string">姓名</Col>
+  </Cols>
+</TreeList>

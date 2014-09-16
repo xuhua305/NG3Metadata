@@ -1,0 +1,202 @@
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=GB2312">
+    <link href="../extjs/resources/css/ext-all.css" rel="stylesheet" type="text/css" />
+    <script type='text/javascript' src='../extjs/ext-all.js'></script>
+    <script type='text/javascript' src='../Resource/js/ExtUx.js'></script>
+    <script type='text/javascript' src='../binary/dynaload.js?72'></script>
+    <script type='text/javascript' src='../Scripts/LggControl.js'></script>
+<script language="JavaScript">
+    var otype = getQueryStringByName("otype");
+    var idKey = getQueryStringByName("id");
+
+    function OnReady(id) {
+        AF.func("Build", "../xml/TestEdit/Layout.xml");
+        GenerateFunctionAndProperty(AF, '');
+        //GenerateProperty(AF, '');
+        if (onBeforeLoadUi()) {
+            onLoadUi();
+            onAfterLoadUi();
+        }
+
+        if (onBeforeLoadData()) {
+            onLoadData();
+            onAfterLoadData();
+        }
+    }
+
+    function onBeforeLoadUi() {
+        return true;
+    }
+
+    //加载数据
+    function onLoadUi() {
+        switch (otype) {
+            case uiStatus.Add:
+
+                break;
+            case uiStatus.Edit:
+
+                break;
+            case uiStatus.View:
+                alert('View');
+                //AF.func('SetObjProp', 'editable\r\nfalse');
+                AF.self.setEditAble(false);
+                break;
+            default:
+                break;
+        }
+
+    }
+
+    function onAfterLoadUi() {
+
+    }
+
+    function onBeforeLoadData() {
+        return true;
+    }
+
+    function onLoadData() {
+
+        switch (otype) {
+            case uiStatus.Add:
+
+                break;
+            case uiStatus.Edit:
+            case uiStatus.View:
+                //$.get("../Designer/GetMaster?id=" + idKey, function (data, status) {
+                //    AF.MyFreeForm.Load(data);
+                //    $.get("../Designer/GetDetails?id=" + idKey, function (data, status) {
+                //        AF.MyGrid.Load(data);
+
+                //    });
+                //});
+                AF.MyFreeForm.Load(data);
+                AF.MyGrid.Load(data);
+                break;
+            default:
+                break;
+        }
+    }
+
+    function onAfterLoadData() {
+
+    }
+
+    //关闭前事件
+    function onBeforeClose() {
+        return true;
+    }
+
+    //工具栏按钮事件
+    function onMyToolbarButtonClicked(p1, p2, p3, p4) {
+
+        switch (p1) {
+            case "btnSave":
+                onMyToolbarBtnSaveButtonClicked(p2, p3, p4);
+                break;
+            case "btnPrint":
+                onMyToolbarBtnPrintButtonClicked(p2, p3, p4);
+                break;
+            case "btnExit":
+                onMyToolbarBtnExitButtonClicked(p2, p3, p4);
+                break;
+            default:
+                break;
+        }
+    }
+
+    //子工具条事件
+    function onMyDetailToolbarButtonClicked(p1, p2, p3, p4) {
+
+        switch (p1) {
+            case "btnAddRow":
+                onMyDetailToolbarBtnAddRowButtonClicked(p2, p3, p4);
+                break;
+            case "btnDeleteRow":
+                onMyDetailToolbarBtnDeleteRowButtonClicked(p2, p3, p4);
+                break;
+            default:
+                break;
+        }
+    }
+
+    function onBeforeSave() {
+        if (AF.MyGrid.Validate('') == 0)
+            return false;
+
+        if (AF.MyFreeForm.Validate('') == 0)
+            return false;
+
+        return true;
+    }
+
+    //保存功能
+    function onMyToolbarBtnSaveButtonClicked(p2, p3, p4) {
+        if (!onBeforeSave())
+            return;
+
+        var masterRet = AF.MyFreeForm.GetChangedXML('level=1');
+        var detailRet = AF.MyGrid.GetChangedXML('level=1; CompKeySep=;isValidateKey=true');
+        alert(detailRet);
+        var master = AF.MyFreeForm.ToJson(masterRet);
+        var detail = AF.MyGrid.ToJson(detailRet);
+
+        $.post("../Home/UpdateMastersAndDetails",
+            {
+                masterData: master,
+                detailData: detail
+
+            },
+            function (data, status) {
+                AF.MyFreeForm.ResetChanged('');
+                AF.MyGrid.ResetChanged('');
+                window.opener.onLoadData();
+                window.close();
+            });
+    }
+
+
+    function onMyToolbarBtnPrintButtonClicked(p2, p3, p4) {
+
+    }
+
+    function onMyToolbarBtnExitButtonClicked(p2, p3, p4) {
+        if (onBeforeClose()) {
+            window.close();
+        }
+    }
+
+    function onMyDetailToolbarBtnAddRowButtonClicked(p2, p3, p4) {
+        var id = AF.MyFreeForm.GetValue('Id');
+        AF.MyGrid.InsertRows(-1, 1, true, 'raiseEvent=true;SelectRow=false;isOpenEdit=true');
+        var rowIndex = AF.MyGrid.GetCurrentRow();
+        AF.MyGrid.SetCellData(rowIndex, 'MasterId', id);
+    }
+
+    function onMyDetailToolbarBtnDeleteRowButtonClicked(p2, p3, p4) {
+        AF.MyGrid.DeleteCurrentRow(-1, 1, true, 'raiseEvent=true;SelectRow=false;isOpenEdit=true');
+    }
+
+    function OnEvent(id, Event, p1, p2, p3, p4) {
+
+        switch (Event) {
+            case "MyToolbar.ButtonClicked":
+                onMyToolbarButtonClicked(p1, p2, p3, p4);
+                break;
+            case "MyDetailToolbar.ButtonClicked":
+                onMyDetailToolbarButtonClicked(p1, p2, p3, p4);
+                break;
+            default:
+                break;
+        }
+    }
+
+</script>
+</head>
+
+<body topmargin=0 leftmargin=0 rightmargin=0 bottommargin=0 scroll=no style="overflow:hidden">
+<script>insertFreeForm('AF', 'eventlog=123.txt')</script>
+</body>
+</html>

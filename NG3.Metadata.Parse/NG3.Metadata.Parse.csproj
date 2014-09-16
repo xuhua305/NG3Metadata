@@ -1,0 +1,102 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{A8D36279-D3E7-492B-97F7-37505599D6C6}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>NG3.Metadata.Parse</RootNamespace>
+    <AssemblyName>NG3.Metadata.Parse</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.4.5.6\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="NG3">
+      <HintPath>..\Refdll\NG3.dll</HintPath>
+    </Reference>
+    <Reference Include="NG3.Data">
+      <HintPath>..\Refdll\NG3.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="NG3.Data.Builder">
+      <HintPath>..\Refdll\NG3.Data.Builder.dll</HintPath>
+    </Reference>
+    <Reference Include="NG3.Data.Service">
+      <HintPath>..\Refdll\NG3.Data.Service.dll</HintPath>
+    </Reference>
+    <Reference Include="SUP.Common.Base">
+      <HintPath>..\Refdll\SUP.Common.Base.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="EntityParse.cs" />
+    <Compile Include="EntityToService.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Res.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Res.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Service\AssemblyImplement.cs" />
+    <Compile Include="Service\EntityServiceImplement.cs" />
+    <Compile Include="Service\ExpressionImplement.cs" />
+    <Compile Include="Service\ServiceImplementException.cs" />
+    <Compile Include="Service\ServiceParseFacade.cs" />
+    <Compile Include="Service\IServiceImplement.cs" />
+    <Compile Include="Service\SqlImplement.cs" />
+    <Compile Include="Service\ParamsHelp.cs" />
+    <Compile Include="Service\StoreProcedureImplement.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Res.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Res.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Metadata.Rule\Metadata.Rule.csproj">
+      <Project>{266d3357-eddd-453f-ae82-ade3de06d4c4}</Project>
+      <Name>Metadata.Rule</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NG3.Metadata.Core\NG3.Metadata.Core.csproj">
+      <Project>{112a34cb-63c9-47bd-b3c6-ee54a179f826}</Project>
+      <Name>NG3.Metadata.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

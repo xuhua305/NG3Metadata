@@ -1,0 +1,50 @@
+{ Template : 
+  {
+      QueryItems : 
+      [{
+         xtype: 'textfield',
+         fieldLabel: '代 码',                            
+         name: 'provinceno'
+                           
+       },{
+          xtype: 'textfield',
+          fieldLabel: '名称',                           
+          name: 'prvcname',
+          anchor: '95%'
+      }
+      ],
+      Model :{
+       fields: [
+            {
+                name: 'provinceno',
+                type: 'string',
+                mapping: 'provinceno'
+            }, {
+                name: 'prvcname',
+                type: 'string',
+                mapping: 'prvcname'
+            }
+            ]
+      },
+     GridColumns:
+     [ {
+                 header: '代 码',
+                 flex: 1,
+                 sortable: true,
+                 dataIndex: 'provinceno',
+                 hidden: false
+             }, {
+                 header: '名 称',
+                 flex: 2,
+                 sortable: true,
+                 dataIndex: 'prvcname'               
+             },{
+                 header: '备注',
+                 flex: 2,
+                 sortable: true,
+                 dataIndex: 'remark'               
+             }
+     ]        
+  }
+
+}

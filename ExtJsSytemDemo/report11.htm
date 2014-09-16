@@ -1,0 +1,84 @@
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=GB2312">
+<link rel="stylesheet" href="res/temp1.css" type="text/css">
+<script type='text/javascript' src='binary/dynaload.js?80'></script>
+<script>
+ function trans()
+ {
+  var ifr = document.getElementById("IFrame1");
+// AF.func('Build', ifr.contentWindow.document.XMLDocument.xml);
+  AF.func('Build', ifr.src);
+ }
+ function showXML()
+ {
+  var xml = AF.func('GetFileXML', '');
+  alert(xml);
+ }
+ function xlsx() {
+  var url = document.getElementById("edit1").value;
+  AF1.func('Build', url);
+ }
+</script>
+</head>
+
+<body leftmargin=0 rightmargin=0>
+<center>
+
+<table cols=2 border=0 width=100%>
+<col valign=top width=90>
+<col>
+<tr>
+<td align=center><img src='res/how.bmp'></td>
+<td><b>1</b>.左侧XML符合Supcan Report XML规范，点击“创建报表”按钮将根据左侧的XML动态创建报表；<br>
+<b>2</b>.对报表作任意的修改，点击"查看XML"，查看导出的XML串.</td></tr>
+<tr height=28><td colspan=2 align=center><input type=button onclick="trans()" value="创建报表">&nbsp;&nbsp;&nbsp;<input type=button value="查看XML" onclick="showXML()"></td></tr>
+</table>
+
+<table cols=2 width=100% height=250 cellpadding=0 cellspacing=0 border=0>
+<tr>
+<td width=50%><IFRAME width=100% frameborder=1 ID=IFrame1 scrolling=auto height=100% FRAMEBORDER=0 SCROLLING=NO SRC="reportdata/dynareport.xml"></IFRAME></td>
+<td width=50% align=right>
+<div style="position:relative;width:99%;height:100%">
+	<script>insertReport('AF', 'Rebar=Main,,Form,Property,,Font; Form=110,111;collapseToolbar=true')</script>
+</div>
+</td>
+</tr>
+</table>
+<br>
+<br>
+<table cols=2 border=0 width=100%>
+<col valign=top width=90>
+<col>
+<tr>
+<td align=center><img src='res/how.bmp'></td>
+<td><b>3</b>.这是部署在服务器的Excel 2007的文件，可以直接读入:  <input id='edit1' value="report/excel2007.xlsx" size=30> <input type=button onclick="xlsx()" value="加载"></td></tr>
+</table>
+<div style="position:relative;width:98%;height:300px">
+	<script>insertReport('AF1', 'collapseToolbar=true')</script>
+</div>
+
+
+<!--  以下为技术分析区 -->
+<br><br><br>
+<table border=0 cols=1 border=0 width=97% style='line-height:21px'>
+<tr><td><img src='res/tech.jpg'></td></tr><tr><td>
+<b>1</b>.“创建报表”功能并无特别之处，前面所有例子中的Report其实都是在OnReady()事件中动态加载的；<br>
+<b>2</b>.“查看XML”按钮执行的js如下：<br>
+<pre class='cpp'>
+ function showXML()
+ {
+  var xml = AF.func('GetFileXML', '');
+  alert(xml);
+ }</pre>
+GetFileXML() 函数能返回当前报表的XML大串，这对报表的上传很有意义：<br>
+　　<b>用 AJAX 将这段XML通过Http Post给服务器，结合后端服务器的编程，就解决了报表的上传保存问题!</b><br><br>
+
+<b>3</b>.当您将演示用的“网站zip包”部署在本地的Web服务器，如果发现无法加载这个xlsx文件，原因很可能是服务器尚未配置xlsx的MIME类型.<br>
+</td></tr></table>
+
+<br>
+</center>
+</body>
+<script type='text/javascript' src='res/nstd.js'></script>
+</html>

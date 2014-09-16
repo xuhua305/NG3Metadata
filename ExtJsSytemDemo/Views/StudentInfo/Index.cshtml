@@ -1,0 +1,547 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+
+@section script
+{
+
+   <script type="text/javascript">
+
+
+       Ext.onReady(function () {
+
+           var firstLoad = true;
+
+           //;
+           var toolbar = Ext.create('Ext.Toolbar',
+                {
+                    region: 'north',
+                    border: false,
+                    //split: true,
+                    height: 26,
+                    minSize: 26,
+                    maxSize: 26,
+                    items: [
+                               {
+                                   id: "save",
+                                   text: "提交",
+                                   iconCls: 'cog_edit'
+                               },
+                               {
+                                   id: "add",
+                                   text: "新增",
+                                   iconCls: 'add'
+                               },
+                               {
+                                   id: "addrow",
+                                   text: "增行",
+                                   iconCls: 'add'
+                               },
+                                {
+                                    id: "edit",
+                                    text: "修改",
+                                    iconCls: 'plugin'
+                                },
+                               {
+                                   id: "delete",
+                                   text: "删除",
+                                   iconCls: 'delete'
+                               }, {
+                                   id: "test",
+                                   text: "测试",
+                                   iconCls: 'delete'
+                               }, "->",
+                               {
+                                   id: "close",
+                                   text: "退出",
+                                   iconCls: 'cross'
+                               }
+                              ]
+                });
+
+           var map = new Ext.util.KeyMap(this.document, {
+               //target: this.document, 
+               key: 'a',
+               alt: true,
+               shift: true,
+               ctrl: true,
+               fn: function (e) {
+                   alert("a+shift+ctrl");
+               },
+               scope: this
+           });
+
+           Ext.define('model', {
+               extend: 'Ext.data.Model',
+               fields: [{
+                   name: 'id',
+                   type: 'string',
+                   mapping: 'id'
+               }, {
+                   name: 'name',
+                   type: 'string',
+                   mapping: 'name'
+               }, {
+                   name: 'sex',
+                   type: 'string',
+                   mapping: 'sex'
+               }, {
+                   name: 'age',
+                   mapping: 'age',
+                   type: 'string'
+               },
+               {
+                   name: 'birthday',
+                   mapping: 'birthday',
+                   type: 'date'
+               },
+               {
+                   name: 'province',
+                   mapping: 'province',
+                   type: 'string'
+               },
+               //               {
+               //                   name: 'province_name',
+               //                   mapping: 'province_name',
+               //                   type: 'string'
+               //               },
+               {
+               name: 'type',
+               mapping: 'type',
+               type: 'string'
+           },
+               {
+                   name: 'email',
+                   mapping: 'email',
+                   type: 'string'
+               }]
+       });
+
+       var store = Ext.create('Ext.data.Store', {
+           model: 'model',
+           pageSize: 20,
+           proxy: {
+               type: 'ajax',
+               url: 'StudentInfo/GetList',
+               reader: {
+                   type: 'json',
+                   root: 'items',
+                   totalProperty: 'total'
+               }
+           }
+       });
+
+       store.load();
+
+       //alert(store.getAt(0)); 
+
+       var pagingbar = Ext.create('Ext.PagingToolbar', {
+           store: store,
+           displayInfo: true,
+           displayMsg: '第 {0} - {1}条 共 {2} 条数据',
+           emptyMsg: "没有任何数据",
+           beforePageText: "第",
+           afterPageText: "/{0} 页",
+           firstText: "首页",
+           prevText: "上一页",
+           nextText: "下一页",
+           lastText: "尾页",
+           refreshText: "刷新"
+       });
+
+       var cellEditing = Ext.create('Ext.grid.plugin.CellEditing', {
+           clicksToEdit: 2
+       });
+
+
+       Ext.define('cmodel', {                //编辑状态下,状态列的下拉菜单的 model
+           extend: 'Ext.data.Model',
+           fields: [{
+               name: 'sex',
+               type: 'string'
+           }, {
+               name: 'name',
+               type: 'string'
+           }]
+       });
+
+       var states = [{             //编辑状态下,状态列的下拉菜单的 data
+           "sex": "0",
+           "name": "男"
+       }, {
+           "sex": "1",
+           "name": "女"
+       }]
+
+       var cstore = Ext.create('Ext.data.Store', {        //编辑状态下,状态列的下拉菜单的 store
+           model: 'cmodel',
+           data: states
+       });
+
+       var sexcomb = Ext.create('Ext.form.ComboBox', {
+           //xtype: 'combobox',                              //指定编辑状态下为下拉菜单
+           store: cstore,                                         //绑定下拉菜单数据源
+           editable: false,                                   //是否可以输入  
+           selectOnFoucus: true,
+           typeAhead: true,
+           triggerAction: "all",
+           hiddenName: String,
+           valueField: "sex",
+           displayField: 'name',
+           queryMode: 'local',                            //local指定为本地数据  如果是后台传输  值为remote
+           allowBlank: false
+       })
+
+       var renderSex = function (val, cell, record, rowIndex, colIndex, store) {
+           //;
+
+           var index = this.find("sex", val);
+           var record = this.getAt(index);
+           var displayText = "";
+           if (record == null) {
+               return val;
+           } else {
+               return record.data.name; // 获取record中的数据集中的display字段的值 
+           }
+       }
+
+       var renderProvince = function (val, cell, record, rowIndex, colIndex, store) {
+
+           ;
+           //               alert('x');
+
+           var name = this.getName(val);
+           //               if (!firstLoad) return;
+
+           //               var value = grid.store.getAt(rowIndex).get('province'); //取代码列
+           //               if (value == "") return;
+           //               var name = this.getName(value);
+           return name;
+
+       }
+
+       var province = Ext.create('Ext.ng.ComboBox', {
+           hiddenName: 'mycity',
+           //fieldLabel: '省州',
+           //editable: false,
+           name: 'province',
+           valueField: 'provinceno',
+           displayField: 'prvcname',
+           helpid: 'province' //帮助标记        
+       });
+
+       var grid = Ext.create('Ext.grid.Panel', {
+           region: 'center',
+           frame: true,
+           store: store,
+           columnLines: true,
+           //selType: 'cellmodel',
+           //selModel: Ext.create('Ext.selection.CheckboxModel'),
+           layout: {
+               type: 'hbox',
+               align: 'stretch'
+           },
+           columns: [Ext.create('Ext.grid.RowNumberer', { text: '行号', width: 35 }),
+                {
+                    header: '编号',
+                    flex: 1,
+                    sortable: true,
+                    dataIndex: 'id',
+                    hidden: true
+                }, {
+                    header: '姓名',
+                    flex: 1,
+                    sortable: true,
+                    dataIndex: 'name',
+                    editor: {
+                        allowBlank: false
+                    }
+                }, {
+                    header: '性别',
+                    flex: 1,
+                    sortable: true,
+                    dataIndex: 'sex',
+                    editor: sexcomb,
+                    renderer: Ext.Function.bind(renderSex, cstore) //重新渲染名称
+                }, {
+                    header: '年龄',
+                    flex: 1,
+                    sortable: true,
+                    dataIndex: 'age',
+                    editor: {
+                        xtype: 'numberfield',
+                        allowBlank: false
+                    }
+                }, {
+                    xtype: 'datecolumn',
+                    header: '生日',
+                    flex: 1,
+                    sortable: true,
+                    dataIndex: 'birthday',
+                    format: 'Y-m-d',
+                    editor: {
+                        xtype: 'datefield',
+                        format: 'Y-m-d',
+                        allowBlank: false
+                    }
+                },
+           //                {
+           //                    header: '省',
+           //                    //flex: 1,
+           //                    sortable: true,
+           //                    //hidden: true,
+           //                    dataIndex: 'province_name'
+           //                }, 
+                {
+                header: '省',
+                //flex: 1,
+                sortable: true,
+                dataIndex: 'province',
+                editor: province,
+                renderer: Ext.Function.bind(renderProvince, province) //重新渲染名称
+            }, {
+                header: '类型',
+                flex: 1,
+                sortable: true,
+                dataIndex: 'type',
+                editor: {
+                    xtype: "triggerfield",
+                    allowBlank: false,
+                    hideTrigger: false,
+                    onTriggerClick: function () {
+
+                        this.value = "1";
+                        ;
+
+                        Ext.create('Ext.window.Window', {
+                            title: 'Hello',
+                            height: 200,
+                            width: 400,
+                            layout: 'fit',
+                            items: {  // Let's put an empty grid in just to illustrate fit layout
+                                xtype: 'grid',
+                                border: false,
+                                columns: [{ header: 'World'}],                 // One header just for show. There's no data,
+                                store: Ext.create('Ext.data.ArrayStore', {}) // A dummy empty data store
+                            }
+                        }).show();
+                    }
+                }
+            }, {
+                header: 'email',
+                flex: 1,
+                sortable: true,
+                dataIndex: 'email',
+                editor: {
+                    allowBlank: false
+                }
+            }],
+           viewConfig: {
+               forceFit: true,
+               scrollOffset: 0
+           },
+           //forceFit: true,
+           plugins: [cellEditing],
+           bbar: pagingbar
+
+       });
+
+       Ext.create('Ext.container.Viewport', {
+           id: "viewPort",
+           layout: 'border',
+           items:
+             [
+               toolbar, grid
+             ]
+       });
+
+       grid.on('afteredit', function () {
+           alert('嘿嘿');
+       })
+
+       grid.on('beforeedit', function (editor, e, eOpts) {
+
+           ;
+
+           firstLoad = false;
+
+           province.on('helpselected', SetSelectedValue, e); //订阅帮助选中事件              
+
+       })
+
+       function SetSelectedValue(obj, rowobj) {
+
+           ;
+           alert('hello');
+           //grid.store.getAt(e.rowIdx).set(e.field, code);
+           grid.store.getAt(this.rowIdx).set('province', obj.code);
+           //grid.store.getAt(this.rowIdx).set('province_name', obj.name);
+
+           province.un('helpselected', SetSelectedValue, this); //取消订阅
+       };
+
+       //           grid.on('validateedit', function (editor, e, eOpts) {
+       //               ;
+       //                
+       //           });
+
+       //新增
+       toolbar.items.get('add').on('click', function () {
+
+           //;
+           //var top = window.parent;             
+
+           top.OpenTab('/StudentInfo/StudentInfoDetail', 'StudentInfoDetail', '学生信息维护');
+
+       });
+
+       //增行
+       toolbar.items.get('addrow').on('click', function () {
+           var data = [{
+               'name': '',
+               'age': '',
+               'Email': ''
+           }];
+
+           store.insert(store.getCount(), data);
+           //store.loadData(data, true); //在store的最后添加一行数据
+       });
+
+       //删除
+       toolbar.items.get('delete').on('click', function () {
+
+           ;
+           var data = grid.getSelectionModel().getSelection();
+
+           if (data.length > 0) {
+
+               var ids = [];
+               Ext.Array.each(data, function (record) {
+                   var name = record.get('name');
+
+                   if (name) {
+                       ids.push(name);
+                   }
+
+                   store.remove(record); //前端删除
+
+               });
+
+           }
+       });
+
+       //保存
+       toolbar.items.get('save').on('click', function () {
+
+           var newRecords = store.getNewRecords(); //获得幻影行  
+           var modifyRecords = store.getUpdatedRecords(); // 获取修改的行的数据，无法获取幻影数据 
+           var removeRecords = store.getRemovedRecords(); //获取移除的行
+           //records = records.concat(phantoms); //将幻影数据与真实数据合并  
+
+           var k = encodeURI(Ext.encode("中国"));
+           //alert(k);
+
+           var newdata = [];
+           Ext.Array.each(newRecords, function (record) {
+               newdata.push(record.data);
+           });
+
+           var modifydata = [];
+           Ext.Array.each(modifyRecords, function (record) {
+
+               var modifyobj = new Object();
+               for (var p in record.modified) {
+                   modifyobj[p] = record.data[p];
+               }
+
+               modifydata.push(modifyobj);
+               //modifydata.push(record.data);
+               // record.commit();// 向store提交修改数据，页面效果  
+           });
+
+           var removedata = [];
+           Ext.Array.each(removeRecords, function (record) {
+               ;
+
+               var object = new Object();
+               object.id = record.get("id");
+               removedata.push(object);
+           });
+
+           var data = { 'newRows': newdata, 'modifyRows': modifydata, 'removeRows': removedata };
+
+           //;
+
+           //var mydata = Ext.encode(data);//中文乱码
+           //var mydata = Ext.JSON.encode(data);//中文乱码
+           //alert(mydata);
+
+           var json_str = JSON.stringify(data); //将JSON对象转化为JSON字符
+           //var json_str = Ext.encode(data); //将JSON对象转化为JSON字符
+           alert(json_str);
+
+           Ext.Ajax.request({
+               params: { "data": json_str },
+               url: '/StudentInfo/Save',
+               success: function (response) {
+                   var resp = Ext.JSON.decode(response.responseText);
+                   if (resp.status === "ok") {
+                       //succFn();
+                   } else {
+                       Ext.MessageBox.alert('保存失败', resp.status);
+                   }
+               }
+           });
+
+
+       });
+
+
+       toolbar.items.get('test').on('click', function () {
+           grid.store.getAt(0).set('province_name', "北京");
+       })
+
+       var contextmenu = Ext.create('Ext.menu.Menu', {
+           width: 200,
+           height: 100,
+           //margin: '0 0 10 0',
+           //floating: false,
+           items: [{ text: 'item 1' }, { text: 'item 2' }, { text: 'item 3'}]
+       });
+
+       var contextmenu2 = Ext.create('Ext.menu.Menu', {
+           width: 200,
+           height: 100,
+           //margin: '0 0 10 0',
+           //floating: false,
+           items: [{ text: 'god 1' }, { text: 'god 2'}]
+       });
+
+       grid.getEl().on('contextmenu', function (e, t, eOpts) {
+
+           //alert('e');
+           e.preventDefault();
+           contextmenu2.showAt(e.getXY());
+       })
+
+       grid.on('itemcontextmenu', function (view, record, item, index, e, eOpts) {
+          
+           //alert('dd');
+           
+           e.preventDefault();
+           contextmenu.showAt(e.getXY());
+           //return false;
+           e.stopEvent();
+       });
+
+       //       grid.on('containercontextmenu', function (view, e, eOpts) {
+       //           //alert('ss');
+       //           e.preventDefault();
+       //           contextmenu.showAt(e.getXY());
+       //       })
+
+   });
+
+   </script>
+       
+}

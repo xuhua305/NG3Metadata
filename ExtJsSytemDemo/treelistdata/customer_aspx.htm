@@ -1,0 +1,25 @@
+﻿&lt;%@ Page Language="C#" %&gt;<br>
+&lt;script language="C#" runat="server"&gt;<br>
+　String [] arrCustomer = {<br>
+　　"ALFKI	Alfreds Futterkiste	Maria Anders	Germany	Berlin	Obere Str. 57	030-0074321",<br>
+　　"ANATR	Ana Trujillo Emparedados y helados	Ana Trujillo	Mexico	Mexico D.F.	Avda. de la Constitucion 2222	(5) 555-4729",<br>
+　　"ANTON	Antonio Moreno Taquera	Antonio Moreno	Mexico	Mexico D.F.	Mataderos  2312	(5) 555-3932",<br>
+　　"AROUT	Around the Horn	Thomas Hardy	UK	London	120 Hanover Sq.	(171) 555-7788",<br>
+　　"BERGS	Berglunds snabbkp	Christina Berglund	Sweden	Lule	Berguvsvgen  8	0921-12 34 65",<br>
+　　...(略)<br>
+　};<br>
+<br>
+　public void Page_Load(Object sender, EventArgs e) {<br>
+　　Response.ContentType = "text/plain";<br>
+<br>
+　　String substr = Request.Params["substr"];<br>
+　　if(substr==null) return;<br>
+<br>
+　　for(int i=0; i&lt;arrCustomer.Length; i++) {<br>
+　　　String s = arrCustomer[i];<br>
+　　　if(s.IndexOf(substr, StringComparison.CurrentCultureIgnoreCase)==-1) continue;<br>
+　　　Response.Write(s + "\r\n");<br>
+　}<br>
+}<br>
+&lt;/script&gt;<br>
+<br>

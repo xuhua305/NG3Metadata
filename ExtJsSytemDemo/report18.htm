@@ -1,0 +1,53 @@
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=GB2312">
+<link rel="stylesheet" href="res/temp1.css" type="text/css">
+<script type='text/javascript' src='binary/dynaload.js?80'></script>
+<script language="JavaScript">
+function OnReady(id)
+{
+ AF.func("Build", "report/htmltable2.xml");
+}
+function Retrieve()
+{
+ AF.func('SetSource', 'ds1\r\n' + document.getElementById('source').value);
+ AF.func('Calc', '');
+}
+</script>
+</head>
+
+<body>
+<center>
+
+<table cols=2 border=0 width=100%>
+<col valign=top width=90>
+<col>
+<tr>
+<td align=center><img src='res/how.bmp'></td>
+<td>数据源URL：<input id='source' type=edit size=30 value="reportdata/findata.htm"> <input type=button value=" 取数 " onClick="Retrieve()">， 演示动态列：从数据源填入后，列将自动和实际数据列匹配.</td>
+</tr></table>
+
+<br>
+<div style="position:relative;width:94%;height:420px">
+	<script>insertReport('AF', '')</script>
+</div>
+
+
+<!--  以下为技术分析区 -->
+<br><br><br>
+<table border=0 cols=1 border=0 width=97% style='line-height:21px'>
+<tr><td><img src='res/tech.jpg'></td></tr><tr><td>
+<b>1</b>.打开数据源管理(<img src='res/ds.bmp'>)，如下选项决定了是否动态生成列：<br>
+<img src='res/illu7.jpg'><br><br>
+<b>2</b>.可查看该<a href="reportdata/findata.htm" target=_blank>HTML数据</a>：<br>
+<br>
+<b>3</b>.B4单元格使用了 dataRowNumber( ) 函数，能自动生成数据的行号：<br>
+备注: 该函数是通用的数据源函数，和动态列没有任何关系.<br>
+<br>
+</td></tr></table>
+
+<br>
+</center>
+</body>
+<script type='text/javascript' src='res/nstd.js'></script>
+</html>

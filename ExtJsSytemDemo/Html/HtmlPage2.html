@@ -1,0 +1,27 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+            <script type='text/javascript' src='../extjs/ext-all.js'></script>
+            <script type='text/javascript' src='../Resource/js/ExtUx.js'></script>
+            <script language="JavaScript">
+    
+                function ShowMyHelp() {
+                    var comhelp = Ext.create('Ext.ng.CommonHelp', {
+                        helpid: 'testEntity',
+                        valueField: "Id",
+                        displayField: 'Name'
+                    });
+                    comhelp.onTriggerClick();
+                    comhelp.on('helpselected', function(obj) {
+                        //CommonHelpClosed(obj);
+                    });
+                }
+
+            </script>
+        <title></title>
+    </head>
+<body>
+    <input id="Button1" type="button" value="button" onclick="ShowMyHelp()" />
+
+</body>
+</html>

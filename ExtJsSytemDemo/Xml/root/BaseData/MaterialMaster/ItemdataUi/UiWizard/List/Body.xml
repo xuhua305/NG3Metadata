@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<TreeList>
+  <Properties Title="物料主体信息" editAble="true" HeaderFontIndex="2" key="Itemno" />
+  <Fonts>
+    <Font faceName="微软雅黑" bold="1" />
+    <Font faceName="Consolas" />
+    <Font bold="true" />
+  </Fonts>
+  <Cols>
+    <Col name="Itemno" width="100" align="center" datatype="string" key="true" isHide="true" />
+    <Col name="Remark" width="100" align="center" datatype="string">备注</Col>
+    <Col name="IsChecked" width="100" align="center" datatype="bool">是否需要检验</Col>
+    <Col name="BeginDateTime" width="100" align="center" datatype="datetime">开始生效时间</Col>
+    <Col name="ItemName" width="100" align="center" datatype="string">物料名称</Col>
+    <Col name="Weight" width="100" align="center" datatype="double">重量</Col>
+  </Cols>
+</TreeList>

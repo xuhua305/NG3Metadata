@@ -1,0 +1,45 @@
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=GB2312">
+<link rel="stylesheet" href="res/temp1.css" type="text/css">
+<script type='text/javascript' src='binary/dynaload.js?80'></script>
+<script language="JavaScript">
+function OnReady(id)
+{
+ AF.func("SetSource", "reportdata/datacenter.xml");
+ AF.func("Build", "report/center3.xml");
+}
+</script>
+</head>
+
+<body>
+<center>
+
+<table cols=2 border=0 width=100%>
+<col valign=top width=90>
+<col>
+<tr height=50>
+<td align=center><img src='res/how.bmp'></td>
+<td><b>1</b>.采用了和上一个demo完全相同的平面数据，只是定义了交叉表, 请点击工具条中的“重新计算”(<img src='res/calc.bmp'>)，查看交叉表效果；<br>
+<b>2</b>.请进入工具条“数据源”(<img src='res/ds.bmp'>)下拉中的“交叉表”，感受类似Excel数据透视的强大的统计功能；</td>
+</tr></table>
+
+<div style="position:relative;width:100%;height:450px">
+	<script>insertReport('AF', 'collapseToolbar=true')</script>
+</div>
+<br>
+
+<!--  以下为技术分析区 -->
+<br><br><br>
+<table border=0 cols=1 border=0 width=97% style='line-height:21px'>
+<tr><td><img src='res/tech.jpg'></td></tr><tr><td>
+<b>1</b>.本报表有二个工作表，第二个工作表中的内容相当于是交叉运算前的数据，这2个工作表共享了同一个数据源：<br>
+<center><img src='res/center2.jpg'><br></center><br>
+<b>2</b>.只要使用了数据源(中心数据源、临时数据源均可)，都可以定义交叉表的功能；<br>
+</td></tr></table>
+
+<br>
+</center>
+</body>
+<script type='text/javascript' src='res/nstd.js'></script>
+</HTML>

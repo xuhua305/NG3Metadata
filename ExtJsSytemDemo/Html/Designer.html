@@ -1,0 +1,58 @@
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=GB2312">
+    <script type='text/javascript' src='../Scripts/LggControl.js'></script>
+    <script type="text/javascript" src="../Scripts/jquery-1.7.1.min.js"></script>
+<script type='text/javascript' src='../binary/dynaload.js?72'></script>
+    <script language="JavaScript">
+        var pageName = getQueryStringByName("pageName");
+        var namespace = getQueryStringByName("namespace");
+        var designerBillType = getQueryStringByName("designerBillType");
+
+        function OnReady(id) {
+            var path = namespace.replace(/\./g, "/");
+            if (designerBillType == 'List') {
+                AF.func("Build", "../xml/"+path+"/List/Layout.xml");
+            } else {
+                AF.func("Build", "../xml/" + path + "/Edit/Layout.xml");
+            }
+        
+            AF.func("OpenToolBox", "0");
+        }
+
+        function SaveAllFile() {
+            GenerateEvents(AF, '');
+            var eventStr = JSON.stringify(eventContainer);
+            alert(eventStr);
+            $.post("../Metadata/Knowledge/SaveDesignerFile",
+                {
+                    namesapce: namespace,
+                    billType: designerBillType,
+                    eventString: eventStr,
+                    pageName: pageName
+                },
+                function (data, status) {
+
+                });
+        }
+
+        function OnEvent(id, Event, p1, p2, p3, p4) {
+            switch (Event) {
+            case 'Saved':
+                SaveAllFile();
+                break;
+            case 'ButtonClicked':
+                var str = '';
+                break;
+            default:
+                break;
+            }
+        }
+
+    </script>
+</head>
+
+<body topmargin=0 leftmargin=0 rightmargin=0 bottommargin=0 scroll=no style="overflow:hidden">
+<script>insertFormDesigner('AF', 'isComponentURLWithButton=1')</script>
+</body>
+</html>

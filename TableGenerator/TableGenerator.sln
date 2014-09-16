@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TableGenerator", "TableGenerator\TableGenerator.csproj", "{85D7A840-DC76-4C68-9503-B5497108713A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TableExportTest", "TableExportTest\TableExportTest.csproj", "{330F8984-091F-4840-9E47-B8BD228C0FF6}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{85D7A840-DC76-4C68-9503-B5497108713A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{85D7A840-DC76-4C68-9503-B5497108713A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{85D7A840-DC76-4C68-9503-B5497108713A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{85D7A840-DC76-4C68-9503-B5497108713A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{330F8984-091F-4840-9E47-B8BD228C0FF6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{330F8984-091F-4840-9E47-B8BD228C0FF6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{330F8984-091F-4840-9E47-B8BD228C0FF6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{330F8984-091F-4840-9E47-B8BD228C0FF6}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
