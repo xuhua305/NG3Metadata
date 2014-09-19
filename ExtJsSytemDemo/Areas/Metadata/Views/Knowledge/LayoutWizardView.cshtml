@@ -8,19 +8,13 @@
 
     <script type="text/javascript" src="../../../../Scripts/ngcommon.js"></script>
     <script type='text/javascript' src='../../../../Scripts/LggControl.js'></script>
-    <script type="text/javascript" src="../../../../Scripts/Wizard/LayoutSetting.js"></script>
-    <script type="text/javascript" src="../../../../Scripts/Wizard/ToolbarZoneSetting.js"></script>
-    <script type="text/javascript" src="../../../../Scripts/Wizard/HeadAndBodySelect.js"></script>
-    <script type="text/javascript" src="../../../../Scripts/Wizard/TreeZoneSetting.js"></script>
-    <script type="text/javascript" src="../../../../Scripts/Wizard/QueryZoneSetting.js"></script>
-    <script type="text/javascript" src="../../../../Scripts/Wizard/HeadZoneSetting.js"></script>
-    <script type="text/javascript" src="../../../../Scripts/Wizard/BodyZoneSetting.js"></script>
     <script type="text/javascript">
         var isLoad = false;
-
         var transferData = Ext.JSON.decode(Ext.htmlDecode('@ViewBag.TransferData'));
         var namespace = getQueryStringByName("namespace");
-
+    </script>
+    <script src="@Url.Content("~/AppJS/Metadata/LayoutWizard/app.js")" type="text/javascript" charset="utf-8"></script>
+@*    <script type="text/javascript">
         Ext.onReady(function () {
 
             var cardView = Ext.create('Ext.panel.Panel', {
@@ -77,15 +71,13 @@
                     loadBodyZoneData();
                 }
                 else if (panel.title == '表体设置') {
-                    debugger 
                     collectBodyZoneData();
                     window.close();
                 }
                     
-                
-                
 
                 var layout = panel.getLayout();
+
                 layout[direction]();
                 Ext.getCmp('move-prev').setDisabled(!layout.getPrev());
                 if (!layout.getNext()) {
@@ -129,6 +121,6 @@
 
         });
 
-    </script>
+    </script>*@
 
 }

@@ -1,0 +1,44 @@
+﻿Ext.define("Entity.view.TechInfoForm", {
+    extend: 'Ext.ng.TableLayoutForm',
+    xtype: 'techInfoForm',
+    title: '技术信息',
+    split: true,
+    autoScroll: true,
+    buskey: 'id',
+    otype: otype,
+    columnsPerRow: 3,
+    fields: [{
+        xtype: 'combo',
+        store: yesAndNo,
+        fieldLabel: '归档',
+        queryMode: 'local',
+        id: 'IsArchive',
+        name: 'IsArchive',
+        valueField: 'value',
+        displayField: 'text'
+    }, {
+        xtype: 'combo',
+        store: yesAndNo,
+        fieldLabel: '缓存',
+        queryMode: 'local',
+        id: 'IsCache',
+        name: 'IsCache',
+        valueField: 'value',
+        displayField: 'text'
+    }, {
+        xtype: 'combo',
+        store: yesAndNo,
+        fieldLabel: '生成视图',
+        queryMode: 'local',
+        id: 'IsGenerateView',
+        name: 'IsGenerateView',
+        valueField: 'value',
+        displayField: 'text'
+    }, {
+        id: 'TableSpaceSize',
+        labelWidth: 130,
+        xtype: 'ngNumber',
+        fieldLabel: '表空间大小(兆为单位)',
+        name: 'TableSpaceSize'
+    }]
+});

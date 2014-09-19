@@ -7,7 +7,8 @@
 {
     <script type="text/javascript" src="../../../../Resource/js/MainFrame.js"></script>
     <script type="text/javascript" src="../../../../Scripts/ngcommon.js"></script>
-    <script type="text/javascript">
+    <script src="@Url.Content("~/AppJS/Metadata/MainTree/app.js")" type="text/javascript" charset="utf-8"></script>
+    @*<script type="text/javascript">
 
         var mainTree;
 
@@ -78,7 +79,7 @@
             }
         }
 
-        function openTabWithCurrentNode() {
+        function openTabWithCurrentNode(){
             var selectionModel = mainTree.getSelectionModel();
             var selectedNodes = selectionModel.selected.items;
             if (selectedNodes.length > 0) {
@@ -208,10 +209,10 @@
 
         Ext.onReady(function () {
 
-            Ext.QuickTips.init();
+            //Ext.QuickTips.init();
             var ngToolbar = Ext.create('Ext.ng.Toolbar', {
                 region: 'north',
-                rightName: "EmpinfoList", //权限名称
+                //rightName: "EmpinfoList", //权限名称
                 ngbuttons: [
                     { groupitem: true, tooltip: '新增', items: ['clear', 'copy'], iconCls: 'add' },
                     { id: "editModel", text: "", tooltip: "修改", iconCls: "add" }, { id: "deleteModel", text: "", tooltip: "删除", iconCls: "add" },
@@ -395,14 +396,14 @@
                         xtype: 'panel',
                         id: "tab1",
                         title: '首页',
-                        html: "这只是一个非常普通的Tab。",
-                        closable: false,
-                        autoLoad: {
-                            url: 'home/xxx',
-                            scope: this,
-                            scripts: true,
-                            text: '页面加载中,请稍候....'
-                        }
+                        html: "这只是一个非常普通的Tab。"
+                        //closable: false,
+                        //autoLoad: {
+                        //    url: 'home/xxx',
+                        //    scope: this,
+                        //    scripts: true,
+                        //    text: '页面加载中,请稍候....'
+                        //}
                     }]
                 });
 
@@ -422,6 +423,6 @@
 
         });
 
-    </script>
+    </script>*@
 }
 

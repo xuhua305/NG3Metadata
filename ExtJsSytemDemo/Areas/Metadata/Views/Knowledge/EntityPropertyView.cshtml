@@ -9,15 +9,14 @@
     <script type="text/javascript" src="../../../../Scripts/ngcommon.js"></script>
     <script type="text/javascript" src="../../../../Scripts/languagewindow.js"></script>
     <script type="text/javascript">
-
         var otype = '@ViewBag.OType';
         var buskey = '@ViewBag.Id';
         var transferData = Ext.JSON.decode(Ext.htmlDecode('@ViewBag.TransferData'));
-        
         var displayData = Ext.JSON.decode(Ext.htmlDecode('@ViewBag.DisplayLanguageData'));
         var descriptionData = Ext.JSON.decode(Ext.htmlDecode('@ViewBag.DescriptionLanguageData'));
-
-
+    </script>
+    <script src="@Url.Content("~/AppJS/Metadata/EntityProperty/app.js")" type="text/javascript" charset="utf-8"></script>
+    @*<script type="text/javascript">
         Ext.onReady(function () {
             Ext.QuickTips.init();
 
@@ -603,5 +602,5 @@
 
         });
 
-    </script>
+    </script>*@
 }

@@ -1,0 +1,61 @@
+﻿Ext.define("Service.view.BaseInfoForm", {
+    extend: 'Ext.ng.TableLayoutForm',
+    xtype: 'baseInfoForm',
+    buskey: 'id',
+    title: '基本信息',
+    split: true,
+    autoScroll: true,
+    otype: otype,
+    columnsPerRow: 3,
+    fields: [
+        {
+            id: 'Name',
+            xtype: 'ngText',
+            fieldLabel: '名称',
+            name: 'Name',
+            mustInput: true
+        }, {
+            id: 'CurrentDisplayName',
+            xtype: 'ngText',
+            fieldLabel: '显示名称',
+            name: 'CurrentDisplayName',
+            mustInput: true
+        }, {
+            id: 'Namespace',
+            xtype: 'ngText',
+            fieldLabel: '命名空间',
+            name: 'Namespace'
+        }, {
+            id: 'Version',
+            xtype: 'ngText',
+            fieldLabel: '版本',
+            name: 'Version'
+        }, {
+            id: 'Remark',
+            xtype: 'ngTextArea',
+            fieldLabel: '备注',
+            name: 'Remark',
+            colspan: 3
+        }, {
+            id: 'Id',
+            xtype: 'hiddenfield',
+            fieldLabel: '编号',
+            name: 'Id'
+        }, {
+            id: 'ParentId',
+            xtype: 'hiddenfield',
+            fieldLabel: '父亲节点编号',
+            name: 'ParentId'
+        }, {
+            id: 'ParentVersionId',
+            xtype: 'hiddenfield',
+            fieldLabel: '父亲节点版本编号',
+            name: 'ParentVersionId'
+        }, {
+            id: 'DisplayName',
+            xtype: 'hiddenfield',
+            fieldLabel: '显示名称',
+            name: 'DisplayName'
+        }
+    ]
+});

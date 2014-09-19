@@ -1,0 +1,29 @@
+﻿Ext.define("Entity.view.EntityHelpForm", {
+    extend: 'Ext.ng.TableLayoutForm',
+    xtype: 'entityHelpForm',
+    buskey: 'id',
+    title: '帮助',
+    split: true,
+    autoScroll: true,
+    otype: 'add',
+    columnsPerRow: 3,
+    region: 'center',
+    fields: [{
+        xtype: 'combo',
+        store: yesAndNo,
+        fieldLabel: '过滤重复行',
+        labelWidth: 80,
+        queryMode: 'local',
+        id: 'IsDistinct',
+        name: 'IsDistinct',
+        valueField: 'value',
+        displayField: 'text'
+    }, {
+        id: 'SqlFilter',
+        xtype: 'ngTextArea',
+        fieldLabel: 'SQL过滤',
+        labelWidth: 80,
+        name: 'SqlFilter',
+        colspan: 3
+    }]
+});
