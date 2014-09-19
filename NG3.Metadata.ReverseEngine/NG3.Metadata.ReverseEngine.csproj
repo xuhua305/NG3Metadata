@@ -35,6 +35,15 @@
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="Microsoft.Build" />
+    <Reference Include="NG3">
+      <HintPath>..\Refdll\NG3.dll</HintPath>
+    </Reference>
+    <Reference Include="NG3.Data">
+      <HintPath>..\Refdll\NG3.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="NG3.Data.Service">
+      <HintPath>..\Refdll\NG3.Data.Service.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Activities.Core.Presentation" />
     <Reference Include="System.Core" />
@@ -48,6 +57,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataBase\DbExportHelp.cs" />
+    <Compile Include="DataBase\Dialect.cs" />
+    <Compile Include="DataBase\Logger.cs" />
+    <Compile Include="DataBase\OracleDialect.cs" />
+    <Compile Include="DataBase\SqlServerDialect.cs" />
+    <Compile Include="DataBase\TableExporter.cs" />
     <Compile Include="DeployHelp.cs" />
     <Compile Include="Html\CustomHtml.cs" />
     <Compile Include="Html\HtmlElementDic.cs" />

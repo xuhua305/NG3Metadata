@@ -73,27 +73,27 @@ namespace NG3.Metadata.ReverseEngine.Supcan
             //    _bodyHeight = realNum.ToString() + "%";
         }
 
-        private string ConvertDataTypeToString(DataType dataType)
+        private string ConvertDataTypeToString(Core.DataType dataType)
         {
             try
             {
                 string retString = string.Empty;
                 switch (dataType)
                 {
-                    case DataType.Bool:
+                    case Core.DataType.Bool:
                         retString = "bool";
                         break;
-                    case DataType.Char:
-                    case DataType.String:
+                    case Core.DataType.Char:
+                    case Core.DataType.String:
                         retString = "string";
                         break;
-                    case DataType.Int:
+                    case Core.DataType.Int:
                         retString = "int";
                         break;
-                    case DataType.Decimal:
+                    case Core.DataType.Decimal:
                         retString = "double";
                         break;
-                    case DataType.DateTime:
+                    case Core.DataType.DateTime:
                         retString = "datetime";
                         break;
                     default:
@@ -118,9 +118,9 @@ namespace NG3.Metadata.ReverseEngine.Supcan
                 {
                     switch (metadataForProperty.DataType)
                     {
-                        case DataType.Decimal:
-                        case DataType.Int:
-                        case DataType.Long:
+                        case Core.DataType.Decimal:
+                        case Core.DataType.Int:
+                        case Core.DataType.Long:
                             newProperty = metadataForProperty.Clone() as MetadataForProperty;
                             metadataForProperty.Name += "*num*ngLow";
                             metadataForProperty.CurrentDisplayName = metadataForProperty.CurrentDisplayName+"上限";
@@ -129,7 +129,7 @@ namespace NG3.Metadata.ReverseEngine.Supcan
                             properties.Add(metadataForProperty);
                             properties.Add(newProperty);
                             break;
-                        case DataType.DateTime:
+                        case Core.DataType.DateTime:
                             newProperty = metadataForProperty.Clone() as MetadataForProperty;
                             metadataForProperty.Name += "*date*ngLow";
                             newProperty.Name += "*date*ngUP";
@@ -1054,7 +1054,7 @@ namespace NG3.Metadata.ReverseEngine.Supcan
                         //xmlWriter.WriteAttributeString("name", metadataForEntity.PrimaryKeyColumnName);
                         xmlWriter.WriteAttributeString("width", "100");
                         xmlWriter.WriteAttributeString("align", "center");
-                        xmlWriter.WriteAttributeString("datatype", ConvertDataTypeToString(DataType.String));
+                        xmlWriter.WriteAttributeString("datatype", ConvertDataTypeToString(Core.DataType.String));
                         xmlWriter.WriteAttributeString("key", "true");
                         xmlWriter.WriteAttributeString("isHide", "true");
                         xmlWriter.WriteEndElement();
