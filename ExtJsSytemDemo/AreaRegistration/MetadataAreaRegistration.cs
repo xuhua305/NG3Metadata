@@ -6,7 +6,7 @@ using System.Web.Mvc;
 
 namespace Metadata
 {
-    public class HRAreaRegistration : AreaRegistration
+    public class MetadataAreaRegistration : AreaRegistration
     {
 
         public override string AreaName
