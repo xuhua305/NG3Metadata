@@ -7,7 +7,7 @@
 //     the code is regenerated.
 // </auto-generated>
 // ------------------------------------------------------------------------------
-namespace NG3.T4
+namespace NG3.T4.Entity
 {
     using System;
     using System.Linq;
@@ -20,7 +20,7 @@ namespace NG3.T4
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "D:\MyWorkspace\Workspace\架构相关\巴别塔计划\支撑框架\前端\JS\Extjs\Backup\ExtJsSytemDemo\NG3.T4\DataAccessTemplate.tt"
+    #line 1 "D:\元数据讨论\src\ExtJsSytemDemo\NG3.T4\Entity\DataAccessTemplate.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "12.0.0.0")]
     public partial class DataAccessTemplate : DataAccessTemplateBase
     {
@@ -35,14 +35,14 @@ namespace NG3.T4
                     "m.Text;\r\nusing System.Data;\r\n\r\nusing NG3.Data;\r\nusing NG3.Data.Service;\r\nusing S" +
                     "UP.Common.Base;\r\nusing SUP.Common.DataAccess;\r\n\r\nnamespace ");
             
-            #line 25 "D:\MyWorkspace\Workspace\架构相关\巴别塔计划\支撑框架\前端\JS\Extjs\Backup\ExtJsSytemDemo\NG3.T4\DataAccessTemplate.tt"
+            #line 25 "D:\元数据讨论\src\ExtJsSytemDemo\NG3.T4\Entity\DataAccessTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_metadataForEntity.Namespace));
             
             #line default
             #line hidden
             this.Write("\r\n{\r\n\tpublic class ");
             
-            #line 27 "D:\MyWorkspace\Workspace\架构相关\巴别塔计划\支撑框架\前端\JS\Extjs\Backup\ExtJsSytemDemo\NG3.T4\DataAccessTemplate.tt"
+            #line 27 "D:\元数据讨论\src\ExtJsSytemDemo\NG3.T4\Entity\DataAccessTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_metadataForEntity.Name));
             
             #line default
@@ -51,14 +51,14 @@ namespace NG3.T4
                     "nt PageIndex, ref int totalRecord)\r\n        {\r\n            try\r\n            {\r\n\t" +
                     "\t\t\tstring sql = \"");
             
-            #line 33 "D:\MyWorkspace\Workspace\架构相关\巴别塔计划\支撑框架\前端\JS\Extjs\Backup\ExtJsSytemDemo\NG3.T4\DataAccessTemplate.tt"
+            #line 33 "D:\元数据讨论\src\ExtJsSytemDemo\NG3.T4\Entity\DataAccessTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_metadataForEntity.Sql));
             
             #line default
             #line hidden
             this.Write("\";\r\n                string sortField =  \" ");
             
-            #line 34 "D:\MyWorkspace\Workspace\架构相关\巴别塔计划\支撑框架\前端\JS\Extjs\Backup\ExtJsSytemDemo\NG3.T4\DataAccessTemplate.tt"
+            #line 34 "D:\元数据讨论\src\ExtJsSytemDemo\NG3.T4\Entity\DataAccessTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_metadataForEntity.KeyMapColumn));
             
             #line default
@@ -82,8 +82,17 @@ namespace NG3.T4
                     "Parameter(\"id\", id);\r\n\t\t\t\treturn DbHelper.GetDataTable(sql, p);\r\n            }\r\n" +
                     "            catch(Exception e)\r\n            {\r\n                throw;\r\n         " +
                     "   }\r\n        }\r\n\r\n        public void UpdateMaster(DataTable masterData)\r\n     " +
-                    "   {\r\n\r\n        }\r\n\r\n        public void DeleteMaster(string id)\r\n        {\r\n\t\t\t" +
-                    "\r\n        }\r\n    }\r\n}");
+                    "   {\r\n\r\n        }\r\n\r\n        public void DeleteMaster(int id)\r\n        {\r\n\t\t\ttry" +
+                    "\r\n            {\r\n\t\t\t\tstring sql = \"delete from ");
+            
+            #line 87 "D:\元数据讨论\src\ExtJsSytemDemo\NG3.T4\Entity\DataAccessTemplate.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(_metadataForEntity.UpdateTable));
+            
+            #line default
+            #line hidden
+            this.Write(" where id=\'\" + id + \"\'\";\r\n\t\t\t\tint iret = DbHelper.ExecuteNonQuery(sql);\r\n        " +
+                    "    }\r\n            catch(Exception e)\r\n            {\r\n                throw;\r\n  " +
+                    "          }\r\n\t\t\t\r\n        }\r\n    }\r\n}");
             return this.GenerationEnvironment.ToString();
         }
     }

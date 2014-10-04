@@ -40,28 +40,28 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ComponentGenerateHelp.cs" />
-    <Compile Include="DataAccessTemplate.cs">
+    <Compile Include="Entity\DataAccessTemplate.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>DataAccessTemplate.tt</DependentUpon>
     </Compile>
-    <Compile Include="DataAccessTemplateExtension.cs" />
+    <Compile Include="Entity\DataAccessTemplateExtension.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="BusinessFacadeTemplate.tt">
+    <None Include="Entity\BusinessFacadeTemplate.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>BusinessFacadeTemplate.txt</LastGenOutput>
     </None>
-    <None Include="BusinessRuleTemplate.tt">
+    <None Include="Entity\BusinessRuleTemplate.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>BusinessRuleTemplate.txt</LastGenOutput>
     </None>
-    <None Include="DataAccessTemplate.tt">
+    <None Include="Entity\DataAccessTemplate.tt">
       <Generator>TextTemplatingFilePreprocessor</Generator>
       <LastGenOutput>DataAccessTemplate.cs</LastGenOutput>
     </None>
-    <None Include="MVCControllerTemplate.tt">
+    <None Include="Entity\MVCControllerTemplate.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>MVCControllerTemplate.txt</LastGenOutput>
     </None>
@@ -70,17 +70,17 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="BusinessFacadeTemplate.txt">
+    <Content Include="Entity\BusinessFacadeTemplate.txt">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>BusinessFacadeTemplate.tt</DependentUpon>
     </Content>
-    <Content Include="BusinessRuleTemplate.txt">
+    <Content Include="Entity\BusinessRuleTemplate.txt">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>BusinessRuleTemplate.tt</DependentUpon>
     </Content>
-    <Content Include="MVCControllerTemplate.txt">
+    <Content Include="Entity\MVCControllerTemplate.txt">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>MVCControllerTemplate.tt</DependentUpon>
@@ -91,6 +91,9 @@
       <Project>{112a34cb-63c9-47bd-b3c6-ee54a179f826}</Project>
       <Name>NG3.Metadata.Core</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Service\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

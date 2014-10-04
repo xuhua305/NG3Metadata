@@ -80,8 +80,17 @@ namespace <#= _metadataForEntity.Namespace #>
 
         }
 
-        public void DeleteMaster(string id)
+        public void DeleteMaster(int id)
         {
+			try
+            {
+				string sql = "delete from <#=_metadataForEntity.UpdateTable#> where id='" + id + "'";
+				int iret = DbHelper.ExecuteNonQuery(sql);
+            }
+            catch(Exception e)
+            {
+                throw;
+            }
 			
         }
     }
