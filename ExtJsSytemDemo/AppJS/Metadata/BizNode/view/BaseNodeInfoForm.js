@@ -41,7 +41,7 @@
         id: 'Version',
         xtype: 'ngText',
         fieldLabel: '版本',
-        mustInput: true, //必输列
+        mustInput: true,
         name: 'Version'
     }, {
         id: 'Remark',
@@ -62,5 +62,6 @@
     }],
     initComponent: function () {
         this.callParent();
+
     }
 });

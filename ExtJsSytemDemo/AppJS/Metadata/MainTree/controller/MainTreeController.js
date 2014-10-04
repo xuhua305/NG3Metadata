@@ -48,7 +48,6 @@
     onLaunch: function () {
         var frame = $GetWFrame();
         frame.Center = this.getMainTreePanel();
-        Ext.bind()
         window.setCurrentNodeValue = Ext.bind(this.setCurrentNodeValue, this);
         window.createNewNodeAndTab = Ext.bind(this.createNewNodeAndTab, this);
     },
