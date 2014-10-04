@@ -90,7 +90,6 @@
     <Compile Include="KnowledgeController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RuntimeController.cs" />
-    <Compile Include="TestController.cs" />
     <Compile Include="TreeBuilderHelp.cs" />
     <Compile Include="WizardController.cs" />
   </ItemGroup>
@@ -98,9 +97,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Metadata.Rule\Metadata.Rule.csproj">
-      <Project>{266d3357-eddd-453f-ae82-ade3de06d4c4}</Project>
-      <Name>Metadata.Rule</Name>
+    <ProjectReference Include="..\Metadata.Facade\Metadata.Facade.csproj">
+      <Project>{e834227c-7e75-48c8-93be-9fd7f6e63411}</Project>
+      <Name>Metadata.Facade</Name>
     </ProjectReference>
     <ProjectReference Include="..\NG3.Metadata.Core\NG3.Metadata.Core.csproj">
       <Project>{112a34cb-63c9-47bd-b3c6-ee54a179f826}</Project>

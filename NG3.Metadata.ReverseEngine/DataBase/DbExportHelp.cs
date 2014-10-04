@@ -15,6 +15,7 @@ namespace NG3.Metadata.ReverseEngine.DataBase
             try
             {
                 DataTable dt = new DataTable(metadataForEntity.UpdateTable);
+                return dt;
 
             }
             catch (Exception ex)

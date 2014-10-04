@@ -43,7 +43,7 @@ namespace NG3.Metadata.Core.Entity
                     {
                         DictionaryContent contentItem = new DictionaryContent();
                         reader.MoveToAttribute("Id");
-                        contentItem.Id = reader.ReadContentAsString();
+                        contentItem.Id = Convert.ToInt32(reader.ReadContentAsString());
                         reader.MoveToAttribute("ContentItem");
                         contentItem.ContentItem = reader.ReadContentAsString();
                         reader.MoveToAttribute("Description");
@@ -65,7 +65,7 @@ namespace NG3.Metadata.Core.Entity
             foreach (var dictionaryContent in DictionaryContents)
             {
                 writer.WriteStartElement("DictionaryContent");
-                writer.WriteAttributeString("Id", dictionaryContent.Id);
+                writer.WriteAttributeString("Id", dictionaryContent.Id.ToString());
                 writer.WriteAttributeString("ContentItem", dictionaryContent.ContentItem);
                 writer.WriteAttributeString("Description", dictionaryContent.Description);
                 writer.WriteEndElement();

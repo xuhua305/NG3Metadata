@@ -22,6 +22,7 @@ namespace TableExportTest
             //连接串
             string constr = "Data Source=.;Initial Catalog=NHTEST;Integrated Security=True;Pooling=False";
             TableExporter exporter = new TableExporter(constr);
+            
             DataTable dt = new DataTable();
             dt.TableName = "testtb";
             DataColumn dcid = new DataColumn("id", typeof(string));
@@ -29,6 +30,7 @@ namespace TableExportTest
             DataColumn dcname = new DataColumn("name", typeof(string));
             dcname.MaxLength = 16;
             DataColumn dcimage = new DataColumn("obj", typeof(System.Byte[]));
+            
             dcname.MaxLength = 16;
             DataColumn dcname2 = new DataColumn("name2", typeof(Decimal));
             dt.Columns.Add(dcid);

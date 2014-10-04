@@ -10,12 +10,7 @@ namespace NG3.Metadata.Core.Entity
     /// </summary>
     public class DictionaryContent
     {
-        private string _id = Guid.NewGuid().ToString();
-        public string Id
-        {
-            get { return _id; }
-            set { _id = value; }
-        }
+        public int Id { get; set; }
 
         public string ContentItem { get; set; }
 

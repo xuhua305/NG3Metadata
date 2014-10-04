@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Newtonsoft.Json;
 
 namespace NG3.Metadata.Core
 {
@@ -23,7 +24,22 @@ namespace NG3.Metadata.Core
         /// <summary>
         /// 行业模型编号
         /// </summary>
-        public IndustryStyle IndustryStyle { get; set; }
+        public string IndustryStyleString { get; set; }
+
+        [JsonIgnore]
+        public IList<IndustryStyle> IndustryStyles
+        {
+            get
+            {
+                IList<IndustryStyle> industryStyles = new List<IndustryStyle>();
+                if (!string.IsNullOrEmpty(IndustryStyleString))
+                {
+                    string[] strArray = IndustryStyleString.Split(new string[]{","},StringSplitOptions.RemoveEmptyEntries);
+                    industryStyles.Add((IndustryStyle)Convert.ToInt32(strArray));
+                }
+                return industryStyles;
+            }
+        }
 
         public override void ReadBaseXml(System.Xml.XmlReader reader)
         {
@@ -36,9 +52,9 @@ namespace NG3.Metadata.Core
             {
                 IsHaveRights = Convert.ToBoolean(reader.ReadString().Trim());
             }
-            else if (reader.IsStartElement("IndustryStyle"))
+            else if (reader.IsStartElement("IndustryStyleString"))
             {
-                IndustryStyle = (IndustryStyle)(Convert.ToInt32(reader.ReadString().Trim()));
+                IndustryStyleString = reader.ReadString().Trim();
             }
         }
 
@@ -47,7 +63,7 @@ namespace NG3.Metadata.Core
             base.WriteBaseXml(writer);
             writer.WriteElementString("IsSensitive", IsSensitive.ToString());
             writer.WriteElementString("IsHaveRights", IsHaveRights.ToString());
-            writer.WriteElementString("IndustryStyle", ((int)IndustryStyle).ToString());
+            writer.WriteElementString("IndustryStyleString", IndustryStyleString);
         }
     }
 }

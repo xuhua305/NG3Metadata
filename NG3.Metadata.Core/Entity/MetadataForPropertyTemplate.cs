@@ -262,7 +262,7 @@ namespace NG3.Metadata.Core.Entity
             metadataForProperty.DisplayName = DisplayName;
             metadataForProperty.EditMask = EditMask;
             metadataForProperty.Id = Id;
-            metadataForProperty.IndustryStyle = IndustryStyle;
+            metadataForProperty.IndustryStyleString = IndustryStyleString;
             metadataForProperty.IsALlowEdit = IsALlowEdit;
             metadataForProperty.IsAllowNull = IsAllowNull;
             metadataForProperty.IsAllowRepeat = IsAllowRepeat;

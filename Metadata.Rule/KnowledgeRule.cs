@@ -24,34 +24,6 @@ namespace Metadata.Rule
     public sealed class KnowledgeRule
     {
 
-        #region 单键构造
-
-        private static object syncLock = new object();
-        private static KnowledgeRule _instance;
-        static public KnowledgeRule Instance
-        {
-            get
-            {
-                if (_instance == null)
-                {
-                    lock (syncLock)
-                    {
-                        
-                        _instance = new KnowledgeRule();
-                    }
-                }
-                ConnectionInfoService.SetSessionConnectString(@"ConnectType=SqlClient;Server=XUHUA305\SQLEXPRESS;Database=MetadataDB;User ID=sa;Password=newgrand123456");
-                return _instance;
-            }
-        }
-
-        private KnowledgeRule()
-        {
-            //ConnectionInfoService.SetSessionConnectString(@"ConnectType=SqlClient;Server=XUHUA305\SQLEXPRESS;Database=MetadataDB;User ID=sa;Password=newgrand123456");
-        }
-
-        #endregion
-
         public static readonly string QueryServiceName = "QueryService";
         public static readonly string UpdateServiceName = "UpdateService";
         public static readonly string MultiUpdateServiceName = "MultiUpdateService";
@@ -94,8 +66,6 @@ namespace Metadata.Rule
                 if (string.IsNullOrEmpty(id))
                     return null;
 
-                DbHelper.Open();
-
                 DataTable dt = KnowledgeDac.Instance.GetModel(id);
 
 
@@ -137,10 +107,6 @@ namespace Metadata.Rule
 
                 throw;
             }
-            finally
-            {
-                DbHelper.Close();
-            }
         }
 
         public IList<T> GetModelByParentId<T>(string id) where T : MetadataGod
@@ -159,8 +125,6 @@ namespace Metadata.Rule
             {
                 if (string.IsNullOrEmpty(id))
                     return null;
-
-                DbHelper.Open();
 
                 DataTable dt = null;
                 if (metadataCatalogue == MetadataCatalogue.Other)
@@ -197,17 +161,12 @@ namespace Metadata.Rule
 
                 throw;
             }
-            finally
-            {
-                DbHelper.Close();
-            }
         }
 
         public T GetModel<T>(string id) where T : MetadataGod
         {
             try
             {
-                DbHelper.Open();
                 if (string.IsNullOrEmpty(id))
                     return null;
 
@@ -227,19 +186,12 @@ namespace Metadata.Rule
 
                 throw;
             }
-            finally
-            {
-                DbHelper.Close();
-            }
         }
 
         public void AddModel<T>(T obj) where T : MetadataGod
         {
             try
             {
-                DbHelper.Open();
-
-                DbHelper.BeginTran();
 
                 obj.CreateTime = DateTime.Now;
                 obj.TimeStamp = DateTime.Now;
@@ -249,17 +201,10 @@ namespace Metadata.Rule
 
                 if (obj.Catalogue == MetadataCatalogue.Entity)
                     CreateEntityService(obj as MetadataForEntity);
-
-                DbHelper.CommitTran();
             }
             catch (Exception ex)
             {
-                DbHelper.RollbackTran();
                 throw;
-            }
-            finally
-            {
-                DbHelper.Close();
             }
         }
 
@@ -275,7 +220,7 @@ namespace Metadata.Rule
                         relation.CascadedUpdateId = metadataForService.Id;
                     }
                 }
-                KnowledgeRule.Instance.AddModel<MetadataForEntity>(metadataForEntity);
+                AddModel<MetadataForEntity>(metadataForEntity);
             }
             catch (Exception)
             {
@@ -288,16 +233,12 @@ namespace Metadata.Rule
         {
             try
             {
-                DbHelper.Open();
-
-                DbHelper.BeginTran();
 
                 obj.TimeStamp = DateTime.Now;
                 obj.IsCheckOut = false;
                 obj.Version.NextRevision();
 
                 string originalId = obj.Id;
-                //obj.Id = Guid.NewGuid().ToString();
 
                 T originalModel = GetModel<T>(originalId);
                 originalModel.Id = Guid.NewGuid().ToString();
@@ -314,17 +255,11 @@ namespace Metadata.Rule
                 originalModel.IsCheckOut = false;
                 KnowledgeDac.Instance.AddModel(originalModel);
 
-                DbHelper.CommitTran();
                 return obj.Id;
             }
             catch (Exception ex)
             {
-                DbHelper.RollbackTran();
                 throw;
-            }
-            finally
-            {
-                DbHelper.Close();
             }
         }
 
@@ -355,20 +290,11 @@ namespace Metadata.Rule
         {
             try
             {
-                DbHelper.Open();
-
-                DbHelper.BeginTran();
                 KnowledgeDac.Instance.ClearModelParentVersion(id);
-                DbHelper.CommitTran();
             }
             catch (Exception ex)
             {
-                DbHelper.RollbackTran();
                 throw;
-            }
-            finally
-            {
-                DbHelper.Close();
             }
         }
 
@@ -376,20 +302,11 @@ namespace Metadata.Rule
         {
             try
             {
-                DbHelper.Open();
-
-                DbHelper.BeginTran();
                 KnowledgeDac.Instance.DeleteModel(id);
-                DbHelper.CommitTran();
             }
             catch (Exception ex)
             {
-                DbHelper.RollbackTran();
                 throw;
-            }
-            finally
-            {
-                DbHelper.Close();
             }
         }
 
@@ -397,20 +314,11 @@ namespace Metadata.Rule
         {
             try
             {
-                DbHelper.Open();
-
-                DbHelper.BeginTran();
                 KnowledgeDac.Instance.Checkout(id);
-                DbHelper.CommitTran();
             }
             catch (Exception ex)
             {
-                DbHelper.RollbackTran();
                 throw;
-            }
-            finally
-            {
-                DbHelper.Close();
             }
         }
 
@@ -418,7 +326,6 @@ namespace Metadata.Rule
         {
             try
             {
-                DbHelper.Open();
                 DataTable dt = KnowledgeDac.Instance.GetModel(id);
                 if (dt != null && dt.Rows.Count != 0)
                 {
@@ -436,10 +343,6 @@ namespace Metadata.Rule
 
                 throw;
             }
-            finally
-            {
-                DbHelper.Close();
-            }
         }
 
         public void DeployUiTemplate(UiTemplate uiTemplate,string basePath)
@@ -456,8 +359,6 @@ namespace Metadata.Rule
             {
                 if (uiTemplateForJs == null)
                     return null;
-
-                DbHelper.Open();
 
                 UiTemplate uiTemplate = new UiTemplate();
                 uiTemplate.IsHaveTree = uiTemplateForJs.IsHaveTree;

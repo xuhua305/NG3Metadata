@@ -42,6 +42,11 @@ namespace NG3.Metadata.Core.Entity
         public string OrderSql { get; set; }
 
         /// <summary>
+        /// 是否多表查询
+        /// </summary>
+        public bool IsMultiTable { get; set; }
+
+        /// <summary>
         /// 需要更新的表(只能是一张，而且必须提供主表的继承)
         /// </summary>
         public string UpdateTable { get; set; }

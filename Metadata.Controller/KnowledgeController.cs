@@ -9,7 +9,8 @@ using System.Net.Http;
 using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.UI;
-using Metadata.Rule;
+using Metadata;
+using Metadata.Facade;
 using NG3.Data.Service;
 using NG3.Metadata.Core;
 using NG3.Metadata.Core.Entity;
@@ -44,6 +45,7 @@ namespace Metadata.Controller
 
         private void ParamsHandle<T>() where T : MetadataGod, new()
         {
+            KnowledgeFacade facade = new KnowledgeFacade();
             Request.ContentEncoding = System.Text.Encoding.GetEncoding("gb2312");
             ViewBag.OType = System.Web.HttpContext.Current.Request.Params["otype"];
             ViewBag.Id = System.Web.HttpContext.Current.Request.Params["id"];
@@ -59,7 +61,8 @@ namespace Metadata.Controller
             }
             else
             {
-                metadataGod = KnowledgeRule.Instance.GetModel<T>(ViewBag.Id);
+                
+                metadataGod = facade.GetModel<T>(ViewBag.Id);
             }
 
             if (metadataGod == null)
@@ -83,7 +86,7 @@ namespace Metadata.Controller
                 case MetadataCatalogue.Entity:
                     MetadataForEntity metadataForEntity = metadataGod as MetadataForEntity;
                     ViewBag.TransferGridData = JsonConvert.SerializeObject(metadataForEntity.EntityRelations);
-                    IList<MetadataForProperty> metadataForProperties = KnowledgeRule.Instance.GetModelByParentId<MetadataForProperty>(metadataGod.Id, MetadataCatalogue.Property);
+                    IList<MetadataForProperty> metadataForProperties = facade.GetModelByParentId<MetadataForProperty>(metadataGod.Id, MetadataCatalogue.Property);
                     if (metadataForProperties == null)
                     {
                         ViewBag.TransferPropertiesGridData = "[]";
@@ -205,8 +208,8 @@ namespace Metadata.Controller
                 }
 
                 HandleLanguageInfo(metadataForService);
-
-                KnowledgeRule.Instance.AddModel<MetadataForService>(metadataForService);
+                KnowledgeFacade facade = new KnowledgeFacade();
+                facade.AddModel<MetadataForService>(metadataForService);
                 return GetReturnStatusString(metadataForService, string.Empty);
             }
             catch (Exception ex)
@@ -254,8 +257,8 @@ namespace Metadata.Controller
                 }
 
                 HandleLanguageInfo(metadataForService);
-
-                string id = KnowledgeRule.Instance.UpdateModel<MetadataForService>(metadataForService);
+                KnowledgeFacade facade = new KnowledgeFacade();
+                string id = facade.UpdateModel<MetadataForService>(metadataForService);
                 return GetReturnStatusString(metadataForService, id);
             }
             catch (Exception ex)
@@ -286,7 +289,8 @@ namespace Metadata.Controller
                 JObject jObject = JObject.Parse(mergeData);
                 MetadataForNode metadataForNode = JsonConvert.DeserializeObject<MetadataForNode>(jObject["form"]["newRow"].ToString());
                 HandleLanguageInfo(metadataForNode);
-                KnowledgeRule.Instance.AddModel<MetadataForNode>(metadataForNode);
+                KnowledgeFacade facade = new KnowledgeFacade();
+                facade.AddModel<MetadataForNode>(metadataForNode);
                 return GetReturnStatusString(metadataForNode, string.Empty);
             }
             catch (Exception ex)
@@ -305,7 +309,8 @@ namespace Metadata.Controller
                 JObject jObject = JObject.Parse(mergeData);
                 MetadataForNode metadataForNode = JsonConvert.DeserializeObject<MetadataForNode>(jObject["form"]["modifiedRow"].ToString());
                 HandleLanguageInfo(metadataForNode);
-                string id = KnowledgeRule.Instance.UpdateModel<MetadataForNode>(metadataForNode);
+                KnowledgeFacade facade = new KnowledgeFacade();
+                string id = facade.UpdateModel<MetadataForNode>(metadataForNode);
                 return GetReturnStatusString(metadataForNode, id);
             }
             catch (Exception ex)
@@ -329,7 +334,8 @@ namespace Metadata.Controller
 
         public string GetEntityByRelationId(string id)
         {
-            IList<MetadataForEntity> metadataForEntities = KnowledgeRule.Instance.GetEntityByRelationId(id);
+            KnowledgeFacade facade = new KnowledgeFacade();
+            IList<MetadataForEntity> metadataForEntities = facade.GetEntityByRelationId(id);
             if (metadataForEntities == null)
                 return "{}";
 
@@ -340,7 +346,8 @@ namespace Metadata.Controller
         {
             try
             {
-                IList<MetadataForProperty> metadataForProperties = KnowledgeRule.Instance.GetModelByParentId<MetadataForProperty>(id, MetadataCatalogue.Property);
+                KnowledgeFacade facade = new KnowledgeFacade();
+                IList<MetadataForProperty> metadataForProperties = facade.GetModelByParentId<MetadataForProperty>(id, MetadataCatalogue.Property);
                 return JsonConvert.SerializeObject(metadataForProperties);
             }
             catch (Exception)
@@ -362,10 +369,11 @@ namespace Metadata.Controller
 
                 string data = System.Web.HttpContext.Current.Request.Params["data"];
                 UiTemplateForJs uiTemplateForJs = JsonConvert.DeserializeObject<UiTemplateForJs>(data);
-                UiTemplate uiTemplate = KnowledgeRule.Instance.ConvertUiTemplate(uiTemplateForJs);
+                KnowledgeFacade facade = new KnowledgeFacade();
+                UiTemplate uiTemplate = facade.ConvertUiTemplate(uiTemplateForJs);
                 Session["UiTemplate"] = uiTemplate;
 
-                KnowledgeRule.Instance.DeployUiTemplate(uiTemplate, baseXmlPath);
+                facade.DeployUiTemplate(uiTemplate, baseXmlPath);
                 return OkStatus;
             }
             catch (Exception ex)
@@ -403,15 +411,15 @@ namespace Metadata.Controller
                         foreach (var jRowObject in jGridObject["table"]["newRow"])
                         {
                             DictionaryContent dictionaryContent = JsonConvert.DeserializeObject<DictionaryContent>(jRowObject["row"].ToString());
-                            dictionaryContent.Id = Guid.NewGuid().ToString();
+                            dictionaryContent.Id = Convert.ToInt32(Guid.NewGuid().ToString());
                             metadataForDictionary.DictionaryContents.Add(dictionaryContent);
                         }
                     }
                 }
 
                 HandleLanguageInfo(metadataForDictionary);
-
-                KnowledgeRule.Instance.AddModel<MetadataForDictionary>(metadataForDictionary);
+                KnowledgeFacade facade = new KnowledgeFacade();
+                facade.AddModel<MetadataForDictionary>(metadataForDictionary);
                 return GetReturnStatusString(metadataForDictionary, string.Empty);
             }
             catch (Exception ex)
@@ -435,7 +443,8 @@ namespace Metadata.Controller
                 IList<DictionaryContent> dictionaryContents = JsonConvert.DeserializeObject<IList<DictionaryContent>>(jGridObject["table"]["newRow"].ToString());
                 metadataForDictionary.DictionaryContents = dictionaryContents;
                 HandleLanguageInfo(metadataForDictionary);
-                string id = KnowledgeRule.Instance.UpdateModel<MetadataForDictionary>(metadataForDictionary);
+                KnowledgeFacade facade = new KnowledgeFacade();
+                string id = facade.UpdateModel<MetadataForDictionary>(metadataForDictionary);
                 return GetReturnStatusString(metadataForDictionary, id);
             }
             catch (Exception ex)
@@ -460,7 +469,8 @@ namespace Metadata.Controller
         {
             try
             {
-                IList<MetadataGod> metadataGods = KnowledgeRule.Instance.GetModelByParentId<MetadataGod>(id, MetadataCatalogue.Entity, true);
+                KnowledgeFacade facade = new KnowledgeFacade();
+                IList<MetadataGod> metadataGods = facade.GetModelByParentId<MetadataGod>(id, MetadataCatalogue.Entity, true);
                 IList<TreeJson> treeJsons = new List<TreeJson>();
                 if (id == "root")
                 {
@@ -513,8 +523,8 @@ namespace Metadata.Controller
                 }
 
                 HandleLanguageInfo(metadataForEntity);
-
-                KnowledgeRule.Instance.AddEntityModel(metadataForEntity);
+                KnowledgeFacade facade = new KnowledgeFacade();
+                facade.AddEntityModel(metadataForEntity);
                 return GetReturnStatusString(metadataForEntity, string.Empty);
             }
             catch (Exception ex)
@@ -551,7 +561,8 @@ namespace Metadata.Controller
                 }
 
                 HandleLanguageInfo(metadataForEntity);
-                string id = KnowledgeRule.Instance.UpdateEntityModel(metadataForEntity);
+                KnowledgeFacade facade = new KnowledgeFacade();
+                string id = facade.UpdateEntityModel(metadataForEntity);
                 return GetReturnStatusString(metadataForEntity, id);
             }
             catch (Exception ex)
@@ -572,7 +583,8 @@ namespace Metadata.Controller
                 MetadataForProperty metadataForProperty = JsonConvert.DeserializeObject<MetadataForProperty>(jformObject["form"]["newRow"].ToString());
 
                 HandleLanguageInfo(metadataForProperty);
-                KnowledgeRule.Instance.AddModel<MetadataForProperty>(metadataForProperty);
+                KnowledgeFacade facade = new KnowledgeFacade();
+                facade.AddModel<MetadataForProperty>(metadataForProperty);
                 return GetReturnStatusString(metadataForProperty, string.Empty);
             }
             catch (Exception ex)
@@ -593,7 +605,8 @@ namespace Metadata.Controller
                 MetadataForProperty metadataForProperty = JsonConvert.DeserializeObject<MetadataForProperty>(jformObject["form"]["modifiedRow"].ToString());
 
                 HandleLanguageInfo(metadataForProperty);
-                string id = KnowledgeRule.Instance.UpdateModel<MetadataForProperty>(metadataForProperty);
+                KnowledgeFacade facade = new KnowledgeFacade();
+                string id = facade.UpdateModel<MetadataForProperty>(metadataForProperty);
                 return GetReturnStatusString(metadataForProperty, id);
             }
             catch (Exception ex)
@@ -705,7 +718,9 @@ namespace Metadata.Controller
                 JObject jObject = JObject.Parse(mergeData);
                 MetadataForUi metadataForUi = JsonConvert.DeserializeObject<MetadataForUi>(jObject["form"]["newRow"].ToString());
                 HandleLanguageInfo(metadataForUi);
-                KnowledgeRule.Instance.AddModel<MetadataForUi>(metadataForUi);
+
+                KnowledgeFacade facade = new KnowledgeFacade();
+                facade.AddModel<MetadataForUi>(metadataForUi);
                 return GetReturnStatusString(metadataForUi, string.Empty);
             }
             catch (Exception ex)
@@ -724,7 +739,8 @@ namespace Metadata.Controller
                 JObject jObject = JObject.Parse(mergeData);
                 MetadataForUi metadataForUi = JsonConvert.DeserializeObject<MetadataForUi>(jObject["form"]["modifiedRow"].ToString());
                 HandleLanguageInfo(metadataForUi);
-                string id = KnowledgeRule.Instance.UpdateModel<MetadataForUi>(metadataForUi);
+                KnowledgeFacade facade = new KnowledgeFacade();
+                string id = facade.UpdateModel<MetadataForUi>(metadataForUi);
                 return GetReturnStatusString(metadataForUi, id);
             }
             catch (Exception ex)
@@ -740,7 +756,8 @@ namespace Metadata.Controller
         {
             try
             {
-                KnowledgeRule.Instance.DeleteModel(id);
+                KnowledgeFacade facade = new KnowledgeFacade();
+                facade.DeleteModel(id);
                 //Dictionary<string, string> dictionary =
                 //    JsonConvert.DeserializeObject<Dictionary<string, string>>(mergeData);
 
@@ -758,7 +775,8 @@ namespace Metadata.Controller
         {
             try
             {
-                if (KnowledgeRule.Instance.IsCheckout(id))
+                KnowledgeFacade facade = new KnowledgeFacade();
+                if (facade.IsCheckout(id))
                 {
                     return TrueStatus;
                 }
@@ -782,7 +800,8 @@ namespace Metadata.Controller
         {
             try
             {
-                KnowledgeRule.Instance.Checkout(id);
+                KnowledgeFacade facade = new KnowledgeFacade();
+                facade.Checkout(id);
                 //Dictionary<string, string> dictionary =
                 //    JsonConvert.DeserializeObject<Dictionary<string, string>>(mergeData);
 
@@ -800,7 +819,8 @@ namespace Metadata.Controller
         {
             try
             {
-                KnowledgeRule.Instance.DeleteModelAbsolute(id);
+                KnowledgeFacade facade = new KnowledgeFacade();
+                facade.DeleteModelAbsolute(id);
                 //Dictionary<string, string> dictionary =
                 //    JsonConvert.DeserializeObject<Dictionary<string, string>>(mergeData);
 
@@ -818,6 +838,7 @@ namespace Metadata.Controller
         {
             try
             {
+                KnowledgeFacade facade = new KnowledgeFacade();
                 string currentNodeId = System.Web.HttpContext.Current.Request.Params["currentNodeId"];
                 int nodeStyle = System.Web.HttpContext.Current.Request.Params["nodeStyle"].Length == 0
                                     ? 0
@@ -835,7 +856,7 @@ namespace Metadata.Controller
                 }
                 else
                 {
-                    metadataForNodeParent = KnowledgeRule.Instance.GetModel<MetadataGod>(currentNodeId);
+                    metadataForNodeParent = facade.GetModel<MetadataGod>(currentNodeId);
                 }
 
 
@@ -872,7 +893,7 @@ namespace Metadata.Controller
                 }
                 else
                 {
-                    metadataForNodes = KnowledgeRule.Instance.GetModelByParentId<MetadataGod>(currentNodeId);
+                    metadataForNodes = facade.GetModelByParentId<MetadataGod>(currentNodeId);
                     if (metadataForNodes != null && metadataForNodes.Count != 0)
                     {
                         foreach (var metadataForNode in metadataForNodes)

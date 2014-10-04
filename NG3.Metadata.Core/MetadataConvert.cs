@@ -101,7 +101,7 @@ namespace NG3.Metadata.Core
                     if (childArray.Length == 3)
                     {
                         DictionaryContent dictionaryContent = new DictionaryContent();
-                        dictionaryContent.Id = childArray[0];
+                        dictionaryContent.Id = Convert.ToInt32(childArray[0]);
                         dictionaryContent.ContentItem = childArray[1];
                         dictionaryContent.Description = childArray[2];
                     }

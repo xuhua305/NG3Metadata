@@ -33,10 +33,6 @@ namespace Metadata.Rule.Service
                         return new ExpressionImplement();
                     case ImplementSytle.StoredProcedure:
                         return new StoreProcedureImplement();
-                    case ImplementSytle.EntityUpdateService:
-                        return new EntityUpdateServiceImplement();
-                    case ImplementSytle.EntityQueryService:
-                        return new EntityQueryServiceImplement();
 
                     default:
                         break;
@@ -177,34 +173,34 @@ namespace Metadata.Rule.Service
         private ServiceContext PrepareServiceContext(string id)
         {
             ServiceContext serviceContext = new ServiceContext();
-            MetadataGod metadataGod = KnowledgeRule.Instance.GetModel<MetadataGod>(id);
-            MetadataForService metadataForService = null;
-            if (metadataGod.Catalogue == MetadataCatalogue.Service)
-            {
-                metadataForService = metadataGod as MetadataForService;
-                serviceContext.Service = metadataForService;
-            }
+            //MetadataGod metadataGod = KnowledgeRule.Instance.GetModel<MetadataGod>(id);
+            //MetadataForService metadataForService = null;
+            //if (metadataGod.Catalogue == MetadataCatalogue.Service)
+            //{
+            //    metadataForService = metadataGod as MetadataForService;
+            //    serviceContext.Service = metadataForService;
+            //}
 
-            if (metadataForService.ImpStyle == ImplementSytle.EntityQueryService ||
-                metadataForService.ImpStyle == ImplementSytle.EntityUpdateService)
-            {
-                if (metadataForService.InputParams != null && metadataForService.InputParams.Count != 0)
-                {
-                    foreach (var info in metadataForService.InputParams)
-                    {
-                        ParameterInfo parameterInfo = info.Clone() as ParameterInfo;
-                        MetadataForEntity metadataForEntity = KnowledgeRule.Instance.GetModel<MetadataForEntity>(parameterInfo.AssociateId);
-                        if (metadataForEntity != null)
-                        {
-                            serviceContext.AssociateEntitys.Add(metadataForEntity);
-                            List<MetadataForProperty> metadataForProperties = KnowledgeRule.Instance.GetModelByParentId<MetadataForProperty>(metadataForEntity.Id) 
-                                as List<MetadataForProperty>;
-                            serviceContext.PropertyDictionary.Add(metadataForEntity.Id,metadataForProperties);
-                        }
+            //if (metadataForService.ImpStyle == ImplementSytle.EntityQueryService ||
+            //    metadataForService.ImpStyle == ImplementSytle.EntityUpdateService)
+            //{
+            //    if (metadataForService.InputParams != null && metadataForService.InputParams.Count != 0)
+            //    {
+            //        foreach (var info in metadataForService.InputParams)
+            //        {
+            //            ParameterInfo parameterInfo = info.Clone() as ParameterInfo;
+            //            MetadataForEntity metadataForEntity = KnowledgeRule.Instance.GetModel<MetadataForEntity>(parameterInfo.AssociateId);
+            //            if (metadataForEntity != null)
+            //            {
+            //                serviceContext.AssociateEntitys.Add(metadataForEntity);
+            //                List<MetadataForProperty> metadataForProperties = KnowledgeRule.Instance.GetModelByParentId<MetadataForProperty>(metadataForEntity.Id) 
+            //                    as List<MetadataForProperty>;
+            //                serviceContext.PropertyDictionary.Add(metadataForEntity.Id,metadataForProperties);
+            //            }
 
-                    }
-                }
-            }
+            //        }
+            //    }
+            //}
             return serviceContext;
         }
 
