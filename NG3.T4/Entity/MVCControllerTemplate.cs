@@ -9,20 +9,18 @@
 // ------------------------------------------------------------------------------
 namespace NG3.T4.Entity
 {
-    using System;
     using System.Linq;
     using System.Text;
     using System.Collections.Generic;
-    using System.Data;
-    using NG3.Metadata.Core.Entity;
+    using System;
     
     /// <summary>
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "D:\元数据讨论\src\ExtJsSytemDemo\NG3.T4\Entity\DataAccessTemplate.tt"
+    #line 1 "D:\元数据讨论\src\ExtJsSytemDemo\NG3.T4\Entity\MVCControllerTemplate.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "12.0.0.0")]
-    public partial class DataAccessTemplate : DataAccessTemplateBase
+    public partial class MVCControllerTemplate : MVCControllerTemplateBase
     {
 #line hidden
         /// <summary>
@@ -30,79 +28,6 @@ namespace NG3.T4.Entity
         /// </summary>
         public virtual string TransformText()
         {
-            this.Write("\r\n");
-            this.Write("using System;\r\nusing System.Collections.Generic;\r\nusing System.Linq;\r\nusing Syste" +
-                    "m.Text;\r\nusing System.Data;\r\n\r\nusing NG3.Data;\r\nusing NG3.Data.Service;\r\nusing S" +
-                    "UP.Common.Base;\r\nusing SUP.Common.DataAccess;\r\n\r\nnamespace ");
-            
-            #line 25 "D:\元数据讨论\src\ExtJsSytemDemo\NG3.T4\Entity\DataAccessTemplate.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(_metadataForEntity.Namespace));
-            
-            #line default
-            #line hidden
-            this.Write(".DataAccess\r\n{\r\n\tpublic class ");
-            
-            #line 27 "D:\元数据讨论\src\ExtJsSytemDemo\NG3.T4\Entity\DataAccessTemplate.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(_metadataForEntity.Name));
-            
-            #line default
-            #line hidden
-            this.Write("Dac\r\n    {\r\n        public DataTable GetMasters(string clientJson,int pageSize, i" +
-                    "nt PageIndex, ref int totalRecord)\r\n        {\r\n            try\r\n            {\r\n\t" +
-                    "\t\t\tstring sql = \"");
-            
-            #line 33 "D:\元数据讨论\src\ExtJsSytemDemo\NG3.T4\Entity\DataAccessTemplate.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(_metadataForEntity.Sql));
-            
-            #line default
-            #line hidden
-            this.Write("\";\r\n                string sortField =  \" ");
-            
-            #line 34 "D:\元数据讨论\src\ExtJsSytemDemo\NG3.T4\Entity\DataAccessTemplate.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(_metadataForEntity.KeyMapColumn));
-            
-            #line default
-            #line hidden
-            this.Write(" asc \";\r\n                DataTable dt = null;\r\n                if (!string.IsNull" +
-                    "OrEmpty(clientJson))\r\n                {\r\n                    string query = stri" +
-                    "ng.Empty;\r\n                    IDataParameter[] p = DataConverterHelper.BuildQue" +
-                    "ryWithParam(clientJson, string.Empty, ref query);\r\n\r\n                    if (!st" +
-                    "ring.IsNullOrEmpty(query))\r\n                    {\r\n                        sql +" +
-                    "= \" where \" + query;\r\n                    }\r\n\r\n                    string sqlstr" +
-                    " = PaginationAdapter.GetPageDataSql(sql, pageSize, ref PageIndex, ref totalRecor" +
-                    "d, sortField, p);\r\n                    dt = DbHelper.GetDataTable(sqlstr, p);\r\n " +
-                    "               }\r\n                else\r\n                {\r\n                    s" +
-                    "tring sqlstr = PaginationAdapter.GetPageDataSql(sql, pageSize, ref PageIndex, re" +
-                    "f totalRecord, sortField);\r\n                    dt = DbHelper.GetDataTable(sqlst" +
-                    "r);\r\n                }\r\n                return dt;\r\n            }\r\n            c" +
-                    "atch(Exception e)\r\n            {\r\n                throw;\r\n            }\r\n       " +
-                    " }\r\n\r\n        public DataTable GetMaster(int id)\r\n        {\r\n\t\t\r\n            try" +
-                    "\r\n            {\r\n\t\t\t\tstring sql = \"select * from hr_employee where hr_employee.i" +
-                    "d={0}\";\r\n\t\t\t\tIDataParameter[] p = new NGDataParameter[1];\r\n\t\t\t\tp[0] = new NGData" +
-                    "Parameter(\"id\", id);\r\n\t\t\t\treturn DbHelper.GetDataTable(sql, p);\r\n            }\r\n" +
-                    "            catch(Exception e)\r\n            {\r\n                throw;\r\n         " +
-                    "   }\r\n        }\r\n\r\n        public void UpdateMaster(DataTable masterData)\r\n     " +
-                    "   {\r\n\r\n        }\r\n\r\n        public void DeleteMaster(int id)\r\n        {\r\n\t\t\ttry" +
-                    "\r\n            {\r\n\t\t\t\tstring sql = \"delete from ");
-            
-            #line 87 "D:\元数据讨论\src\ExtJsSytemDemo\NG3.T4\Entity\DataAccessTemplate.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(_metadataForEntity.UpdateTable));
-            
-            #line default
-            #line hidden
-            this.Write(@" where id={0}"";
-				IDataParameter[] p = new NGDataParameter[1];
-				p[0] = new NGDataParameter(""id"", id);
-				DbHelper.ExecuteNonQuery(sql);
-            }
-            catch(Exception e)
-            {
-                throw;
-            }
-			
-        }
-    }
-}");
             return this.GenerationEnvironment.ToString();
         }
     }
@@ -114,7 +39,7 @@ namespace NG3.T4.Entity
     /// Base class for this transformation
     /// </summary>
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "12.0.0.0")]
-    public class DataAccessTemplateBase
+    public class MVCControllerTemplateBase
     {
         #region Fields
         private global::System.Text.StringBuilder generationEnvironmentField;

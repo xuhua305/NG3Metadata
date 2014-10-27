@@ -1,4 +1,4 @@
-﻿<#@ template language="C#" #>
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
 <#@ assembly name="System.Core" #>
 <#@ assembly name="System" #>
 <#@ assembly name="System.Data" #>
@@ -22,7 +22,7 @@ using NG3.Data.Service;
 using SUP.Common.Base;
 using SUP.Common.DataAccess;
 
-namespace <#= _metadataForEntity.Namespace #>
+namespace <#= _metadataForEntity.Namespace #>.DataAccess
 {
 	public class <#=_metadataForEntity.Name#>Dac
     {
@@ -84,8 +84,10 @@ namespace <#= _metadataForEntity.Namespace #>
         {
 			try
             {
-				string sql = "delete from <#=_metadataForEntity.UpdateTable#> where id='" + id + "'";
-				int iret = DbHelper.ExecuteNonQuery(sql);
+				string sql = "delete from <#=_metadataForEntity.UpdateTable#> where id={0}";
+				IDataParameter[] p = new NGDataParameter[1];
+				p[0] = new NGDataParameter("id", id);
+				DbHelper.ExecuteNonQuery(sql);
             }
             catch(Exception e)
             {

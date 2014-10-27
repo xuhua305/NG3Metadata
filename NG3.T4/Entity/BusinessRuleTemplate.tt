@@ -1,6 +1,54 @@
 ﻿<#@ template debug="false" hostspecific="false" language="C#" #>
 <#@ assembly name="System.Core" #>
+<#@ assembly name="System" #>
+<#@ assembly name="System.Data" #>
+<#@ assembly name="NG3.Metadata.Core" #>
+
+<#@ import namespace="System" #>
 <#@ import namespace="System.Linq" #>
 <#@ import namespace="System.Text" #>
 <#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Data" #>
+<#@ import namespace="NG3.Metadata.Core.Entity" #>
 <#@ output extension=".txt" #>
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Data;
+
+using <#= _metadataForEntity.Namespace #>.DataAccess
+
+namespace <#= _metadataForEntity.Namespace #>.Rule
+{
+	public class <#=_metadataForEntity.Name#>Rule
+    {
+
+		private <#=_metadataForEntity.Name#>Dac _dac = null;
+		public <#=_metadataForEntity.Name#>Rule()
+		{
+			_dac = new <#=_metadataForEntity.Name#>Dac();
+		}
+
+
+        public DataTable GetMasters(string clientJson,int pageSize, int PageIndex, ref int totalRecord)
+        {
+            return _dac.GetMasters(clientJson,pageSize,PageIndex,ref totalRecord);
+        }
+
+        public DataTable GetMaster(int id)
+        {
+			return _dac.GetMaster(id);
+        }
+
+        public void UpdateMaster(DataTable masterData)
+        {
+			_dac.UpdateMaster(masterData);
+        }
+
+        public void DeleteMaster(int id)
+        {
+			_dac.DeleteMaster(id);
+        }
+    }
+}
