@@ -21,6 +21,7 @@ namespace TestApp
         {
             DataAccessTemplate dataAccessTemplate = new DataAccessTemplate("helodfdf");
             MessageBox.Show(dataAccessTemplate.TransformText());
+            
         }
     }
 }

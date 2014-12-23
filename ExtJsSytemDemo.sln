@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30723.0
+VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExtJsSytemDemo", "ExtJsSytemDemo\ExtJsSytemDemo.csproj", "{228A4EAD-3910-4925-BC68-4D19F35B8FA9}"
 EndProject
@@ -32,6 +32,12 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NG3.T4", "NG3.T4\NG3.T4.csproj", "{E7F992EF-58E7-410C-97BD-B91CA3010FEE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestApp", "TestApp\TestApp.csproj", "{E60F5CA6-8CDC-42CA-88C1-C56B002B028B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PowerBuilder", "PowerBuilder", "{43B453DB-F3C0-4FB2-B24B-217DE8712BEF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NG3.Metadata", "PowerBuilder\NG3.Metadata\NG3.Metadata.csproj", "{09B59914-7E10-4AAD-8B61-375E819182E0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NG3.Metadata.PBDesignerParse", "PowerBuilder\NG3.Metadata.PBDesignerParse\NG3.Metadata.PBDesignerParse.csproj", "{497DFC12-EB02-45B0-8D8E-2A5F0B84BE58}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -87,6 +93,14 @@ Global
 		{E60F5CA6-8CDC-42CA-88C1-C56B002B028B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E60F5CA6-8CDC-42CA-88C1-C56B002B028B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E60F5CA6-8CDC-42CA-88C1-C56B002B028B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{09B59914-7E10-4AAD-8B61-375E819182E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{09B59914-7E10-4AAD-8B61-375E819182E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{09B59914-7E10-4AAD-8B61-375E819182E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{09B59914-7E10-4AAD-8B61-375E819182E0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{497DFC12-EB02-45B0-8D8E-2A5F0B84BE58}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{497DFC12-EB02-45B0-8D8E-2A5F0B84BE58}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{497DFC12-EB02-45B0-8D8E-2A5F0B84BE58}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{497DFC12-EB02-45B0-8D8E-2A5F0B84BE58}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -103,5 +117,7 @@ Global
 		{E834227C-7E75-48C8-93BE-9FD7F6E63411} = {C11345EC-75DB-4310-8A0A-450B8A823CDB}
 		{E7F992EF-58E7-410C-97BD-B91CA3010FEE} = {863E0AE1-214E-47BE-A349-6C53796190FE}
 		{E60F5CA6-8CDC-42CA-88C1-C56B002B028B} = {863E0AE1-214E-47BE-A349-6C53796190FE}
+		{09B59914-7E10-4AAD-8B61-375E819182E0} = {43B453DB-F3C0-4FB2-B24B-217DE8712BEF}
+		{497DFC12-EB02-45B0-8D8E-2A5F0B84BE58} = {43B453DB-F3C0-4FB2-B24B-217DE8712BEF}
 	EndGlobalSection
 EndGlobal
