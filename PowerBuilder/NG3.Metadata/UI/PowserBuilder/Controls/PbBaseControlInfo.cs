@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using NG3.Metadata.Core;
+﻿using NG3.Metadata.Core;
+using NG3.Metadata.UI.PowserBuilder.Events.Implementation;
 
 namespace NG3.Metadata.UI.PowserBuilder.Controls
 {
@@ -14,10 +11,12 @@ namespace NG3.Metadata.UI.PowserBuilder.Controls
         private int _xPos = -1;
         private int _yPos = -1;
         private string _description = string.Empty;
-        private bool _visible = false;
+        private bool _visible;
+        private PbExpressionImp _visibleExpressionImp = new PbExpressionImp(); 
+        private long _color = 0;
+        private PbExpressionImp _colorExpressionImp = new PbExpressionImp();
         private int _height = -1;
         private int _width = -1;
-        private bool _readOnly = false;
         private string _name = string.Empty;
         private string _fullName = string.Empty;
 
@@ -63,12 +62,6 @@ namespace NG3.Metadata.UI.PowserBuilder.Controls
             set { _width = value; }
         }
 
-        public bool ReadOnly
-        {
-            get { return _readOnly; }
-            set { _readOnly = value; }
-        }
-
         public string Name
         {
             get { return _name; }
@@ -79,6 +72,24 @@ namespace NG3.Metadata.UI.PowserBuilder.Controls
         {
             get { return _fullName; }
             set { _fullName = value; }
+        }
+
+        public long Color
+        {
+            get { return _color; }
+            set { _color = value; }
+        }
+
+        public PbExpressionImp VisibleExpressionImp
+        {
+            get { return _visibleExpressionImp; }
+            set { _visibleExpressionImp = value; }
+        }
+
+        public PbExpressionImp ColorExpressionImp
+        {
+            get { return _colorExpressionImp; }
+            set { _colorExpressionImp = value; }
         }
     }
 

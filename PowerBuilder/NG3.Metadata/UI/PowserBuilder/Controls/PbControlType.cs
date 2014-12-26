@@ -30,5 +30,6 @@ namespace NG3.Metadata.UI.PowserBuilder.Controls
         RemarkText,
         Grid,
         GridColumn,
+        Head,
     }
 }

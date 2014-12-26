@@ -5,13 +5,15 @@ using System.Linq;
 using System.Text;
 using NG3.Metadata.Core;
 
-namespace NG3.Metadata.UI.PowserBuilder
+namespace NG3.Metadata.UI.PowserBuilder.Controls
 {
     public class PbColumnInfo:MetadataGod
     {
         private SqlDbType _columnDataType = SqlDbType.UniqueIdentifier;
 
         private string _columnName = string.Empty;
+
+        private string _defaultValue = string.Empty;
 
         private int _textLen = 0;
 
@@ -71,6 +73,12 @@ namespace NG3.Metadata.UI.PowserBuilder
         {
             get { return _tableName; }
             set { _tableName = value; }
+        }
+
+        public string DefaultValue
+        {
+            get { return _defaultValue; }
+            set { _defaultValue = value; }
         }
     }
 }

@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using NG3.Metadata.UI.PowserBuilder.Events;
+using NG3.Metadata.UI.PowserBuilder.Events.Implementation;
 
 namespace NG3.Metadata.UI.PowserBuilder.Controls
 {
@@ -19,5 +21,13 @@ namespace NG3.Metadata.UI.PowserBuilder.Controls
             get { return _text; }
             set { _text = value; }
         }
+
+        public PbEvent<PbExpressionImp> ClickEvent
+        {
+            get { return _clickEvent; }
+            set { _clickEvent = value; }
+        }
+
+        private PbEvent<PbExpressionImp> _clickEvent = new PbEvent<PbExpressionImp>();
     }
 }

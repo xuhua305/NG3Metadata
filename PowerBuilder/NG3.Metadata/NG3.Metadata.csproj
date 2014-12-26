@@ -50,6 +50,7 @@
     <Compile Include="UI\PowserBuilder\Controls\PbFormInfo.cs" />
     <Compile Include="UI\PowserBuilder\Controls\PbGridInfo.cs" />
     <Compile Include="UI\PowserBuilder\Controls\PbGroupboxInfo.cs" />
+    <Compile Include="UI\PowserBuilder\Controls\PbHeadInfo.cs" />
     <Compile Include="UI\PowserBuilder\Controls\PbIntTextInfo.cs" />
     <Compile Include="UI\PowserBuilder\Controls\PbLabelInfo.cs" />
     <Compile Include="UI\PowserBuilder\Controls\PbOfficeInfo.cs" />
@@ -59,10 +60,21 @@
     <Compile Include="UI\PowserBuilder\Controls\PbScheduleInfo.cs" />
     <Compile Include="UI\PowserBuilder\Controls\PbTabInfo.cs" />
     <Compile Include="UI\PowserBuilder\Controls\PbTextInfo.cs" />
-    <Compile Include="UI\PowserBuilder\PbColumnInfo.cs" />
+    <Compile Include="UI\PowserBuilder\Events\Implementation\PbAttachmentImp.cs" />
+    <Compile Include="UI\PowserBuilder\Events\Implementation\PbBaseImp.cs" />
+    <Compile Include="UI\PowserBuilder\Events\Implementation\PbCurrentBillFunctionImp.cs" />
+    <Compile Include="UI\PowserBuilder\Events\Implementation\PbExpressionImp.cs" />
+    <Compile Include="UI\PowserBuilder\Events\Implementation\PbExternalWebPageImp.cs" />
+    <Compile Include="UI\PowserBuilder\Events\Implementation\PbSysBillImp.cs" />
+    <Compile Include="UI\PowserBuilder\Events\Implementation\PbReportImp.cs" />
+    <Compile Include="UI\PowserBuilder\Events\Implementation\PbSysHelpImp.cs" />
+    <Compile Include="UI\PowserBuilder\Events\PbEvent.cs" />
+    <Compile Include="UI\PowserBuilder\Events\PbEventType.cs" />
+    <Compile Include="UI\PowserBuilder\Events\Implementation\PbExpressionType.cs" />
+    <Compile Include="UI\PowserBuilder\Events\Implementation\PbEventImpType.cs" />
+    <Compile Include="UI\PowserBuilder\Controls\PbColumnInfo.cs" />
     <Compile Include="UI\PowserBuilder\Controls\PbBaseControlInfo.cs" />
     <Compile Include="UI\PowserBuilder\Controls\PbControlType.cs" />
-    <Compile Include="UI\PowserBuilder\PbMetadataUi.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
