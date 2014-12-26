@@ -5,6 +5,9 @@ using System.Text;
 
 namespace NG3.Metadata.UI.PowserBuilder.Events.Implementation
 {
+    /// <summary>
+    /// PB表达式的类型
+    /// </summary>
     public enum PbExpressionType
     {
         Other,

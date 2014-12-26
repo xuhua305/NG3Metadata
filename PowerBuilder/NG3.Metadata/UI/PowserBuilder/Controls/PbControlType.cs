@@ -5,8 +5,12 @@ using System.Text;
 
 namespace NG3.Metadata.UI.PowserBuilder.Controls
 {
+    /// <summary>
+    /// PB的控件类型
+    /// </summary>
     public enum PbControlType
     {
+
         Unknow,
         Label,
         Button,

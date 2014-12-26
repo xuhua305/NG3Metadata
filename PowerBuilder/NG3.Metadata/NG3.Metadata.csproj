@@ -47,7 +47,7 @@
     <Compile Include="UI\PowserBuilder\Controls\PbComboboxInfo.cs" />
     <Compile Include="UI\PowserBuilder\Controls\PbDateTimeTextInfo.cs" />
     <Compile Include="UI\PowserBuilder\Controls\PbDecimalTextInfo.cs" />
-    <Compile Include="UI\PowserBuilder\Controls\PbFormInfo.cs" />
+    <Compile Include="UI\PowserBuilder\PbBillInfo.cs" />
     <Compile Include="UI\PowserBuilder\Controls\PbGridInfo.cs" />
     <Compile Include="UI\PowserBuilder\Controls\PbGroupboxInfo.cs" />
     <Compile Include="UI\PowserBuilder\Controls\PbHeadInfo.cs" />

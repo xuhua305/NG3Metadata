@@ -7,6 +7,10 @@ using NG3.Metadata.UI.PowserBuilder.Events.Implementation;
 
 namespace NG3.Metadata.UI.PowserBuilder.Events
 {
+    /// <summary>
+    /// PB事件描述
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public class PbEvent<T>:MetadataGod where T:PbBaseImp,new()
     {
         private T _pbImp = new T();

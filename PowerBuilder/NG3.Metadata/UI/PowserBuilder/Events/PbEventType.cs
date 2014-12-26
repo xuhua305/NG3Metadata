@@ -5,6 +5,9 @@ using System.Text;
 
 namespace NG3.Metadata.UI.PowserBuilder.Events
 {
+    /// <summary>
+    /// PB事件类型
+    /// </summary>
     public enum PbEventType
     {
         Other,

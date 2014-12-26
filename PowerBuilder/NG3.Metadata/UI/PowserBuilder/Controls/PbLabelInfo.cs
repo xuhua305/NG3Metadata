@@ -7,6 +7,9 @@ using NG3.Metadata.UI.PowserBuilder.Events.Implementation;
 
 namespace NG3.Metadata.UI.PowserBuilder.Controls
 {
+    /// <summary>
+    /// PB的标签控件
+    /// </summary>
     public class PbLabelInfo:PbBaseControlInfo
     {
         public PbLabelInfo()

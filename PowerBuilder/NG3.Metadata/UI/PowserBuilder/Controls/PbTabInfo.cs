@@ -14,6 +14,9 @@ namespace NG3.Metadata.UI.PowserBuilder.Controls
 
         private string _gridId = string.Empty;
 
+        /// <summary>
+        /// Tab页对应的Grid编号
+        /// </summary>
         public string GridId
         {
             get { return _gridId; }

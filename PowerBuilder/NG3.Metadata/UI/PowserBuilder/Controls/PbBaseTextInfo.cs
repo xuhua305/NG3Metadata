@@ -7,6 +7,9 @@ using NG3.Metadata.UI.PowserBuilder.Events.Implementation;
 
 namespace NG3.Metadata.UI.PowserBuilder.Controls
 {
+    /// <summary>
+    /// PB带字段绑定的控件基础类
+    /// </summary>
     public class PbBaseTextInfo:PbBaseControlInfo
     {
         private string _leftText = string.Empty;
@@ -30,79 +33,117 @@ namespace NG3.Metadata.UI.PowserBuilder.Controls
         private PbEvent<PbExpressionImp> _doubleClickEvent = new PbEvent<PbExpressionImp>();
         private PbEvent<PbExpressionImp> _updateEvent = new PbEvent<PbExpressionImp>();
 
+        /// <summary>
+        /// 左边标签的文字显示
+        /// </summary>
         public string LeftText
         {
             get { return _leftText; }
             set { _leftText = value; }
         }
 
+        /// <summary>
+        /// 右边输入框的文字显示
+        /// </summary>
         public string RightText
         {
             get { return _rightText; }
             set { _rightText = value; }
         }
 
+        /// <summary>
+        /// 是否必输项目
+        /// </summary>
         public bool IsMustInput
         {
             get { return _isMustInput; }
             set { _isMustInput = value; }
         }
 
+        /// <summary>
+        /// 帮助数据源(内置帮助和通用帮助都支持)
+        /// </summary>
         public string HelpDataSource
         {
             get { return _helpDataSource; }
             set { _helpDataSource = value; }
         }
 
+        /// <summary>
+        /// 帮助是否可以多行选择(多行选择后，填入的时候用逗号分隔)
+        /// </summary>
         public bool IsHelpDsMultiSelect
         {
             get { return _isHelpDsMultiSelect; }
             set { _isHelpDsMultiSelect = value; }
         }
 
+        /// <summary>
+        /// 输入的掩码(pb专有的掩码格式)
+        /// </summary>
         public string EditMask
         {
             get { return _editMask; }
             set { _editMask = value; }
         }
 
+        /// <summary>
+        /// 是否只读
+        /// </summary>
         public bool IsReadOnly
         {
             get { return _isReadOnly; }
             set { _isReadOnly = value; }
         }
 
+        /// <summary>
+        /// 只读对应的表达式(表达式返回1或者0，1表示只读，0表示不只读)
+        /// </summary>
         public PbExpressionImp IsReadOnlyExpressionImp
         {
             get { return _isReadOnlyExpressionImp; }
             set { _isReadOnlyExpressionImp = value; }
         }
 
+        /// <summary>
+        /// 必输项对应的表达式(表达式返回1表示必输，0表示不必输)
+        /// </summary>
         public PbExpressionImp IsMustInputExpressionImp
         {
             get { return _isMustInputExpressionImp; }
             set { _isMustInputExpressionImp = value; }
         }
 
+        /// <summary>
+        /// 单击事件
+        /// </summary>
         public PbEvent<PbExpressionImp> ClickEvent
         {
             get { return _clickEvent; }
             set { _clickEvent = value; }
         }
 
+        /// <summary>
+        /// 双击事件
+        /// </summary>
         public PbEvent<PbExpressionImp> DoubleClickEvent
         {
             get { return _doubleClickEvent; }
             set { _doubleClickEvent = value; }
         }
 
+        /// <summary>
+        /// 更新后的事件
+        /// </summary>
         public PbEvent<PbExpressionImp> UpdateEvent
         {
             get { return _updateEvent; }
             set { _updateEvent = value; }
         }
 
-
+        /// <summary>
+        /// 对应的数据库字段信息
+        /// </summary>
         public PbColumnInfo ColumnInfo
         {
             get { return _pbColumnInfo; }

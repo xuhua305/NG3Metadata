@@ -6,6 +6,9 @@ using NG3.Metadata.Core;
 
 namespace NG3.Metadata.UI.PowserBuilder.Events.Implementation
 {
+    /// <summary>
+    /// 事件实现的基础类
+    /// </summary>
     public class PbBaseImp:MetadataGod
     {
         private PbEventImpType _pbEventImpType = PbEventImpType.Other;

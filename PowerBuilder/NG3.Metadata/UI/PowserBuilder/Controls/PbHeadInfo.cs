@@ -5,6 +5,9 @@ using System.Text;
 
 namespace NG3.Metadata.UI.PowserBuilder.Controls
 {
+    /// <summary>
+    /// PB表头控件
+    /// </summary>
     public class PbHeadInfo : PbBaseControlInfo
     {
         public PbHeadInfo()
@@ -16,12 +19,18 @@ namespace NG3.Metadata.UI.PowserBuilder.Controls
 
         IList<PbBaseControlInfo> _pbBaseControlInfos = new List<PbBaseControlInfo>();
 
+        /// <summary>
+        /// 表头其他控件信息(包括表体的Group)
+        /// </summary>
         public IList<PbBaseControlInfo> PbBaseControlInfos
         {
             get { return _pbBaseControlInfos; }
             set { _pbBaseControlInfos = value; }
         }
 
+        /// <summary>
+        /// 表头列信息
+        /// </summary>
         public IList<PbBaseControlInfo> PbColumns
         {
             get { return _pbColumns; }

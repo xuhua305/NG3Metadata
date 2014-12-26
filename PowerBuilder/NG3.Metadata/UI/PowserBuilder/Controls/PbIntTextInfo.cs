@@ -5,6 +5,9 @@ using System.Text;
 
 namespace NG3.Metadata.UI.PowserBuilder.Controls
 {
+    /// <summary>
+    /// PB整数输入控件
+    /// </summary>
     public class PbIntTextInfo : PbBaseTextInfo
     {
         public PbIntTextInfo()
