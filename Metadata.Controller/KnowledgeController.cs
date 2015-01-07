@@ -11,6 +11,7 @@ using System.Web.Mvc;
 using System.Web.UI;
 using Metadata;
 using Metadata.Facade;
+using NG.Web.Controller;
 using NG3.Data.Service;
 using NG3.Metadata.Core;
 using NG3.Metadata.Core.Entity;

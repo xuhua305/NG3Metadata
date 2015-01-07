@@ -61,6 +61,8 @@ namespace NG3.Metadata.Core.Entity
         /// </summary>
         public PrimaryKeyGenerateStyle KeyGenerateStyle { get; set; }
 
+        public DataType KeyDataType { get; set; }
+
         /// <summary>
         /// 是否树形展示
         /// </summary>
@@ -174,6 +176,10 @@ namespace NG3.Metadata.Core.Entity
             {
                 KeyMapColumn = reader.ReadString().Trim();
             }
+            else if (reader.IsStartElement("KeyDataType"))
+            {
+                KeyDataType = (DataType)(Convert.ToInt32(reader.ReadString().Trim()));
+            }
             else if (reader.IsStartElement("KeyGenerateStyle"))
             {
                 KeyGenerateStyle = (PrimaryKeyGenerateStyle)(Convert.ToInt32(reader.ReadString().Trim()));
@@ -261,6 +267,7 @@ namespace NG3.Metadata.Core.Entity
             writer.WriteElementString("OrderSql", OrderSql);
             writer.WriteElementString("UpdateTable", UpdateTable);
             writer.WriteElementString("KeyMapColumn", KeyMapColumn);
+            writer.WriteElementString("KeyDataType", ((int)KeyDataType).ToString());
             writer.WriteElementString("KeyGenerateStyle", ((int)KeyGenerateStyle).ToString());
 
             writer.WriteElementString("IsTreeStyle", IsTreeStyle.ToString());

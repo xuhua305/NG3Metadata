@@ -40,57 +40,61 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ComponentGenerateHelp.cs" />
-    <Compile Include="DataAccessTemplate.cs">
+    <Compile Include="Entity\BusinessFacadeTemplate.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BusinessFacadeTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\BusinessFacadeTemplateExtension.cs" />
+    <Compile Include="Entity\BusinessRuleTemplate.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BusinessRuleTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\BusinessRuleTemplateExtension.cs" />
+    <Compile Include="Entity\DataAccessTemplate.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>DataAccessTemplate.tt</DependentUpon>
     </Compile>
-    <Compile Include="DataAccessTemplateExtension.cs" />
+    <Compile Include="Entity\DataAccessTemplateExtension.cs" />
+    <Compile Include="Entity\MVCControllerTemplate.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MVCControllerTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\MVCControllerTemplateExtension.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="BusinessFacadeTemplate.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>BusinessFacadeTemplate.txt</LastGenOutput>
+    <None Include="Entity\BusinessFacadeTemplate.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>BusinessFacadeTemplate.cs</LastGenOutput>
     </None>
-    <None Include="BusinessRuleTemplate.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>BusinessRuleTemplate.txt</LastGenOutput>
+    <None Include="Entity\BusinessRuleTemplate.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>BusinessRuleTemplate.cs</LastGenOutput>
     </None>
-    <None Include="DataAccessTemplate.tt">
+    <None Include="Entity\DataAccessTemplate.tt">
       <Generator>TextTemplatingFilePreprocessor</Generator>
       <LastGenOutput>DataAccessTemplate.cs</LastGenOutput>
     </None>
-    <None Include="MVCControllerTemplate.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>MVCControllerTemplate.txt</LastGenOutput>
+    <None Include="Entity\MVCControllerTemplate.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>MVCControllerTemplate.cs</LastGenOutput>
     </None>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="BusinessFacadeTemplate.txt">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>BusinessFacadeTemplate.tt</DependentUpon>
-    </Content>
-    <Content Include="BusinessRuleTemplate.txt">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>BusinessRuleTemplate.tt</DependentUpon>
-    </Content>
-    <Content Include="MVCControllerTemplate.txt">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>MVCControllerTemplate.tt</DependentUpon>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\NG3.Metadata.Core\NG3.Metadata.Core.csproj">
       <Project>{112a34cb-63c9-47bd-b3c6-ee54a179f826}</Project>
       <Name>NG3.Metadata.Core</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Service\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

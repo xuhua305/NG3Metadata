@@ -42,6 +42,16 @@
         name: 'KeyMapColumn'
     }, {
         xtype: 'combo',
+        store: dataTypeStore,
+        fieldLabel: '主键数据类型',
+        queryMode: 'local',
+        id: 'KeyDataType',
+        name: 'KeyDataType',
+        mustInput: true, //必输列
+        valueField: 'value',
+        displayField: 'text'
+    }, {
+        xtype: 'combo',
         store: keyGenerateStyleStore,
         labelWidth: 80,
         fieldLabel: '主键产生方式',

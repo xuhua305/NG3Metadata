@@ -15,7 +15,7 @@ namespace Metadata.Facade
     {
         public KnowledgeFacade()
         {
-            ConnectionInfoService.SetSessionConnectString(@"ConnectType=SqlClient;Server=XUHUA305\SQLEXPRESS;Database=MetadataDB;User ID=sa;Password=newgrand123456");
+            ConnectionInfoService.SetSessionConnectString(@"ConnectType=SqlClient;Server=XUHUA305-PC;Database=MetadataDB;User ID=sa;Password=xuhua7913905");
         }
 
         public IList<MetadataForEntity> GetEntityByRelationId(string id)

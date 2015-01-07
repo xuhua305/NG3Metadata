@@ -15,5 +15,9 @@ namespace NG3.Metadata.Core
         {
             Catalogue = MetadataCatalogue.Node;
         }
+
+        public bool IsDependencyPackage { get; set; }
+
+
     }
 }
