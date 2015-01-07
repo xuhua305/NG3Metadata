@@ -10,7 +10,6 @@ namespace NG3.Metadata.UI.PowserBuilder.Controls
     /// </summary>
     public enum PbControlType
     {
-
         Unknow,
         Label,
         Button,
@@ -35,5 +34,7 @@ namespace NG3.Metadata.UI.PowserBuilder.Controls
         Grid,
         GridColumn,
         Head,
+        ToolbarButton,
+        Toolbar,
     }
 }

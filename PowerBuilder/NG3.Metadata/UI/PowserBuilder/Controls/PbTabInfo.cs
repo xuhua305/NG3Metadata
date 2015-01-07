@@ -12,15 +12,15 @@ namespace NG3.Metadata.UI.PowserBuilder.Controls
             ControlType = PbControlType.Tab;
         }
 
-        private string _gridId = string.Empty;
+        private IList<string> _gridIds = new List<string>();
 
         /// <summary>
-        /// Tab页对应的Grid编号
+        /// Tab页中对应的Grid编号集合，按照顺序
         /// </summary>
-        public string GridId
+        public IList<string> GridIds
         {
-            get { return _gridId; }
-            set { _gridId = value; }
+            get { return _gridIds; }
+            set { _gridIds = value; }
         }
     }
 }

@@ -41,12 +41,15 @@
   <ItemGroup>
     <Compile Include="Core\MetadataGod.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UI\PowserBuilder\Controls\PbBaseInfo.cs" />
     <Compile Include="UI\PowserBuilder\Controls\PbBaseTextInfo.cs" />
     <Compile Include="UI\PowserBuilder\Controls\PbButtonInfo.cs" />
     <Compile Include="UI\PowserBuilder\Controls\PbCheckboxInfo.cs" />
     <Compile Include="UI\PowserBuilder\Controls\PbComboboxInfo.cs" />
     <Compile Include="UI\PowserBuilder\Controls\PbDateTimeTextInfo.cs" />
     <Compile Include="UI\PowserBuilder\Controls\PbDecimalTextInfo.cs" />
+    <Compile Include="UI\PowserBuilder\Controls\PbToolbarButtonInfo.cs" />
+    <Compile Include="UI\PowserBuilder\Controls\PbToolbarInfo.cs" />
     <Compile Include="UI\PowserBuilder\PbBillInfo.cs" />
     <Compile Include="UI\PowserBuilder\Controls\PbGridInfo.cs" />
     <Compile Include="UI\PowserBuilder\Controls\PbGroupboxInfo.cs" />

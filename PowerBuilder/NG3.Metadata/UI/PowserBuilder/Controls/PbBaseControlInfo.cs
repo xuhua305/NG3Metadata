@@ -6,30 +6,16 @@ namespace NG3.Metadata.UI.PowserBuilder.Controls
     /// <summary>
     /// PB控件基础类
     /// </summary>
-    public class PbBaseControlInfo : MetadataGod
+    public class PbBaseControlInfo : PbBaseInfo
     {
 
-        private PbControlType _pbControlType = PbControlType.Unknow;
         private int _xPos = -1;
         private int _yPos = -1;
-        private string _description = string.Empty;
-        private bool _visible;
         private PbExpressionImp _visibleExpressionImp = new PbExpressionImp(); 
         private long _textColor = 0;
         private PbExpressionImp _textColorExpressionImp = new PbExpressionImp();
         private int _height = -1;
         private int _width = -1;
-        private string _name = string.Empty;
-        private string _fullName = string.Empty;
-
-        /// <summary>
-        /// PB的控件类型
-        /// </summary>
-        public PbControlType ControlType
-        {
-            get { return _pbControlType; }
-            set { _pbControlType = value; }
-        }
 
         /// <summary>
         /// 绝对坐标X轴
@@ -49,23 +35,6 @@ namespace NG3.Metadata.UI.PowserBuilder.Controls
             set { _yPos = value; }
         }
 
-        /// <summary>
-        /// 控件描述
-        /// </summary>
-        public string Description
-        {
-            get { return _description; }
-            set { _description = value; }
-        }
-
-        /// <summary>
-        /// 可见性
-        /// </summary>
-        public bool Visible
-        {
-            get { return _visible; }
-            set { _visible = value; }
-        }
 
         /// <summary>
         /// 高度
@@ -85,23 +54,6 @@ namespace NG3.Metadata.UI.PowserBuilder.Controls
             set { _width = value; }
         }
 
-        /// <summary>
-        /// 名称
-        /// </summary>
-        public string Name
-        {
-            get { return _name; }
-            set { _name = value; }
-        }
-
-        /// <summary>
-        /// 全名
-        /// </summary>
-        public string FullName
-        {
-            get { return _fullName; }
-            set { _fullName = value; }
-        }
 
         /// <summary>
         /// 字体颜色(RGB的数字表示)

@@ -20,8 +20,11 @@ namespace NG3.Metadata.UI.PowserBuilder
         private bool _isReadOnly = false;
         private string _text = string.Empty;
 
+        private PbGridInfo _pbList = new PbGridInfo();
         private PbHeadInfo _headInfo = new PbHeadInfo();
-        private IList<PbGridInfo> _pbGrids = new List<PbGridInfo>(); 
+        private IList<PbGridInfo> _pbGrids = new List<PbGridInfo>();
+        private IList<PbTabInfo> _pbTabInfos = new List<PbTabInfo>();
+        private PbToolbarInfo _toolbarInfo = new PbToolbarInfo();
 
         private PbEvent<PbExpressionImp> _editAddInitEvent = new PbEvent<PbExpressionImp>();
         private PbEvent<PbExpressionImp> _billDelCheckEvent = new PbEvent<PbExpressionImp>();
@@ -145,6 +148,33 @@ namespace NG3.Metadata.UI.PowserBuilder
         {
             get { return _billUnApprovalUpdateEvent; }
             set { _billUnApprovalUpdateEvent = value; }
+        }
+
+        /// <summary>
+        /// PB列表界面信息
+        /// </summary>
+        public PbGridInfo PbList
+        {
+            get { return _pbList; }
+            set { _pbList = value; }
+        }
+
+        /// <summary>
+        /// 对应的Tab信息(Tab页有多个)
+        /// </summary>
+        public IList<PbTabInfo> PbTabInfos
+        {
+            get { return _pbTabInfos; }
+            set { _pbTabInfos = value; }
+        }
+
+        /// <summary>
+        /// 工具栏信息
+        /// </summary>
+        public PbToolbarInfo ToolbarInfo
+        {
+            get { return _toolbarInfo; }
+            set { _toolbarInfo = value; }
         }
     }
 }

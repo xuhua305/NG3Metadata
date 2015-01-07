@@ -17,6 +17,8 @@ namespace NG3.Metadata.UI.PowserBuilder.Controls
 
         private bool _isInTab = false;
 
+        private string _tabId = string.Empty;
+
         private string _tableName = string.Empty;
 
         private string _parentId = string.Empty;
@@ -57,6 +59,15 @@ namespace NG3.Metadata.UI.PowserBuilder.Controls
         {
             get { return _parentId; }
             set { _parentId = value; }
+        }
+
+        /// <summary>
+        /// 对应的Tab页编号
+        /// </summary>
+        public string TabId
+        {
+            get { return _tabId; }
+            set { _tabId = value; }
         }
     }
 }
